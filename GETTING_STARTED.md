@@ -17,10 +17,19 @@ g++ -O3 -std=c++17 implementations/cpp/mergesegmentsort_v3.cpp -o segmentsort
 ./segmentsort
 ```
 
-### 3. Run basic benchmarks
+### 3. Run tests
+```bash
+# Comprehensive test suite
+cd tests
+python3 run_python_tests.py
+php run_php_tests.php
+```
+
+### 4. Run basic benchmarks
 ```bash
 # Comparative benchmarks
-python3 benchmarks/run_benchmarks.py --sizes 1000 5000 10000
+cd benchmarks
+python3 run_benchmarks.py --sizes 1000 5000 10000
 ```
 
 ## 📁 Project Structure
@@ -30,19 +39,24 @@ segment-sort/
 ├── 📄 README.md              # Main documentation
 ├── 📄 GETTING_STARTED.md     # This guide
 ├── 📄 LICENSE                # MIT License
-├── 📄 Makefile              # Task automation
-├── 📄 setup.py              # Automatic configuration
-├── 📄 config.yml            # Project configuration
+├── 📄 Makefile               # Task automation
+├── 📄 setup.py               # Automatic configuration
+├── 📄 config.yml             # Project configuration
 ├── 📁 implementations/       # Code by language
-│   ├── cpp/                  # C++ 
+│   ├── cpp/                  # C++
 │   ├── python/               # Python
 │   ├── java/                 # Java
 │   ├── go/                   # Go
 │   ├── rust/                 # Rust
-│   └── javascript/           # JavaScript
+│   ├── javascript/           # JavaScript
+│   └── php/                  # PHP
 ├── 📁 benchmarks/            # Benchmarking system
 │   ├── run_benchmarks.py     # Complete benchmark suite
 │   └── quick_test.py         # Quick validation test
+├── 📁 tests/                 # Comprehensive test suite
+│   ├── test_cases.json       # Test cases in JSON format
+│   ├── run_*.php             # Test runners for each language
+│   └── *.php                 # PHP implementation and tests
 ├── 📁 paper/                 # Academic analysis
 │   └── segment_sort_analysis.md  # Complete paper
 ├── 📁 docs/                  # Detailed documentation

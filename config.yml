@@ -41,6 +41,9 @@ compilation:
     edition: "2018"
   javascript:
     node_version: "12+"
+  php:
+    version: "7.4+"
+    opcache_enabled: true
 
 # Documentation configuration
 documentation:
@@ -52,6 +55,16 @@ documentation:
 # Testing configuration
 testing:
   quick_test_size: 10000
+  comprehensive_suite: true
+  test_files:
+    - "test_cases.json"
+    - "run_python_tests.py"
+    - "run_php_tests.php"
+    - "run_cpp_tests.cpp"
+    - "run_go_tests.go"
+    - "run_rust_tests.rs"
+    - "run_js_tests.js"
+    - "runJavaTests.java"
   validation_arrays:
     - empty
     - single_element
@@ -60,12 +73,14 @@ testing:
     - reversed
     - duplicates
     - semi_ordered
+  coverage_languages: 7  # C++, Python, Java, Go, Rust, JavaScript, PHP
 
 # CI/CD configuration
 ci_cd:
   platforms: ["linux", "windows", "macos"]
   python_versions: ["3.7", "3.8", "3.9", "3.10", "3.11"]
   node_versions: ["12", "14", "16", "18"]
+  php_versions: ["7.4", "8.0", "8.1", "8.2", "8.3"]
 
 # Release configuration
 release:

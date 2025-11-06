@@ -111,6 +111,17 @@ cd implementations/javascript
 node segmentsort.js
 ```
 
+### PHP
+
+#### Requirements
+- PHP 7.4+
+
+#### Execution
+```bash
+cd implementations/php
+php segmentsort.php
+```
+
 ## Usage Examples
 
 ### C++
@@ -276,6 +287,33 @@ const sorted = objects.sort((a, b) => a.age - b.age);
 console.log('Objects sorted by age:', sorted);
 ```
 
+### PHP
+
+```php
+<?php
+require_once 'segmentsort.php';
+
+// Basic example
+$arr = [64, 34, 25, 12, 22, 11, 90];
+$sorter = new SegmentSort();
+$sorter->sort($arr);
+
+echo "Sorted array: " . implode(' ', $arr) . "\n";
+
+// Example with different data types
+$testCases = [
+    "Integers" => [3, 1, 4, 1, 5],
+    "Floats" => [3.1, 1.4, 2.7, 1.5],
+    "Strings" => ["b", "a", "c", "a"]
+];
+
+foreach ($testCases as $name => $data) {
+    $sorter->sort($data);
+    echo "$name: " . implode(' ', $data) . "\n";
+}
+?>
+```
+
 ## API Reference
 
 ### SegmentSort Class
@@ -332,6 +370,58 @@ go build -ldflags="-s -w" -o segmentsort segmentsort.go
 GOGC=off go run segmentsort.go  # Disable GC for benchmarks
 ```
 
+### 5. PHP Performance
+```bash
+# Enable OPcache for better performance
+php -d opcache.enable=1 -d opcache.memory_consumption=256 segmentsort.php
+```
+
+## Testing
+
+The project includes a comprehensive test suite that validates all implementations:
+
+### Running Tests
+
+```bash
+# Run all language tests
+cd tests
+python3 run_python_tests.php
+
+# Run PHP-specific tests
+php run_php_tests.php
+
+# Run C++ tests
+g++ -O3 -std=c++17 run_cpp_tests.cpp -o cpp_test && ./cpp_test
+```
+
+### Test Coverage
+
+- **Empty arrays and edge cases**
+- **Single element and small arrays**
+- **Already sorted and reverse sorted arrays**
+- **Arrays with duplicates and identical elements**
+- **Semi-ordered and pattern-based data**
+- **All 7 implementations cross-validated**
+
+### Test Structure
+
+```json
+// tests/test_cases.json
+[
+    {
+        "name": "Empty array",
+        "input": [],
+        "expected": []
+    },
+    {
+        "name": "Single element",
+        "input": [42],
+        "expected": [42]
+    },
+    // ... more test cases
+]
+```
+
 ## Troubleshooting
 
 ### Common Errors
@@ -350,6 +440,14 @@ GOGC=off go run segmentsort.go  # Disable GC for benchmarks
 
 #### Rust: "borrowed value does not live long enough"
 **Solution:** Use appropriate references in slice operations
+
+#### PHP: "Call to undefined method" or class not found
+**Solution:** Ensure PHP file is included/required correctly:
+```php
+require_once 'segmentsort.php';
+// or
+include 'segmentsort.php';
+```
 
 ### Performance Issues
 
