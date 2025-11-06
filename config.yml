@@ -1,0 +1,82 @@
+# Segment Sort - Configuración del Proyecto
+# =========================================
+
+project:
+  name: "Segment Sort Algorithm"
+  version: "1.0.0"
+  description: "Algoritmo de ordenación innovador con detección automática de segmentos"
+  author: "Segment Sort Developer"
+  license: "MIT"
+
+# Configuración de benchmarks
+benchmarks:
+  default_sizes: [1000, 5000, 10000, 50000, 100000]
+  max_size: 1000000
+  timeout_seconds: 300
+  iterations: 5
+  datasets:
+    - random
+    - sorted
+    - reversed
+    - semi_ordered
+    - segmented
+
+# Configuración de compilación
+compilation:
+  cpp:
+    compiler: "g++"
+    flags: ["-O3", "-std=c++17", "-Wall", "-Wextra"]
+    optimization: "O3"
+  python:
+    version: "3.7+"
+    required_packages: ["matplotlib", "numpy"]
+  java:
+    version: "8+"
+    target: "1.8"
+  go:
+    version: "1.11+"
+    flags: ["-ldflags=-s -w"]
+  rust:
+    version: "1.40+"
+    edition: "2018"
+  javascript:
+    node_version: "12+"
+
+# Configuración de documentación
+documentation:
+  formats: ["markdown", "html"]
+  include_code_examples: true
+  include_benchmarks: true
+  include_visualizations: true
+
+# Configuración de testing
+testing:
+  quick_test_size: 10000
+  validation_arrays:
+    - empty
+    - single_element
+    - two_elements
+    - sorted
+    - reversed
+    - duplicates
+    - semi_ordered
+
+# Configuración de CI/CD
+ci_cd:
+  platforms: ["linux", "windows", "macos"]
+  python_versions: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+  node_versions: ["12", "14", "16", "18"]
+
+# Configuración de releases
+release:
+  changelog_file: "CHANGELOG.md"
+  documentation_site: true
+  publish_npm: false  # Si se quiere publicar en npm
+  publish_pip: false  # Si se quiere publicar en PyPI
+
+# Configuración de optimizaciones
+optimizations:
+  cache_friendly: true
+  parallel_processing: false  # Para versiones futuras
+  memory_pool: false          # Para versiones futuras
+  custom_allocators: false    # Para versiones futuras
