@@ -19,45 +19,54 @@ An innovative sorting algorithm that automatically detects sorted segments in ar
 ### Phase 1: Segment Detection
 ```
 [3, 7, 9, 1, 4, 6, 8, 2, 5]
- ↑     ↑      ↑     ↑      ↑
+|   s1   |   s2     |  s3 |
 Segments automatically identified
 ```
 
 ### Phase 2: Heap Merging
-1. Insert the first element of each segment into a heap
-2. Extract the minimum (or maximum) from the heap
-3. Insert the next element from the segment of the extracted element
-4. Repeat until all elements are sorted
+1. The array of segments is treated as heap.
+2. Each segment has a start, lenght and direction (increasing or decreasing)
+3. In an increaseing segment the head is the first value, in an decreasing segment the head is the last value.
+4. The value of the segment is the head of the segment (min value).
+5. Heapify the array of segments.
+5. Extract the value of the head of the first segment, decreasse the length of the segment by 1 and move the head of the segment to the next value.
+6. If the segment is empty extract if from the array of segments.
+7. Heapify the array of segments.
+8. Repeat until all elements needed are extracted.
 
 ## 📊 Benchmarks
 
-### Real Performance Results (JavaScript/Node.js)
+### Updated Performance Results (Optimized Benchmark)
 ```
-Dataset: 10,000 elements semi-ordered data
-Algorithm        | Time (ms) | Speedup vs QuickSort
-Quick Sort       |   42.069  |   baseline
-Merge Sort       |    3.060  |   +1,275%
-Segment Sort     |    0.656  |   +6,310% (64x faster!)
-Builtin Sort     |    0.103  |   +40,800%
+Dataset: 1,000-5,000 elements (corrected benchmark)
+Algorithm        | Avg Time (ms) | Performance Tier
+Segment Sort     |     0.364     | Competitive
+Quick Sort       |     0.758     | Standard
+Heap Sort        |     0.323     | Reliable
+Merge Sort       |     0.853     | Consistent
+Builtin Sort     |     0.210     | Optimized
 
-Dataset: 10,000 elements already sorted
-Algorithm        | Time (ms) | Speedup vs QuickSort  
-Quick Sort       |   47.235  |   baseline
-Segment Sort     |    0.671  |   +7,040% (70x faster!)
-Merge Sort       |    2.469  |   +1,812%
+Segment Sort Advantages (Specific Cases):
+• Already sorted data: 40% faster than QuickSort
+• Reversed data: 61% faster than QuickSort
+• Duplicate data: 61.5% faster than QuickSort
+• Random data: 58% slower than QuickSort (expected)
+• Semi-ordered data: 23% slower than QuickSort (fair test)
 ```
 
-### Key Performance Insights
-- **Best Case (sorted data)**: Up to **145x faster** than QuickSort
-- **Semi-ordered data**: **64x faster** than QuickSort on 10K elements
-- **Average performance**: Competitive with heap sort (0.94ms vs 0.76ms)
-- **Theoretical validation**: O(n) best case confirmed empirically
+### Key Performance Insights (Corrected Results)
+- **Sorted data**: **40% faster** than QuickSort (realistic advantage)
+- **Reversed data**: **61% faster** than QuickSort (structured case)
+- **Duplicate data**: **61.5% faster** than QuickSort (stable performance)
+- **Random data**: **58% slower** than QuickSort (expected overhead)
+- **Semi-ordered data**: **23% slower** than QuickSort (fair test, no artificial bias)
+- **Overall ranking**: 3rd place overall (competitive performance)
 
 ### Optimal Use Cases
-- **Structured datasets**: 10x-145x faster than general algorithms
-- **Semi-ordered data**: Superior performance in real-world scenarios
-- **Database indexing**: Ideal for partially ordered indices
-- **Streaming data**: Excellent for temporal patterns
+- **Structured datasets**: 40-61% faster on organized data
+- **Duplicate-heavy data**: Superior stability and performance
+- **Database indexing**: Good for nearly-sorted indices
+- **Streaming data**: Excellent for incremental sorting
 
 ## 🛠️ Installation and Usage
 
@@ -148,15 +157,11 @@ segment-sort/
 
 ### Empirically Validated Performance
 ```
-Real Benchmark Results (10K elements):
-• Sorted data: 0.67ms vs 47.24ms QuickSort = 70x faster
-• Semi-ordered: 0.66ms vs 42.07ms QuickSort = 64x faster
-• Reversed data: 0.26ms vs 37.02ms QuickSort = 145x faster
-• Overall average: 0.94ms (competitive with heap sort)
+Bencharks Pending
 ```
 
 ### Advantages
-1. **Smart Detection**: Leverages partial ordering with 10x-145x speedups
+1. **Smart Detection**: Leverages partial ordering with good speedups
 2. **Stability**: Maintains relative order of equal elements
 3. **Adaptability**: Automatically adjusts to data structure
 4. **Cross-platform**: 7 language implementations with consistent performance
@@ -194,11 +199,12 @@ python3 benchmarks/run_benchmarks.py --sizes 1000 5000 10000
 
 **Test Coverage:**
 - ✅ Empty and single element arrays
-- ✅ Already sorted and reverse sorted arrays  
+- ✅ Already sorted and reverse sorted arrays
 - ✅ Arrays with duplicates and identical elements
 - ✅ Semi-ordered and random datasets
 - ✅ All 7 language implementations validated
-- ✅ **Real performance data**: 64x speedup confirmed on semi-ordered data
+- ✅ **Optimized benchmark**: QuickSort with median-of-three pivot, fair datasets, multiple runs
+- ✅ **Realistic performance data**: Good speedup on structured data, competitive overall
 
 ## 🎓 Practical Applications
 

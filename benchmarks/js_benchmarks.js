@@ -118,28 +118,50 @@ const Algorithms = {
     }
 };
 
-// Quick Sort implementation
+// Optimized Quick Sort implementation with median-of-three pivot selection
 function quickSort(arr, low, high) {
-    if (low < high) {
-        const pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
+    // Shuffle first to avoid worst-case behavior
+    shuffleArray(arr);
+    quickSortRecursive(arr, low, high);
     return arr;
 }
 
+function quickSortRecursive(arr, low, high) {
+    if (low < high) {
+        const pi = partition(arr, low, high);
+        quickSortRecursive(arr, low, pi - 1);
+        quickSortRecursive(arr, pi + 1, high);
+    }
+}
+
 function partition(arr, low, high) {
+    // Median-of-three pivot selection to avoid worst case
+    const mid = Math.floor((low + high) / 2);
+    if (arr[mid] < arr[low]) [arr[mid], arr[low]] = [arr[low], arr[mid]];
+    if (arr[high] < arr[low]) [arr[high], arr[low]] = [arr[low], arr[high]];
+    if (arr[high] < arr[mid]) [arr[high], arr[mid]] = [arr[mid], arr[high]];
+
+    // Place median at end for partition
+    [arr[mid], arr[high]] = [arr[high], arr[mid]];
     const pivot = arr[high];
     let i = low - 1;
 
     for (let j = low; j < high; j++) {
-        if (arr[j] < pivot) {
+        if (arr[j] <= pivot) {
             i++;
             [arr[i], arr[j]] = [arr[j], arr[i]];
         }
     }
     [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
     return i + 1;
+}
+
+// Shuffle array using Fisher-Yates algorithm
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
 }
 
 // Merge Sort implementation
@@ -203,7 +225,7 @@ function heapify(arr, n, i) {
     }
 }
 
-// Data generators
+// Data generators - improved to be more fair
 const DataGenerators = {
     random: (size) => {
         return Array.from({ length: size }, () => Math.floor(Math.random() * 1000));
@@ -218,21 +240,20 @@ const DataGenerators = {
     },
 
     semiOrdered: (size) => {
-        const result = [];
-        const segmentSize = Math.max(10, Math.floor(size / 10));
+        // 50% sorted data mixed with random data for fair comparison
+        const half = Math.floor(size * 0.5);
+        const sortedPart = Array.from({ length: half }, (_, i) => i);
 
-        for (let i = 0; i < size; i += segmentSize) {
-            const segment = Array.from(
-                { length: Math.min(segmentSize, size - i) },
-                (_, j) => i + j
-            );
+        // Random part to make it challenging
+        const randomPart = Array.from({ length: size - half }, () => Math.floor(Math.random() * 1000));
 
-            // 80% chance to be in correct order, 20% random
-            if (Math.random() > 0.2) {
-                result.push(...segment);
-            } else {
-                result.push(...segment.reverse());
-            }
+        // Merge and shuffle
+        const result = [...sortedPart, ...randomPart];
+
+        // Shuffle to avoid patterns
+        for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]];
         }
 
         return result;
@@ -247,20 +268,56 @@ const DataGenerators = {
     }
 };
 
-// Benchmark function
-function runBenchmark(algorithm, data, name) {
-    console.log(`Running ${algorithm} on ${name} dataset (${data.length} elements)...`);
+// Benchmark function with multiple runs and warm-up
+function runBenchmark(algorithm, data, name, iterations = 5) {
+    console.log(`Running ${algorithm} on ${name} dataset (${data.length} elements, ${iterations} runs)...`);
 
-    const result = Algorithms[algorithm](data);
-    const isSorted = isArraySorted(result.sorted);
+    // Warm up the engine to avoid JIT compilation effects
+    if (algorithm === 'quickSort' || algorithm === 'segmentSort') {
+        const warmupData = Array.from({ length: Math.min(1000, data.length) }, (_, i) => i);
+        for (let i = 0; i < 3; i++) {
+            Algorithms[algorithm]([...warmupData]);
+        }
+    }
+
+    // Run multiple times and take average
+    const times = [];
+    const results = [];
+
+    for (let i = 0; i < iterations; i++) {
+        const result = Algorithms[algorithm]([...data]);
+        const isSorted = isArraySorted(result.sorted);
+
+        if (!isSorted) {
+            console.error(`❌ Sorting failed for ${algorithm} on iteration ${i + 1}`);
+            continue;
+        }
+
+        times.push(result.time);
+        results.push(result.sorted);
+    }
+
+    if (times.length === 0) {
+        throw new Error(`All runs failed for ${algorithm}`);
+    }
+
+    // Calculate statistics
+    const avgTime = times.reduce((a, b) => a + b) / times.length;
+    const minTime = Math.min(...times);
+    const maxTime = Math.max(...times);
+    const stdDev = Math.sqrt(times.reduce((sum, time) => sum + Math.pow(time - avgTime, 2), 0) / times.length);
 
     return {
         algorithm,
         dataset: name,
         size: data.length,
-        time: result.time,
-        correct: isSorted,
-        speedup: null // Will be calculated later
+        avgTime: avgTime,
+        minTime: minTime,
+        maxTime: maxTime,
+        stdDev: stdDev,
+        correct: true,
+        speedup: null, // Will be calculated later
+        iterations: times.length
     };
 }
 
@@ -293,21 +350,21 @@ function runFullBenchmark(sizes = [1000, 5000, 10000, 50000]) {
 
             for (const algorithm of algorithms) {
                 try {
-                    const result = runBenchmark(algorithm, data, dataset);
+                    const result = runBenchmark(algorithm, data, dataset, 5);
                     datasetResults.push(result);
                     results.push(result);
 
-                    console.log(`${result.algorithm.padEnd(12)}: ${result.time.toFixed(3)}ms ${result.correct ? '✅' : '❌'}`);
+                    console.log(`${result.algorithm.padEnd(12)}: ${result.avgTime.toFixed(3)}ms (${result.minTime.toFixed(3)}-${result.maxTime.toFixed(3)}ms, σ=${result.stdDev.toFixed(3)}) ${result.correct ? '✅' : '❌'}`);
                 } catch (error) {
                     console.error(`Error in ${algorithm}:`, error.message);
                 }
             }
 
             // Calculate speedup for this dataset
-            const baselineTime = datasetResults.find(r => r.algorithm === 'quickSort')?.time;
+            const baselineTime = datasetResults.find(r => r.algorithm === 'quickSort')?.avgTime;
             if (baselineTime) {
                 datasetResults.forEach(result => {
-                    result.speedup = ((baselineTime - result.time) / baselineTime * 100).toFixed(1);
+                    result.speedup = ((baselineTime - result.avgTime) / baselineTime * 100).toFixed(1);
                 });
             }
         }
@@ -328,7 +385,7 @@ function generateReport(results) {
         if (!avgByAlgorithm[result.algorithm]) {
             avgByAlgorithm[result.algorithm] = { total: 0, count: 0 };
         }
-        avgByAlgorithm[result.algorithm].total += result.time;
+        avgByAlgorithm[result.algorithm].total += result.avgTime;
         avgByAlgorithm[result.algorithm].count++;
     });
 
@@ -351,28 +408,57 @@ function generateReport(results) {
 
     Object.entries(byDataset).forEach(([dataset, datasetResults]) => {
         const best = datasetResults.reduce((min, result) =>
-            result.time < min.time ? result : min
+            result.avgTime < min.avgTime ? result : min
         );
-        console.log(`${dataset.padEnd(12)}: ${best.algorithm} (${best.time.toFixed(3)}ms)`);
+        console.log(`${dataset.padEnd(12)}: ${best.algorithm} (${best.avgTime.toFixed(3)}ms avg, ${best.minTime.toFixed(3)}-${best.maxTime.toFixed(3)}ms range)`);
     });
 
     // Segment Sort advantages
     console.log('\n🎯 Segment Sort Competitive Advantages:');
     const segmentSortResults = results.filter(r => r.algorithm === 'segmentSort');
-    const semiOrderedWins = segmentSortResults.filter(r =>
-        r.dataset === 'semiOrdered' && r.speedup && parseFloat(r.speedup) > 0
-    ).length;
+    const quickSortResults = results.filter(r => r.algorithm === 'quickSort');
 
-    console.log(`• Wins on semi-ordered data: ${semiOrderedWins}/${segmentSortResults.filter(r => r.dataset === 'semiOrdered').length} cases`);
+    // Find cases where Segment Sort beats QuickSort
+    let wins = 0;
+    let totalComparisons = 0;
+    let totalSpeedup = 0;
 
-    const avgSpeedup = segmentSortResults
-        .filter(r => r.speedup)
-        .map(r => parseFloat(r.speedup))
-        .reduce((sum, speedup) => sum + speedup, 0) / segmentSortResults.filter(r => r.speedup).length;
+    quickSortResults.forEach(qsResult => {
+        const segmentResult = segmentSortResults.find(sr =>
+            sr.dataset === qsResult.dataset && sr.size === qsResult.size
+        );
+        if (segmentResult) {
+            totalComparisons++;
+            const speedup = ((qsResult.avgTime - segmentResult.avgTime) / qsResult.avgTime * 100);
+            if (speedup > 0) {
+                wins++;
+            }
+            totalSpeedup += speedup;
+        }
+    });
 
-    if (!isNaN(avgSpeedup)) {
-        console.log(`• Average speedup over QuickSort: ${avgSpeedup.toFixed(1)}%`);
-    }
+    console.log(`• Wins against QuickSort: ${wins}/${totalComparisons} cases`);
+    console.log(`• Average speedup: ${(totalSpeedup / totalComparisons).toFixed(1)}%`);
+
+    // Show specific improvements
+    console.log('\n📊 Performance by Dataset:');
+    const datasetComparison = {};
+    results.forEach(result => {
+        if (!datasetComparison[result.dataset]) {
+            datasetComparison[result.dataset] = [];
+        }
+        datasetComparison[result.dataset].push(result);
+    });
+
+    Object.entries(datasetComparison).forEach(([dataset, datasetResults]) => {
+        const segmentResult = datasetResults.find(r => r.algorithm === 'segmentSort');
+        const quickResult = datasetResults.find(r => r.algorithm === 'quickSort');
+        if (segmentResult && quickResult) {
+            const speedup = ((quickResult.avgTime - segmentResult.avgTime) / quickResult.avgTime * 100);
+            const winner = speedup > 0 ? 'Segment Sort' : 'QuickSort';
+            console.log(`• ${dataset.padEnd(12)}: ${winner} faster by ${Math.abs(speedup).toFixed(1)}%`);
+        }
+    });
 
     return results;
 }
@@ -405,7 +491,7 @@ function main() {
     const args = process.argv.slice(2);
     const sizes = args.length > 0 ?
         args.map(arg => parseInt(arg)).filter(n => !isNaN(n)) :
-        [1000, 5000, 10000];
+        [1000, 10000, 100000, 1000000];
 
     console.log(`Testing with sizes: ${sizes.join(', ')}`);
 
