@@ -1,14 +1,14 @@
-# Segment Sort - Configuración del Proyecto
-# =========================================
+# Segment Sort - Project Configuration
+# =====================================
 
 project:
   name: "Segment Sort Algorithm"
   version: "1.0.0"
-  description: "Algoritmo de ordenación innovador con detección automática de segmentos"
-  author: "Segment Sort Developer"
+  description: "Innovative sorting algorithm with automatic segment detection"
+  author: "Mario Raúl Carbonell Martínez"
   license: "MIT"
 
-# Configuración de benchmarks
+# Benchmark configuration
 benchmarks:
   default_sizes: [1000, 5000, 10000, 50000, 100000]
   max_size: 1000000
@@ -21,7 +21,7 @@ benchmarks:
     - semi_ordered
     - segmented
 
-# Configuración de compilación
+# Compilation configuration
 compilation:
   cpp:
     compiler: "g++"
@@ -42,14 +42,14 @@ compilation:
   javascript:
     node_version: "12+"
 
-# Configuración de documentación
+# Documentation configuration
 documentation:
   formats: ["markdown", "html"]
   include_code_examples: true
   include_benchmarks: true
   include_visualizations: true
 
-# Configuración de testing
+# Testing configuration
 testing:
   quick_test_size: 10000
   validation_arrays:
@@ -61,22 +61,22 @@ testing:
     - duplicates
     - semi_ordered
 
-# Configuración de CI/CD
+# CI/CD configuration
 ci_cd:
   platforms: ["linux", "windows", "macos"]
   python_versions: ["3.7", "3.8", "3.9", "3.10", "3.11"]
   node_versions: ["12", "14", "16", "18"]
 
-# Configuración de releases
+# Release configuration
 release:
   changelog_file: "CHANGELOG.md"
   documentation_site: true
-  publish_npm: false  # Si se quiere publicar en npm
-  publish_pip: false  # Si se quiere publicar en PyPI
+  publish_npm: false  # If you want to publish to npm
+  publish_pip: false  # If you want to publish to PyPI
 
-# Configuración de optimizaciones
+# Optimization configuration
 optimizations:
   cache_friendly: true
-  parallel_processing: false  # Para versiones futuras
-  memory_pool: false          # Para versiones futuras
-  custom_allocators: false    # Para versiones futuras
+  parallel_processing: false  # For future versions
+  memory_pool: false          # For future versions
+  custom_allocators: false    # For future versions

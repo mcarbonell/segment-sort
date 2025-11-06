@@ -1,60 +1,60 @@
-# 🚀 Guía de Inicio Rápido - Segment Sort
+# 🚀 Quick Start Guide - Segment Sort
 
-¡Bienvenido al repositorio del algoritmo **Segment Sort**! Esta guía te ayudará a empezar rápidamente.
+Welcome to the **Segment Sort** algorithm repository! This guide will help you get started quickly.
 
-## ⚡ Inicio Rápido (2 minutos)
+## ⚡ Quick Start (2 minutes)
 
-### 1. Verificar que todo funciona
+### 1. Verify everything works
 ```bash
-# En el directorio del proyecto
+# In the project directory
 python3 benchmarks/quick_test.py
 ```
 
-### 2. Ver el algoritmo en acción
+### 2. See the algorithm in action
 ```bash
-# Compilar y ejecutar C++
+# Compile and run C++
 g++ -O3 -std=c++17 implementations/cpp/mergesegmentsort_v3.cpp -o segmentsort
 ./segmentsort
 ```
 
-### 3. Ejecutar benchmarks básicos
+### 3. Run basic benchmarks
 ```bash
-# Benchmarks comparativos
+# Comparative benchmarks
 python3 benchmarks/run_benchmarks.py --sizes 1000 5000 10000
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 segment-sort/
-├── 📄 README.md              # Documentación principal
-├── 📄 GETTING_STARTED.md     # Esta guía
-├── 📄 LICENSE                # Licencia MIT
-├── 📄 Makefile              # Automatización de tareas
-├── 📄 setup.py              # Configuración automática
-├── 📄 config.yml            # Configuración del proyecto
-├── 📁 implementations/       # Código por lenguaje
-│   ├── cpp/                  # C++ (4 versiones optimizadas)
+├── 📄 README.md              # Main documentation
+├── 📄 GETTING_STARTED.md     # This guide
+├── 📄 LICENSE                # MIT License
+├── 📄 Makefile              # Task automation
+├── 📄 setup.py              # Automatic configuration
+├── 📄 config.yml            # Project configuration
+├── 📁 implementations/       # Code by language
+│   ├── cpp/                  # C++ 
 │   ├── python/               # Python
 │   ├── java/                 # Java
 │   ├── go/                   # Go
 │   ├── rust/                 # Rust
 │   └── javascript/           # JavaScript
-├── 📁 benchmarks/            # Sistema de benchmarking
-│   ├── run_benchmarks.py     # Suite completa de benchmarks
-│   └── quick_test.py         # Test rápido de validación
-├── 📁 paper/                 # Análisis académico
-│   └── segment_sort_analysis.md  # Paper completo
-├── 📁 docs/                  # Documentación detallada
-│   └── implementation_guide.md   # Guía de implementación
-├── 📁 visualizations/        # Herramientas visuales
-│   └── README.md             # Info sobre visualizaciones
-└── 📁 .gitignore            # Archivos ignorados por Git
+├── 📁 benchmarks/            # Benchmarking system
+│   ├── run_benchmarks.py     # Complete benchmark suite
+│   └── quick_test.py         # Quick validation test
+├── 📁 paper/                 # Academic analysis
+│   └── segment_sort_analysis.md  # Complete paper
+├── 📁 docs/                  # Detailed documentation
+│   └── implementation_guide.md   # Implementation guide
+├── 📁 visualizations/        # Visual tools
+│   └── README.md             # Visualization info
+└── 📁 .gitignore            # Git ignored files
 ```
 
-## 🎯 Casos de Uso Principales
+## 🎯 Main Use Cases
 
-### 1. **Usar Segment Sort en tu código**
+### 1. **Use Segment Sort in your code**
 ```python
 # Python
 from implementations.python.segmentsort import SegmentSort
@@ -66,93 +66,92 @@ sorter.custom_sort([3, 1, 4, 1, 5, 9, 2, 6])
 // C++
 #include "implementations/cpp/segmentsort.cpp"
 SegmentSort sorter;
-sorter.customSort(arr);
+sorter.Sort(arr);
 ```
 
-### 2. **Comparar rendimiento**
+### 2. **Compare performance**
 ```bash
-# Ejecutar benchmarks completos
+# Run complete benchmarks
 python3 benchmarks/run_benchmarks.py --sizes 10000 50000 100000
 
-# Ver resultados
+# View results
 cat benchmark_report.md
 ```
 
-### 3. **Estudiar la implementación**
-- **Código simple**: `implementations/python/segmentsort.py`
-- **Código optimizado**: `implementations/cpp/mergesegmentsort_v3.cpp`
-- **Paper académico**: `paper/segment_sort_analysis.md`
+### 3. **Study the implementation**
+- **Simple code**: `implementations/python/segmentsort.py`
+- **Optimized code**: `implementations/cpp/mergesegmentsort_v3.cpp`
+- **Academic paper**: `paper/segment_sort_analysis.md`
 
-## 🛠️ Comandos Útiles
+## 🛠️ Useful Commands
 
-### Compilación
+### Compilation
 ```bash
-# Compilar todo automáticamente
+# Compile everything automatically
 make all
 
-# Solo C++
+# C++ only
 make cpp_segmentsort
 
-# Solo Java
+# Java only
 make java_compile
 
-# Solo Go
+# Go only
 make go_build
 ```
 
 ### Testing
 ```bash
-# Test rápido
+# Quick test
 make python_test
 
-# Test completo
+# Complete test
 make test
 ```
 
 ### Benchmarks
 ```bash
-# Benchmarks básicos
+# Basic benchmarks
 make benchmarks
 
-# Benchmarks con datasets grandes
+# Large dataset benchmarks
 python3 benchmarks/run_benchmarks.py --sizes 100000 500000 1000000
 ```
 
-### Limpieza
+### Cleanup
 ```bash
-# Limpiar archivos generados
+# Clean generated files
 make clean
 ```
 
-## 📊 Interpretar Resultados
+## 📊 Interpreting Results
 
 ### Performance
-- **Tiempo menor = mejor rendimiento**
-- **Segment Sort brilla en datos semi-ordenados**
-- **Comparar con Quick Sort, Merge Sort, etc.**
+- **Lower time = better performance**
+- **Segment Sort shines on semi-ordered data**
+- **Compare with Quick Sort, Merge Sort, etc.**
 
-### Casos de Uso Óptimos
-1. **Datos con ordenamiento parcial** → Segment Sort es superior
-2. **Datos completamente aleatorios** → Comparable a otros algoritmos
-3. **Datos ya ordenados** → Segment Sort es más rápido (O(n))
+### Optimal Use Cases
+1. **Partially ordered data** → Segment Sort is superior
+2. **Completely random data** → Comparable to other algorithms
+3. **Already sorted data** → Segment Sort is faster (O(n))
 
-## 🎓 Para Investigadores
+## 🎓 For Researchers
 
-### Leer Primero
-1. **Paper académico**: `paper/segment_sort_analysis.md`
-2. **Implementación simple**: `implementations/python/segmentsort.py`
-3. **Optimizaciones**: `implementations/cpp/mergesegmentsort_v3.cpp`
+### Read First
+1. **Academic paper**: `paper/segment_sort_analysis.md`
+2. **Simple implementation**: `implementations/python/segmentsort.py`
 
-### Contribuir
-1. Fork del repositorio
-2. Crear rama: `git checkout -b feature/nueva-feature`
-3. Commit: `git commit -m 'Añadir nueva optimización'`
-4. Push: `git push origin feature/nueva-feature`
+### Contribute
+1. Fork the repository
+2. Create branch: `git checkout -b feature/new-feature`
+3. Commit: `git commit -m 'Add new optimization'`
+4. Push: `git push origin feature/new-feature`
 5. Pull Request
 
-## 🐛 Problemas Comunes
+## 🐛 Common Issues
 
-### Error: "g++ no encontrado"
+### Error: "g++ not found"
 ```bash
 # Windows (chocolatey)
 choco install mingw
@@ -164,66 +163,72 @@ sudo apt-get install g++
 xcode-select --install
 ```
 
-### Error: "matplotlib no encontrado"
+### Error: "matplotlib not found"
 ```bash
 pip install matplotlib numpy
 ```
 
-### Rendimiento lento
-1. Usar versión C++ optimizada
-2. Compilar con `-O3 -march=native`
-3. Para Python: usar arrays de NumPy
+### Slow performance
+1. Use optimized C++ version
+2. Compile with `-O3 -march=native`
+3. For Python: use NumPy arrays
 
-## 📈 Roadmap del Proyecto
+## 📈 Project Roadmap
 
-### ✅ Completado
-- [x] Implementación básica en 6 lenguajes
-- [x] Sistema de benchmarks
-- [x] Documentación completa
-- [x] Paper académico
-- [x] Makefile y automatización
+### ✅ Completed
+- [x] Basic implementation in 6 languages
+- [x] Benchmark system
+- [x] Complete documentation
+- [x] Academic paper
+- [x] Makefile and automation
 
-### 🔄 En Progreso
-- [ ] Optimizaciones de cache
-- [ ] Versión paralela
-- [ ] Interfaz web interactiva
+### 🔄 In Progress
+- [ ] Cache optimizations
+- [ ] Parallel version
+- [ ] Interactive web interface
 
-### 📋 Futuro
-- [ ] Análisis de complejidad formal
-- [ ] Publicación en conferencias
-- [ ] Integración con bibliotecas populares
-- [ ] Versión distribuida
+### 📋 Future
+- [ ] Formal complexity analysis
+- [ ] Conference publication
+- [ ] Integration with popular libraries
+- [ ] Distributed version
 
-## 💡 Tips y Trucos
+## 💡 Tips and Tricks
 
-### Para Máximizar Rendimiento
-1. **Usar C++** para mejor rendimiento
-2. **Compilar con optimizaciones** (`-O3`)
-3. **Datos semi-ordenados** dan mejor performance
-4. **Arrays grandes** (100K+) muestran ventajas
+### To Maximize Performance
+1. **Use C++** for better performance
+2. **Compile with optimizations** (`-O3`)
+3. **Semi-ordered data** gives better performance
+4. **Large arrays** (100K+) show advantages
 
-### Para Entender el Algoritmo
-1. **Empezar con implementación Python** (más simple)
-2. **Debug con arrays pequeños** (10-20 elementos)
-3. **Visualizar detección de segmentos** paso a paso
-4. **Leer paper académico** para teoría profunda
+### To Understand the Algorithm
+1. **Start with Python implementation** (simpler)
+2. **Debug with small arrays** (10-20 elements)
+3. **Visualize segment detection** step by step
+4. **Read academic paper** for deep theory
 
-## 🎉 ¡Ya estás listo!
+## 🎉 You're Ready!
 
-- ✅ **Tienes un repositorio completo y profesional**
-- ✅ **Implementaciones en 6 lenguajes de programación**
-- ✅ **Sistema de benchmarks automatizado**
-- ✅ **Documentación académica y técnica**
-- ✅ **Listo para GitHub y colaboración**
+- ✅ **You have a complete and professional repository**
+- ✅ **Implementations in 6 programming languages**
+- ✅ **Automated benchmark system**
+- ✅ **Academic and technical documentation**
+- ✅ **Ready for GitHub and collaboration**
 
-### Próximos Pasos Sugeridos
-1. **Ejecutar tests** para verificar que todo funciona
-2. **Experimentar** con diferentes tipos de datos
-3. **Leer la documentación** para entender profundamente
-4. **¡Compartir el proyecto** con la comunidad!
+### Suggested Next Steps
+1. **Run tests** to verify everything works
+2. **Experiment** with different data types
+3. **Read the documentation** to understand deeply
+4. **Share the project** with the community!
 
 ---
 
-**¡Disfruta explorando Segment Sort!** 🚀
+**Enjoy exploring Segment Sort!** 🚀
 
-*¿Preguntas? Consulta `docs/implementation_guide.md` o abre un issue en GitHub.*
+## 👨‍💻 Author
+
+**Segment Sort Algorithm Quick Start Guide**
+- Created by: Mario Raúl Carbonell Martínez
+- Date: November 2025
+
+*Questions? Check `docs/implementation_guide.md` or open an issue on GitHub.*

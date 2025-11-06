@@ -1,62 +1,68 @@
-# Visualizaciones - Segment Sort Algorithm
+# Visualizations - Segment Sort Algorithm
 
-Esta carpeta contiene herramientas de visualización para entender mejor cómo funciona el algoritmo Segment Sort.
+This folder contains visualization tools to better understand how the Segment Sort algorithm works.
 
-## 📊 Tipos de Visualizaciones
+## 📊 Types of Visualizations
 
-### 1. Diagramas de Flujo
-- `flowchart.md` - Diagrama del flujo principal del algoritmo
-- `segment_detection.svg` - Visualización de la detección de segmentos
-- `heap_merge.svg` - Animación de la fusión con heap
+### 1. Flow Diagrams
+- `flowchart.md` - Main algorithm flow diagram
+- `segment_detection.svg` - Segment detection visualization
+- `heap_merge.svg` - Heap merging animation
 
-### 2. Animaciones Interactivas
-- `interactive_demo.html` - Demo interactivo en JavaScript
-- `segment_animation.py` - Animación en Python con matplotlib
+### 2. Interactive Animations
+- `interactive_demo.html` - Interactive JavaScript demo
+- `segment_animation.py` - Python animation with matplotlib
 
-### 3. Análisis Visual
-- `performance_charts.md` - Gráficos de rendimiento comparativo
-- `complexity_analysis.svg` - Representación visual de la complejidad
+### 3. Visual Analysis
+- `performance_charts.md` - Comparative performance charts
+- `complexity_analysis.svg` - Visual complexity representation
 
-## 🎨 Cómo Usar
+## 🎨 How to Use
 
-### Animación Python
+### Python Animation
 ```bash
 cd visualizations
 python segment_animation.py
 ```
 
-### Demo Interactivo
+### Interactive Demo
 ```bash
-# Abrir en navegador web
+# Open in web browser
 open interactive_demo.html
 ```
 
-### Generar Gráficos de Rendimiento
+### Generate Performance Charts
 ```bash
 python generate_charts.py
 ```
 
-## 📈 Interpretación
+## 📈 Interpretation
 
-### Detección de Segmentos
-La visualización muestra cómo el algoritmo identifica automáticamente:
-- **Segmentos crecientes** (→)
-- **Segmentos decrecientes** (←)
-- **Puntos de cambio** (⊥)
+### Segment Detection
+The visualization shows how the algorithm automatically identifies:
+- **Increasing segments** (→)
+- **Decreasing segments** (←)
+- **Change points** (⊥)
 
-### Fusión con Heap
-La animación demuestra:
-- Inserción de elementos en el heap
-- Extracción del mínimo/máximo
-- Reorganización dinámica de segmentos
+### Heap Merging
+The animation demonstrates:
+- Inserting elements into the heap
+- Extracting minimum/maximum
+- Dynamic segment reorganization
 
-## 🎯 Casos de Estudio
+## 🎯 Case Studies
 
-1. **Array Ordenado** - Mejor caso O(n)
-2. **Array Aleatorio** - Caso promedio O(n log n)
-3. **Array Semi-ordenado** - Caso de ventaja competitiva
-4. **Array con Patrones** - Casos de uso óptimos
+1. **Sorted Array** - Best case O(n)
+2. **Random Array** - Average case O(n log n)
+3. **Semi-ordered Array** - Competitive advantage case
+4. **Patterned Array** - Optimal use cases
 
 ---
 
-*Nota: Algunas visualizaciones requieren bibliotecas adicionales como matplotlib o una conexión web para funcionar completamente.*
+## 👨‍💻 Author
+
+**Segment Sort Algorithm Visualization Tools**
+- Created by: Mario Raúl Carbonell Martínez
+- Date: November 2025
+
+*Note: Some visualizations require additional libraries such as matplotlib or a web connection to function completely.*

@@ -1,38 +1,38 @@
-# Guía de Implementación - Segment Sort
+# Implementation Guide - Segment Sort
 
-## 📋 Índice
-1. [Introducción](#introducción)
-2. [Instalación por Lenguaje](#instalación-por-lenguaje)
-3. [Ejemplos de Uso](#ejemplos-de-uso)
+## 📋 Table of Contents
+1. [Introduction](#introduction)
+2. [Installation by Language](#installation-by-language)
+3. [Usage Examples](#usage-examples)
 4. [API Reference](#api-reference)
-5. [Optimizaciones](#optimizaciones)
+5. [Optimizations](#optimizations)
 6. [Troubleshooting](#troubleshooting)
 
-## Introducción
+## Introduction
 
-Esta guía proporciona instrucciones detalladas para usar las diferentes implementaciones de Segment Sort en varios lenguajes de programación.
+This guide provides detailed instructions for using the different Segment Sort implementations across various programming languages.
 
-## Instalación por Lenguaje
+## Installation by Language
 
 ### C++
 
-#### Requisitos
-- C++17 o superior
-- Compilador: g++, clang++, MSVC
+#### Requirements
+- C++17 or higher
+- Compiler: g++, clang++, MSVC
 
-#### Compilación
+#### Compilation
 ```bash
-# Versión básica
+# Basic version
 g++ -O3 -std=c++17 implementations/cpp/segmentsort.cpp -o segmentsort
 
-# Versión optimizada (recomendada)
+# Optimized version (recommended)
 g++ -O3 -march=native -std=c++17 implementations/cpp/mergesegmentsort_v3.cpp -o segmentsort
 
-# Con benchmarks
+# With benchmarks
 g++ -O3 -std=c++17 benchmarks/benchmark2.cpp -o benchmark
 ```
 
-#### Ejecución
+#### Execution
 ```bash
 ./segmentsort
 ./benchmark
@@ -40,50 +40,50 @@ g++ -O3 -std=c++17 benchmarks/benchmark2.cpp -o benchmark
 
 ### Python
 
-#### Requisitos
+#### Requirements
 - Python 3.7+
-- Bibliotecas: heapq (incluida en Python estándar)
+- Libraries: heapq (included in standard Python)
 
-#### Instalación
+#### Installation
 ```bash
-# No requiere instalación de dependencias adicionales
-python3 --version  # Verificar versión
+# No additional dependencies required
+python3 --version  # Verify version
 ```
 
-#### Ejecución
+#### Execution
 ```bash
-# Implementación básica
+# Basic implementation
 python3 implementations/python/segmentsort.py
 
-# Benchmarks completos
+# Complete benchmarks
 python3 benchmarks/run_benchmarks.py --sizes 1000 5000 10000
 
-# Test rápido
+# Quick test
 python3 benchmarks/quick_test.py
 ```
 
 ### Java
 
-#### Requisitos
+#### Requirements
 - JDK 8+
 
-#### Compilación
+#### Compilation
 ```bash
 cd implementations/java
 javac segmentsort.java
 ```
 
-#### Ejecución
+#### Execution
 ```bash
 java SegmentSort
 ```
 
 ### Go
 
-#### Requisitos
+#### Requirements
 - Go 1.11+
 
-#### Ejecución
+#### Execution
 ```bash
 cd implementations/go
 go run segmentsort.go
@@ -91,10 +91,10 @@ go run segmentsort.go
 
 ### Rust
 
-#### Requisitos
+#### Requirements
 - Rust 1.40+
 
-#### Compilación y ejecución
+#### Build and execution
 ```bash
 cd implementations/rust
 cargo run
@@ -102,16 +102,16 @@ cargo run
 
 ### JavaScript
 
-#### Requisitos
+#### Requirements
 - Node.js 12+
 
-#### Ejecución
+#### Execution
 ```bash
 cd implementations/javascript
 node segmentsort.js
 ```
 
-## Ejemplos de Uso
+## Usage Examples
 
 ### C++
 
@@ -124,9 +124,9 @@ int main() {
     std::vector<int> arr = {64, 34, 25, 12, 22, 11, 90};
     
     SegmentSort sorter;
-    sorter.customSort(arr);
+    sorter.sort(arr);
     
-    std::cout << "Array ordenado: ";
+    std::cout << "Sorted array: ";
     for (int num : arr) {
         std::cout << num << " ";
     }
@@ -143,14 +143,14 @@ import sys
 sys.path.append('implementations/python')
 from segmentsort import SegmentSort
 
-# Ejemplo básico
+# Basic example
 arr = [64, 34, 25, 12, 22, 11, 90]
 sorter = SegmentSort()
 sorter.custom_sort(arr)
 
-print("Array ordenado:", arr)
+print("Sorted array:", arr)
 
-# Ejemplo con diferentes tipos de datos
+# Example with different data types
 data = [
     ("Integers", [3, 1, 4, 1, 5]),
     ("Floats", [3.1, 1.4, 2.7, 1.5]),
@@ -158,7 +158,7 @@ data = [
 ]
 
 for name, data_list in data:
-    # Para strings, usar comparación lexicográfica
+    # For strings, use lexicographic comparison
     sorted_data = sorter.custom_sort(data_list)
     print(f"{name}: {sorted_data}")
 ```
@@ -171,9 +171,9 @@ public class Main {
         int[] arr = {64, 34, 25, 12, 22, 11, 90};
         
         SegmentSort sorter = new SegmentSort();
-        sorter.customSort(arr);
+        sorter.sort(arr);
         
-        System.out.print("Array ordenado: ");
+        System.out.print("Sorted array: ");
         for (int num : arr) {
             System.out.print(num + " ");
         }
@@ -196,9 +196,9 @@ func main() {
 	arr := []int{64, 34, 25, 12, 22, 11, 90}
 	
 	sorter := new(segmentsort.SegmentSort)
-	sorter.CustomSort(arr)
+	sorter.Sort(arr)
 	
-	fmt.Print("Array ordenado: ")
+	fmt.Print("Sorted array: ")
 	for _, num := range arr {
 		fmt.Printf("%d ", num)
 	}
@@ -212,12 +212,12 @@ func main() {
 use std::cmp::Ord;
 
 fn segment_sort<T: Ord + Copy>(arr: &mut [T]) {
-    // Implementación en Rust del Segment Sort
+    // Segment Sort implementation in Rust
     if arr.len() <= 1 {
         return;
     }
     
-    // Detección de segmentos
+    // Segment detection
     let n = arr.len();
     let mut segments: Vec<(usize, usize, i8)> = Vec::new();
     let mut start = 0;
@@ -240,15 +240,15 @@ fn segment_sort<T: Ord + Copy>(arr: &mut [T]) {
         }
     }
     
-    // Fusionar segmentos usando heap
-    // ... implementación del heap merge
+    // Merge segments using heap
+    // ... heap merge implementation
 }
 
 fn main() {
     let mut arr = vec![64, 34, 25, 12, 22, 11, 90];
     segment_sort(&mut arr);
     
-    println!("Array ordenado: {:?}", arr);
+    println!("Sorted array: {:?}", arr);
 }
 ```
 
@@ -260,124 +260,130 @@ const SegmentSort = require('./segmentsort.js');
 const arr = [64, 34, 25, 12, 22, 11, 90];
 const sorter = new SegmentSort();
 
-sorter.customSort(arr);
+sorter.sort(arr);
 
-console.log('Array ordenado:', arr);
+console.log('Sorted array:', arr);
 
-// Ejemplo con objetos personalizados
+// Example with custom objects
 const objects = [
     {name: 'Alice', age: 30},
     {name: 'Bob', age: 25},
     {name: 'Charlie', age: 35}
 ];
 
-// Para ordenar por propiedad específica
+// To sort by specific property
 const sorted = objects.sort((a, b) => a.age - b.age);
-console.log('Objetos ordenados por edad:', sorted);
+console.log('Objects sorted by age:', sorted);
 ```
 
 ## API Reference
 
 ### SegmentSort Class
 
-#### `customSort(arr)`
-Método principal para ordenar un array.
+#### `sort(arr)`
+Main method to sort an array.
 
-**Parámetros:**
-- `arr` (Array/List/Vector): Array a ordenar
+**Parameters:**
+- `arr` (Array/List/Vector): Array to sort
 
-**Retorna:**
-- `void`: El array se modifica in-place
+**Returns:**
+- `void`: The array is modified in-place
 
-**Ejemplo:**
+**Example:**
 ```python
 sorter = SegmentSort()
-sorter.custom_sort([3, 1, 4, 1, 5])  # Modifica el array
+sorter.custom_sort([3, 1, 4, 1, 5])  # Modifies the array
 ```
 
-#### Propiedades
+#### Properties
 
-- `copyarr`: Array auxiliar para operaciones internas
-- `segments`: Lista de segmentos detectados
+- `copyarr`: Auxiliary array for internal operations
+- `segments`: List of detected segments
 
-## Optimizaciones
+## Optimizations
 
-### 1. Compilación C++
+### 1. C++ Compilation
 ```bash
-# Optimizaciones de rendimiento máximo
+# Maximum performance optimizations
 g++ -O3 -march=native -flto -funroll-loops -std=c++17 \
     implementations/cpp/mergesegmentsort_v3.cpp -o segmentsort
 
-# Para debugging
+# For debugging
 g++ -O1 -g -std=c++17 implementations/cpp/segmentsort.cpp -o debug_sort
 ```
 
-### 2. Configuración de Python
+### 2. Python Configuration
 ```python
-# Para mejor rendimiento con arrays grandes
+# For better performance with large arrays
 import sys
-sys.setrecursionlimit(1000000)  # Incrementar límite de recursión
+sys.setrecursionlimit(1000000)  # Increase recursion limit
 ```
 
 ### 3. Java Heap Settings
 ```bash
-# Para benchmarks con datasets grandes
+# For large dataset benchmarks
 java -Xmx4g -XX:+UseG1GC -jar segmentsort.jar
 ```
 
 ### 4. Go Performance
 ```go
-// Para Go, compilar con optimizaciones
+// For Go, compile with optimizations
 go build -ldflags="-s -w" -o segmentsort segmentsort.go
-GOGC=off go run segmentsort.go  # Deshabilitar GC para benchmarks
+GOGC=off go run segmentsort.go  # Disable GC for benchmarks
 ```
 
 ## Troubleshooting
 
-### Errores Comunes
+### Common Errors
 
 #### C++: "heap operations not found"
-**Solución:** Incluir `<queue>` y `<vector>`
+**Solution:** Include `<queue>` and `<vector>`
 
 #### Python: "Index out of range"
-**Solución:** Verificar que el array no esté vacío antes de ordenar
+**Solution:** Verify the array is not empty before sorting
 
 #### Java: "NullPointerException"
-**Solución:** Inicializar correctamente los arrays
+**Solution:** Initialize arrays correctly
 
 #### Go: "index out of range"
-**Solución:** Verificar índices en bucles for
+**Solution:** Check indices in for loops
 
 #### Rust: "borrowed value does not live long enough"
-**Solución:** Usar referencias apropiadas en slice operations
+**Solution:** Use appropriate references in slice operations
 
 ### Performance Issues
 
-#### Rendimiento lento en arrays grandes
-1. Verificar que se esté usando la versión optimizada (v3)
-2. Compilar con optimizaciones `-O3`
-3. Usar tipos de datos primitivos cuando sea posible
+#### Slow performance on large arrays
+1. Verify you're using the optimized version (v3)
+2. Compile with `-O3` optimizations
+3. Use primitive data types when possible
 
-#### Error de memoria
-1. Verificar que hay suficiente memoria RAM disponible
-2. Para Python: usar `array.array` en lugar de listas para datos grandes
-3. Para Java: incrementar heap size con `-Xmx`
+#### Memory errors
+1. Verify sufficient RAM is available
+2. For Python: use `array.array` instead of lists for large data
+3. For Java: increase heap size with `-Xmx`
 
 ### Debug Mode
 
-#### Activar logging detallado
+#### Enable detailed logging
 ```python
-# En implementaciones que soporten debug
+# In implementations that support debug
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
 
-#### Verificar detección de segmentos
+#### Verify segment detection
 ```cpp
-// En C++, añadir prints para debug
-std::cout << "Segmento: start=" << start << ", length=" << length << std::endl;
+// In C++, add prints for debug
+std::cout << "Segment: start=" << start << ", length=" << length << std::endl;
 ```
 
 ---
 
-Para más información, consulta el [paper académico](../paper/segment_sort_analysis.md) o los [benchmarks](../benchmarks/README.md).
+## 👨‍💻 Author
+
+**Segment Sort Algorithm Implementation Guide**
+- Created by: Mario Raúl Carbonell Martínez
+- Date: November 2025
+
+For more information, check the [academic paper](../paper/segment_sort_analysis.md) or the [benchmarks](../benchmarks/README.md).
