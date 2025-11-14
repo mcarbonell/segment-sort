@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Sort - Visualizador de Benchmarks</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <!-- Cargar el core de benchmarks -->
+    <script src="benchmark_core.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        canvas {
+            max-height: 400px;
+        }
+
+        .stats-table {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #c33;
+        }
+
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3c3;
+        }
+
+        .file-upload {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 Segment Sort - Visualizador de Benchmarks</h1>
+        <p class="subtitle">Análisis Visual de Performance de Algoritmos de Ordenación</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="sizes">Tamaños de Array (separados por comas)</label>
+                <input type="text" id="sizes" value="100,500,1000,2000" placeholder="100,500,1000,2000">
+            </div>
+
+            <div class="control-group">
+                <label for="repetitions">Repeticiones por Test</label>
+                <input type="number" id="repetitions" value="10" min="1" max="100">
+            </div>
+
+            <div class="control-group">
+                <label for="dataType">Tipo de Datos</label>
+                <select id="dataType">
+                    <option value="all">Todos los tipos</option>
+                    <option value="Aleatorio">Aleatorio</option>
+                    <option value="Ordenado">Ordenado</option>
+                    <option value="Inverso">Inverso</option>
+                    <option value="K-sorted">K-sorted</option>
+                    <option value="NearlySorted">Nearly Sorted</option>
+                    <option value="Duplicados">Con Duplicados</option>
+                    <option value="Plateau">Plateau</option>
+                    <option value="SegmentSorted">Segment Sorted</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="algorithms">Algoritmos a Comparar</label>
+                <select id="algorithms" multiple>
+                    <option value="segmentSort" selected>Segment Sort</option>
+                    <option value="quickSort" selected>Quick Sort</option>
+                    <option value="mergeSort" selected>Merge Sort</option>
+                    <option value="heapSort" selected>Heap Sort</option>
+                    <option value="builtinSort" selected>Builtin Sort</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="runBenchmark" onclick="runBenchmark()">▶️ Ejecutar Benchmarks</button>
+        <button id="loadResults" onclick="loadResultsFile()">📁 Cargar Resultados JSON</button>
+
+        <div class="file-upload" id="fileUpload" style="display: none;">
+            <input type="file" id="jsonFile" accept=".json" onchange="handleFileLoad(event)">
+            <p>Selecciona un archivo JSON de resultados para visualizar</p>
+        </div>
+
+        <div id="status"></div>
+        <div id="results" style="display: none;">
+            <div class="charts">
+                <div class="chart-container">
+                    <div class="chart-title">Comparación de Algoritmos por Tiempo Medio</div>
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Evolución de Performance por Tamaño</div>
+                    <canvas id="scalabilityChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Análisis de Variabilidad (Desviación Estándar)</div>
+                    <canvas id="variabilityChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Heatmap de Performance</div>
+                    <canvas id="heatmapChart"></canvas>
+                </div>
+            </div>
+
+            <div class="stats-table">
+                <h3>📊 Tabla de Resultados Detallados</h3>
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Algoritmo</th>
+                            <th>Tamaño</th>
+                            <th>Tipo de Datos</th>
+                            <th>Media (ms)</th>
+                            <th>Mediana (ms)</th>
+                            <th>Desv. Estándar</th>
+                            <th>P5 (ms)</th>
+                            <th>P95 (ms)</th>
+                            <th>Min (ms)</th>
+                            <th>Max (ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="benchmark_web.js"></script>
+</body>
+
+</html>
