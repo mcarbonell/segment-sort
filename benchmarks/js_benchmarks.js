@@ -15,14 +15,16 @@
     const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
 
     // Import Segment Sort implementation (solo en Node.js)
-    let SegmentSort = null;
+    let segmentSort = null;
+    let balancedSegmentMergeSort = null;
     if (isNode) {
         const fs = require('fs');
         const path = require('path');
-        SegmentSort = require('../implementations/javascript/segmentsort.js');
+        segmentSort = require('../implementations/javascript/segmentsort.js');
+        balancedSegmentMergeSort = require('../implementations/javascript/balanced_segment_merge_sort.js');
     } else {
         // En navegador, SegmentSort se cargará dinámicamente
-        SegmentSort = null;
+        segmentSort = null;
     }
 
     // --- Deterministic Random Number Generator (LCG) ---
@@ -214,18 +216,25 @@
 
     const sorters = {
         segmentSort: (arr) => {
-            const sorter = new SegmentSort();
             const copy = [...arr];
             const start = process.hrtime.bigint();
-            sorter.sort(copy);
+            const sorted = segmentSort(copy);
             const end = process.hrtime.bigint();
-            return { sorted: copy, time: Number(end - start) / 1e6 }; // Convert to milliseconds
+            return { sorted, time: Number(end - start) / 1e6 };
         },
 
         quickSort: (arr) => {
             const copy = [...arr];
             const start = process.hrtime.bigint();
             const sorted = quickSort(copy, 0, copy.length - 1);
+            const end = process.hrtime.bigint();
+            return { sorted, time: Number(end - start) / 1e6 };
+        },
+
+        balancedSegmentMergeSort: (arr) => {
+            const copy = [...arr];
+            const start = process.hrtime.bigint();
+            const sorted = balancedSegmentMergeSort(copy);
             const end = process.hrtime.bigint();
             return { sorted, time: Number(end - start) / 1e6 };
         },

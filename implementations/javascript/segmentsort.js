@@ -1,189 +1,125 @@
-class SegmentSort {
-    /**
-     * Implements the Segment Sort algorithm in JavaScript.
-     */
-
-    /**
-     * Sorts an array in-place using the Segment Sort algorithm.
-     * @param {number[]} arr The array of numbers to sort.
-     */
-    sort(arr) {
-        const n = arr.length;
-        if (n <= 1) {
-            return;
-        }
-
-        // Phase 1: Segment Detection
-        const segments = this._detectSegments(arr);
-
-        // Phase 2: Heap Merging
-        if (segments.length === 0) {
-            return;
-        }
-
-        this._mergeSegments(arr, segments);
+/**
+ * Sorts an array using the Balanced Segment Merge algorithm.
+ * This algorithm identifies naturally sorted segments (runs) and merges them
+ * in a balanced way, similar to a classic merge sort.
+ *
+ * @param {number[]} arr The array to sort (will be mutated).
+ * @returns {number[]} The mutated sorted array.
+ */
+function segmentSort(arr) {
+    if (!arr || arr.length <= 1) {
+        return arr;
     }
 
-    /**
-     * Detects sorted (increasing or decreasing) segments in the array.
-     * @param {number[]} arr The input array.
-     * @returns {Array<[number, number]>} A list of segments, where each segment is a tuple [start_index, end_index].
-     */
-    _detectSegments(arr) {
-        const segments = [];
-        const n = arr.length;
-        if (n === 0) {
-            return segments;
-        }
+    // 1. Identify all ascending segments (runs)
+    let segments = _identifySegments(arr);
 
-        let start = 0;
-        while (start < n) {
-            let end = start;
-            if (end + 1 < n && arr[end] > arr[end + 1]) {
-                // Decreasing segment
-                while (end + 1 < n && arr[end] > arr[end + 1]) {
-                    end++;
-                }
-                segments.push([end, start]); // Store as [end, start] for backward iteration
+    if (segments.length <= 1) {
+        const result = segments.length === 1 ? segments[0] : [];
+        // Copy result back to original array if it's different
+        if (arr !== result) {
+            arr.length = 0;
+            arr.push(...result);
+        }
+        return arr;
+    }
+
+    // 2. Merge segments in balanced rounds until only one remains
+    while (segments.length > 1) {
+        const newSegments = [];
+        for (let i = 0; i < segments.length; i += 2) {
+            if (i + 1 < segments.length) {
+                // Merge a pair of segments
+                newSegments.push(_merge(segments[i], segments[i + 1]));
             } else {
-                // Increasing or single-element segment
-                while (end + 1 < n && arr[end] <= arr[end + 1]) {
-                    end++;
-                }
-                segments.push([start, end]);
-            }
-            start = end + 1;
-        }
-        return segments;
-    }
-
-    /**
-     * Merges the detected segments using a min-heap.
-     * @param {number[]} arr The list to be sorted (will be modified in-place).
-     * @param {Array<[number, number]>} segments The list of detected segments.
-     */
-    _mergeSegments(arr, segments) {
-        const minHeap = new MinHeap();
-
-        for (let i = 0; i < segments.length; i++) {
-            const [start, _] = segments[i];
-            const value = arr[start];
-            minHeap.push({ value, segIndex: i, currentPos: start });
-        }
-
-        const sortedArr = [];
-        while (!minHeap.isEmpty()) {
-            const { value, segIndex, currentPos } = minHeap.pop();
-            sortedArr.push(value);
-
-            const [start, end] = segments[segIndex];
-            const direction = start <= end ? 1 : -1;
-
-            const nextPos = currentPos + direction;
-
-            if ((direction === 1 && nextPos <= end) || (direction === -1 && nextPos >= end)) {
-                const nextValue = arr[nextPos];
-                minHeap.push({ value: nextValue, segIndex, currentPos: nextPos });
+                // If there's an odd one out, carry it to the next round
+                newSegments.push(segments[i]);
             }
         }
-
-        for (let i = 0; i < arr.length; i++) {
-            arr[i] = sortedArr[i];
-        }
+        segments = newSegments;
     }
+
+    // 3. Copy the final sorted segment back into the original array
+    const finalResult = segments[0];
+    arr.length = 0;
+    arr.push(...finalResult);
+    return arr;
 }
 
 /**
- * A simple MinHeap implementation for the merge phase.
+ * Identifies naturally sorted segments (ascending or descending) in an array.
+ * Descending segments are reversed to become ascending.
+ * @param {number[]} arr The input array.
+ * @returns {Array<number[]>} An array of segments (which are also arrays).
+ * @private
  */
-class MinHeap {
-    constructor() {
-        this.heap = [];
+function _identifySegments(arr) {
+    const segments = [];
+    const n = arr.length;
+    if (n === 0) {
+        return segments;
     }
 
-    push(node) {
-        this.heap.push(node);
-        this._heapifyUp();
-    }
-
-    pop() {
-        if (this.isEmpty()) {
-            return null;
+    let start = 0;
+    while (start < n) {
+        let end = start;
+        // Check for a descending segment
+        if (end + 1 < n && arr[end] > arr[end + 1]) {
+            while (end + 1 < n && arr[end] > arr[end + 1]) {
+                end++;
+            }
+            // Extract the descending segment and reverse it
+            const segment = arr.slice(start, end + 1);
+            segment.reverse();
+            segments.push(segment);
+        } else {
+            // It's an ascending segment
+            while (end + 1 < n && arr[end] <= arr[end + 1]) {
+                end++;
+            }
+            // Extract the ascending segment
+            segments.push(arr.slice(start, end + 1));
         }
-        this._swap(0, this.heap.length - 1);
-        const popped = this.heap.pop();
-        this._heapifyDown();
-        return popped;
+        start = end + 1;
     }
-
-    isEmpty() {
-        return this.heap.length === 0;
-    }
-
-    _heapifyUp() {
-        let index = this.heap.length - 1;
-        while (index > 0) {
-            const parentIndex = Math.floor((index - 1) / 2);
-            if (this.heap[parentIndex].value > this.heap[index].value) {
-                this._swap(parentIndex, index);
-                index = parentIndex;
-            } else {
-                break;
-            }
-        }
-    }
-
-    _heapifyDown() {
-        let index = 0;
-        const length = this.heap.length;
-        while (true) {
-            let leftChildIndex = 2 * index + 1;
-            let rightChildIndex = 2 * index + 2;
-            let smallest = index;
-
-            if (leftChildIndex < length && this.heap[leftChildIndex].value < this.heap[smallest].value) {
-                smallest = leftChildIndex;
-            }
-            if (rightChildIndex < length && this.heap[rightChildIndex].value < this.heap[smallest].value) {
-                smallest = rightChildIndex;
-            }
-            if (smallest !== index) {
-                this._swap(index, smallest);
-                index = smallest;
-            } else {
-                break;
-            }
-        }
-    }
-
-    _swap(i, j) {
-        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
-    }
+    return segments;
 }
 
-// Example of usage
-if (typeof module !== 'undefined' && !module.parent) {
-    const sorter = new SegmentSort();
-    
-    const v = [5, 3, 2, 4, 6, 8, 7, 19, 10, 12, 13, 14, 17, 18];
-    console.log("Original vector:", v.join(' '));
-    sorter.sort(v);
-    console.log("Sorted vector:  ", v.join(' '));
+/**
+ * Merges two sorted arrays into a single sorted array.
+ * @param {number[]} left The first sorted array.
+ * @param {number[]} right The second sorted array.
+ * @returns {number[]} The merged and sorted array.
+ * @private
+ */
+function _merge(left, right) {
+    const result = [];
+    let i = 0;
+    let j = 0;
 
-    const v2 = [9, 2, 3, 4, 5, 6, 7, 8, 1];
-    console.log("\nOriginal vector:", v2.join(' '));
-    sorter.sort(v2);
-    console.log("Sorted vector:  ", v2.join(' '));
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            result.push(left[i]);
+            i++;
+        } else {
+            result.push(right[j]);
+            j++;
+        }
+    }
 
-    const v3 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    console.log("\nOriginal vector:", v3.join(' '));
-    sorter.sort(v3);
-    console.log("Sorted vector:  ", v3.join(' '));
+    // Add remaining elements from left array, if any
+    while (i < left.length) {
+        result.push(left[i]);
+        i++;
+    }
 
-    const v4 = [9, 8, 7, 6, 5, 4, 3, 2, 1];
-    console.log("\nOriginal vector:", v4.join(' '));
-    sorter.sort(v4);
-    console.log("Sorted vector:  ", v4.join(' '));
+    // Add remaining elements from right array, if any
+    while (j < right.length) {
+        result.push(right[j]);
+        j++;
+    }
+
+    return result;
 }
 
-module.exports = SegmentSort;
+module.exports = segmentSort;
