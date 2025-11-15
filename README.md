@@ -1,5 +1,7 @@
 # Segment Sort (On-the-Fly Balanced Merge) 🧮
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-mcarbonell/segment--sort-blue?logo=github)](https://github.com/mcarbonell/segment-sort)
+
 An innovative adaptive sorting algorithm that identifies sorted segments in an array and merges them **on-the-fly** using a stack-based balanced merge strategy. This repository now features the highly optimized **On-the-Fly Balanced Merge Sort**.
 
 ## 🎯 What is On-the-Fly Balanced Merge Sort?
