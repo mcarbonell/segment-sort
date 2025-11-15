@@ -18,6 +18,7 @@
 #include <cstring>
 #include <string>
 #include <functional>
+#include <queue>
 #include <map>
 #include <unordered_map>
 
@@ -537,6 +538,90 @@ std::vector<int> builtinSort(const std::vector<int>& arr) {
     return copy;
 }
 
+// Original SegmentSort implementation using priority queue for k-way merge
+std::vector<int> segmentSortOriginal(const std::vector<int>& arr) {
+    int n = arr.size();
+    std::vector<int> copyarr = arr;
+
+    struct Segment {
+        int start;
+        int length;
+    };
+
+    // Identify segments (runs)
+    std::vector<Segment> segments;
+    int start_pos = 0;
+    int direction = 0; // 0 unknown, > 0 increasing, < 0 decreasing
+
+    for (int i = 1; i < n; ++i) {
+        if (direction == 0) {
+            direction = copyarr[i] - copyarr[i - 1];
+            continue;
+        }
+        if ((direction > 0) && copyarr[i - 1] > copyarr[i]) { // Found a decreasing segment
+            int length = i - start_pos;
+            segments.push_back({start_pos, length});
+            start_pos = i;
+            direction = 0;
+        } else if ((direction < 0) && copyarr[i - 1] < copyarr[i]) { // Found an increasing segment
+            int length = start_pos - i;
+            segments.push_back({i-1, length});
+            start_pos = i;
+            direction = 0;
+        }
+    }
+    if (direction >= 0) {
+        int length = n - start_pos;
+        segments.push_back({start_pos, length});
+    } else {
+        int length = start_pos - n;
+        segments.push_back({n-1, length});
+    }
+
+    // Min-heap comparator for segments
+    struct CompareSegments {
+        const std::vector<int>& arr;
+        CompareSegments(const std::vector<int>& a) : arr(a) {}
+        bool operator()(const Segment& a, const Segment& b) const {
+            return arr[a.start] > arr[b.start];
+        }
+    };
+
+    // Priority queue for k-way merge
+    CompareSegments comparator(copyarr);
+    std::priority_queue<Segment, std::vector<Segment>, CompareSegments> minHeap(comparator);
+
+    for (const auto& segment : segments) {
+        minHeap.push(segment);
+    }
+
+    // Extract minimum elements using k-way merge
+    std::vector<int> result;
+    result.reserve(n);
+
+    while (!minHeap.empty()) {
+        Segment current = minHeap.top();
+        minHeap.pop();
+
+        result.push_back(copyarr[current.start]);
+
+        // If the segment still has elements, push it back to the heap
+        if (current.length > 0) {       // Positive segment (increasing)
+            if (--current.length > 0) {
+                current.start++;
+                minHeap.push(current);
+            }
+        } else if (current.length < 0) { // Negative segment (decreasing)
+            if (++current.length < 0) {
+                current.start--;
+                minHeap.push(current);
+            }
+        }
+    }
+
+    return result;
+}
+
 
 Statistics calculateStats(const std::vector<double>& times) {
     Statistics stats;
@@ -657,6 +742,7 @@ std::vector<Sorter> getSorters() {
             std::vector<int> copy = arr;
             return onTheFlyBalancedMergeSort(copy);
         }},
+        {"segmentSortOriginal", segmentSortOriginal},
         {"quickSort", quickSort},
         {"mergeSort", mergeSort},
         {"heapSort", heapSort},

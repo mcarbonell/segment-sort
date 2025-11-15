@@ -14,6 +14,24 @@ This algorithm was developed **completely independently** by Mario Raúl Carbone
 
 This parallel invention validates the natural emergence of these ideas when analyzing real-world data structures and merge strategies. It demonstrates that fundamental algorithmic insights can be reached through independent thinking, leading to solutions comparable to those developed through extensive academic research.
 
+### 🔄 Algorithm Evolution
+
+The development process involved **two distinct algorithmic approaches**:
+
+1. **[SegmentSort Original](docs/segment_sort_original.md)** (k-way merge with priority queue)
+   - **Approach**: Detect segments, use priority queue for simultaneous k-way merge
+   - **Complexity**: O(n log k) where k = number of segments
+   - **Advantage**: Efficient for top-m elements (O(n + m log k))
+   - **Performance**: 73.53 ms average on 1M elements (3.7x faster than QuickSort)
+   - **Applications**: Search engines, pagination, top-k queries
+
+2. **On-the-fly Balanced Merge Sort** (refined stack-based approach)
+   - **Approach**: Incremental stack-based merges with balance rules
+   - **Complexity**: O(n log n) guaranteed
+   - **Advantage**: Better cache locality and general performance
+   - **Performance**: 48.99 ms average on 1M elements (**40% faster than original**)
+   - **Applications**: General-purpose sorting, robust performance
+
 **Key insight**: The algorithm emerged from recognizing that real data often contains natural "runs" of sorted elements, and that maintaining balance during merging operations leads to optimal performance.
 
 ### Key Features
@@ -91,7 +109,7 @@ The **On-the-Fly Balanced Merge Sort** demonstrates exceptional performance acro
 - **Adaptive Performance**: Performance scales directly with pre-existing order in the data.
 - **Balanced Merging**: Stack-based approach prevents inefficient merges between vastly different segment sizes.
 - **Robustness**: Immune to cases that cause catastrophic performance degradation in other algorithms.
-- **Scalability**: Tested and validated on arrays up to 100,000 elements with consistent excellent performance.
+- **Scalability**: Tested and validated on arrays up to 1,000,000 elements with consistent excellent performance.
 
 ### Optimal Use Cases
 
@@ -158,16 +176,19 @@ segment-sort/
 │   ├── javascript/              # JavaScript implementations
 │   │   ├── segmentsort.js              # Original
 │   │   └── balanced_segment_merge_sort.js  # NEW: On-the-Fly version
-│   └── ... (other languages)
+│   └── cpp/                     # C++ implementations
+│       └── balanced_segment_merge_sort.cpp
 ├── benchmarks/                  # Performance comparisons
-│   ├── js_benchmarks.js         # Benchmark suite
+│   ├── cpp_benchmarks.cpp       # C++ benchmark suite
+│   ├── js_benchmarks.js         # JavaScript benchmark suite
 │   └── benchmark_results_*.json # Latest benchmark results
 ├── tests/                       # Comprehensive test suite
 │   ├── test_cases.json          # Test cases
 │   ├── run_balanced_segment_merge_sort_tests.py  # Python tests
 │   └── run_balanced_segment_merge_tests.js       # JS tests
 └── docs/                        # Documentation
-    ├── on_the_fly_balanced_merge.md     # NEW: Algorithm documentation
+    ├── segment_sort_original.md         # NEW: Original algorithm detailed docs
+    ├── on_the_fly_balanced_merge.md     # On-the-Fly algorithm docs
     ├── balanced_segment_merge_variant.md
     └── implementation_guide.md
 ```
