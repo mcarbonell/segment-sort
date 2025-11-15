@@ -307,6 +307,6 @@ This work extends research in adaptive sorting algorithms and builds upon the fo
 **Keywords**: sorting algorithms, adaptive sorting, merge sort, run detection, low memory sorting, cache locality, Timsort
 
 **Author**: Mario Raúl Carbonell Martínez  
-**Email**: mcarbonell@example.com  
+**GitHub**: https://github.com/mcarbonell/segment-sort
 **Affiliation**: Independent Researcher  
 **Date**: November 15, 2025
