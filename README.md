@@ -8,6 +8,14 @@ An innovative adaptive sorting algorithm that identifies sorted segments in an a
 
 **On-the-Fly Balanced Merge Sort** is an advanced sorting algorithm that processes segments immediately as they are detected, using a stack to maintain optimal merge balance. Unlike traditional approaches that first identify all segments then merge, this algorithm merges segments incrementally, ensuring O(log n) space complexity while maintaining O(n log n) time complexity. This makes it exceptionally fast and memory-efficient for partially sorted or structured data.
 
+## 🌟 Independent Discovery
+
+This algorithm was developed **completely independently** by Mario Raúl Carbonell Martínez without prior knowledge of TimSort or related academic work. Starting only from familiarity with classic sorting algorithms (quicksort, mergesort, heapsort, bubble sort, etc.), the concept of stack-based balanced merge sort was **rediscovered through original algorithmic reasoning**.
+
+This parallel invention validates the natural emergence of these ideas when analyzing real-world data structures and merge strategies. It demonstrates that fundamental algorithmic insights can be reached through independent thinking, leading to solutions comparable to those developed through extensive academic research.
+
+**Key insight**: The algorithm emerged from recognizing that real data often contains natural "runs" of sorted elements, and that maintaining balance during merging operations leads to optimal performance.
+
 ### Key Features
 
 - **Time Complexity**: O(n log n) worst case, O(n) best case (already sorted data).
