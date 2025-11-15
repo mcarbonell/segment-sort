@@ -215,13 +215,13 @@
     }
 
     const sorters = {
-        segmentSort: (arr) => {
-            const copy = [...arr];
-            const start = process.hrtime.bigint();
-            const sorted = segmentSort(copy);
-            const end = process.hrtime.bigint();
-            return { sorted, time: Number(end - start) / 1e6 };
-        },
+        // segmentSort: (arr) => {
+        //     const copy = [...arr];
+        //     const start = process.hrtime.bigint();
+        //     const sorted = segmentSort(copy);
+        //     const end = process.hrtime.bigint();
+        //     return { sorted, time: Number(end - start) / 1e6 };
+        // },
 
         quickSort: (arr) => {
             const copy = [...arr];
@@ -408,6 +408,24 @@
         return arr;
     }
 
+    // Función para verificar que un array está ordenado
+    function checkSorted(arr) {
+        if (!Array.isArray(arr) || arr.length === 0) {
+            return { isSorted: false, error: "Array is empty or not an array" };
+        }
+
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] < arr[i - 1]) {
+                return {
+                    isSorted: false,
+                    error: `Array not sorted at index ${i}: arr[${i - 1}]=${arr[i - 1]}, arr[${i}]=${arr[i]}`
+                };
+            }
+        }
+
+        return { isSorted: true };
+    }
+
     // Función para calcular estadísticas
     function calculateStats(times) {
         if (times.length === 0) {
@@ -450,7 +468,7 @@
         }
     }
 
-    function runBenchmark(algorithm, array, name, repetitions = 10) {
+    function runBenchmark(algorithm, array, name, repetitions = 10, validateResults = true) {
         const times = [];
         let sorted = null;
         let success = true;
@@ -468,7 +486,18 @@
             try {
                 const result = algorithm([...array]);
                 times.push(result.time);
-                if (rep === 0) sorted = result.sorted; // Store first result for validation
+
+                // Validate that result is correctly sorted (if validation is enabled)
+                if (validateResults) {
+                    const validation = checkSorted(result.sorted);
+                    if (!validation.isSorted) {
+                        success = false;
+                        error = `Validation failed: ${validation.error}`;
+                        break;
+                    }
+                }
+
+                if (rep === 0) sorted = result.sorted; // Store first valid result
             } catch (err) {
                 success = false;
                 error = err.message;
@@ -501,11 +530,11 @@
         }
     }
 
-    function runBenchmarks(sizes = [100, 500, 1000, 2000], repetitions = 10) {
-        console.log('🚀 Iniciando benchmarks de Segment Sort (Metodología Académica)...\n');
+    function runBenchmarks(sizes = [100000], repetitions = 10, validateResults = true) {
+        console.log('🚀 Iniciando benchmarks JAVASCRIPT de Segment Sort (Metodología Académica)...\n');
         console.log(`📋 Configuración: ${repetitions} repeticiones, análisis estadístico completo\n`);
         console.log('='.repeat(100));
-        console.log('| Algoritmo           | Tamaño | Tipo de Datos        | Media (ms) | Mediana (ms) | Desv.Std | Estado |');
+        console.log('| Algoritmo                   | Tamaño | Tipo de Datos        | Media (ms) | Mediana (ms) | Desv.Std | Estado |');
         console.log('='.repeat(100));
 
         const allResults = [];
@@ -540,14 +569,14 @@
 
                 // Probar cada algoritmo
                 for (const [name, algorithm] of Object.entries(sorters)) {
-                    const result = runBenchmark(algorithm, testCase.data, name, repetitions);
+                    const result = runBenchmark(algorithm, testCase.data, name, repetitions, validateResults);
                     const status = result.success ? '✅' : '❌';
 
                     if (result.success) {
                         const timeStr = `${result.statistics.mean.toFixed(3)}`;
                         const medianStr = `${result.statistics.median.toFixed(3)}`;
                         const stdStr = `${result.statistics.std.toFixed(3)}`;
-                        console.log(`   ${name.padEnd(18)} | ${size.toString().padStart(6)} | ${testCase.shortName.padEnd(18)} | ${timeStr.padStart(9)} | ${medianStr.padStart(11)} | ${stdStr.padStart(8)} | ${status}`);
+                        console.log(`   ${name.padEnd(25)} | ${size.toString().padStart(6)} | ${testCase.shortName.padEnd(18)} | ${timeStr.padStart(9)} | ${medianStr.padStart(11)} | ${stdStr.padStart(8)} | ${status}`);
 
                         // Store result for JSON export
                         allResults.push({
@@ -560,7 +589,7 @@
                             success: true
                         });
                     } else {
-                        console.log(`   ${name.padEnd(18)} | ${size.toString().padStart(6)} | ${testCase.shortName.padEnd(18)} | ${'ERROR'.padStart(9)} | ${'ERROR'.padStart(11)} | ${'ERROR'.padStart(8)} | ${status}`);
+                        console.log(`   ${name.padEnd(25)} | ${size.toString().padStart(6)} | ${testCase.shortName.padEnd(18)} | ${'ERROR'.padStart(9)} | ${'ERROR'.padStart(11)} | ${'ERROR'.padStart(8)} | ${status}`);
                         console.log(`   Error: ${result.error}`);
 
                         allResults.push({
@@ -580,6 +609,9 @@
 
         console.log('\n' + '='.repeat(100));
         console.log('🎉 Benchmarks completados!');
+
+        // Análisis comparativo resumido
+        analyzeResults(allResults);
 
         // Exportar resultados a JSON
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -605,19 +637,91 @@
         }
 
         return results;
-    }// Ejecutar benchmarks si el archivo se ejecuta directamente
+    }
+
+    function analyzeResults(allResults) {
+        if (!allResults || allResults.length === 0) {
+            console.log('No hay resultados para analizar.');
+            return;
+        }
+
+        console.log('\n📈 Análisis comparativo resumido (media de tiempos por algoritmo y tipo de datos):');
+
+        const byType = new Map();
+        const globalAgg = new Map();
+
+        for (const res of allResults) {
+            if (!res.success || !res.statistics || typeof res.statistics.mean !== 'number') continue;
+            const { algorithm, dataType } = res;
+            const mean = res.statistics.mean;
+
+            if (!byType.has(dataType)) {
+                byType.set(dataType, new Map());
+            }
+            const typeMap = byType.get(dataType);
+            const prev = typeMap.get(algorithm) || { sum: 0, count: 0 };
+            typeMap.set(algorithm, { sum: prev.sum + mean, count: prev.count + 1 });
+
+            const gPrev = globalAgg.get(algorithm) || { sum: 0, count: 0 };
+            globalAgg.set(algorithm, { sum: gPrev.sum + mean, count: gPrev.count + 1 });
+        }
+
+        for (const [dataType, algMap] of byType.entries()) {
+            const averages = [];
+            for (const [alg, agg] of algMap.entries()) {
+                averages.push({ algorithm: alg, mean: agg.sum / agg.count });
+            }
+            averages.sort((a, b) => a.mean - b.mean);
+            if (averages.length === 0) continue;
+
+            const best = averages[0];
+            console.log(`\n   ▸ Tipo de datos: ${dataType}`);
+            console.log(`     - Más rápido: ${best.algorithm} (~${best.mean.toFixed(3)} ms)`);
+            const rankingStr = averages
+                .map((x, idx) => `${idx + 1}. ${x.algorithm} (${x.mean.toFixed(3)} ms)`)
+                .join('  |  ');
+            console.log(`     - Ranking: ${rankingStr}`);
+        }
+
+        const globalArr = [];
+        for (const [alg, agg] of globalAgg.entries()) {
+            globalArr.push({ algorithm: alg, mean: agg.sum / agg.count });
+        }
+        globalArr.sort((a, b) => a.mean - b.mean);
+        if (globalArr.length > 0) {
+            console.log('\n📊 Ranking global (promedio sobre todos los tamaños y tipos):');
+            const globalStr = globalArr
+                .map((x, idx) => `${idx + 1}. ${x.algorithm} (${x.mean.toFixed(3)} ms)`)
+                .join('  |  ');
+            console.log(`     ${globalStr}`);
+        }
+    }
+
+    // Ejecutar benchmarks si el archivo se ejecuta directamente
     if (require.main === module) {
         const args = process.argv.slice(2);
-        let sizes, repetitions;
+        let sizes, repetitions, validateResults = true;
 
         // Parse command line arguments
-        if (args.length === 0) {
-            sizes = [100, 500, 1000, 2000];
+        if (args.includes('--help') || args.includes('-h')) {
+            console.log('Uso: node js_benchmarks.js [sizes...] [--reps repetitions] [--no-validate]');
+            console.log('\nEjemplos:');
+            console.log('  node js_benchmarks.js                # Ejecuta con tamaño por defecto 100000, 10 repeticiones');
+            console.log('  node js_benchmarks.js 50000          # Ejecuta solo para tamaño 50000');
+            console.log('  node js_benchmarks.js 10000 50000    # Ejecuta para varios tamaños');
+            console.log('  node js_benchmarks.js 100000 --reps 30  # Ejecuta tamaño 100000 con 30 repeticiones');
+            console.log('  node js_benchmarks.js 10000 --no-validate  # Ejecuta sin validación de resultados');
+            console.log('\nFlags:');
+            console.log('  --reps, -r   Número de repeticiones por configuración (por defecto 10)');
+            console.log('  --no-validate   Deshabilita validación de que los resultados estén ordenados');
+            process.exit(0);
+        } else if (args.length === 0) {
+            sizes = [100000];
             repetitions = 10;
         } else if (args.length === 1) {
             // If only one argument, it could be a size or repetitions flag
-            if (args[0] === '--reps' || args[0] === '-r') {
-                console.log('Uso: node js_benchmarks.js [sizes...] [--reps repetitions]');
+            if (args[0] === '--reps' || args[0] === '-r' || args[0] === '--no-validate') {
+                console.log('Uso: node js_benchmarks.js [sizes...] [--reps repetitions] [--no-validate]');
                 process.exit(1);
             } else if (isNaN(args[0])) {
                 console.log('Error: Argumentos deben ser números');
@@ -627,14 +731,24 @@
                 repetitions = 10;
             }
         } else {
-            // Check for --reps flag
-            const repsIndex = args.indexOf('--reps') || args.indexOf('-r');
-            if (repsIndex !== -1 && repsIndex < args.length - 1) {
+            // Check for flags
+            let repsIndex = args.indexOf('--reps');
+            if (repsIndex === -1) {
+                repsIndex = args.indexOf('-r');
+            }
+            const noValidateIndex = args.indexOf('--no-validate');
+
+            if (noValidateIndex !== -1) {
+                validateResults = false;
+                args.splice(noValidateIndex, 1); // Remove the flag from args
+            }
+
+            if (repsIndex !== -1 && repsIndex < args.length) {
                 repetitions = parseInt(args[repsIndex + 1]);
                 sizes = args.slice(0, repsIndex).filter(arg => !isNaN(arg)).map(Number);
-                if (sizes.length === 0) sizes = [100, 500, 1000, 2000];
+                if (sizes.length === 0) sizes = [100000];
             } else {
-                // All arguments are sizes
+                // All remaining arguments are sizes
                 sizes = args.map(Number).filter(n => !isNaN(n));
                 repetitions = 10;
             }
@@ -643,8 +757,9 @@
         console.log(`🔧 Configuración:`);
         console.log(`   - Tamaños: [${sizes.join(', ')}]`);
         console.log(`   - Repeticiones: ${repetitions}`);
-        console.log(`   - Seed: ${currentSeed}\n`);
+        console.log(`   - Seed: ${currentSeed}`);
+        console.log(`   - Validación: ${validateResults ? 'Habilitada' : 'Deshabilitada'}\n`);
 
-        runBenchmarks(sizes, repetitions);
+        runBenchmarks(sizes, repetitions, validateResults);
     }
 })();

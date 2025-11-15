@@ -1,0 +1,650 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-15 17:57:15",
+    "seed": 3833040843,
+    "repetitions": 10,
+    "methodology": "Academic Rigor Benchmarking v1.0"
+  },
+  "results": [
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00336,
+        "median": 0.0027,
+        "std": 0.00161815,
+        "p5": -1.29106e-231,
+        "p95": 0.0042,
+        "min": 0.0025,
+        "max": 0.008
+      },
+      "allTimes": [0.0042, 0.008, 0.003, 0.0027, 0.0027, 0.0025, 0.0028, 0.0025, 0.0026, 0.0026]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.0008,
+        "median": 0.0008,
+        "std": 7.74597e-05,
+        "p5": -1.28917e-231,
+        "p95": 0.0008,
+        "min": 0.0007,
+        "max": 0.001
+      },
+      "allTimes": [0.001, 0.0008, 0.0008, 0.0008, 0.0007, 0.0008, 0.0008, 0.0008, 0.0007, 0.0008]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.01241,
+        "median": 0.0123,
+        "std": 0.000425323,
+        "p5": -1.2898e-231,
+        "p95": 0.0129,
+        "min": 0.0119,
+        "max": 0.0133
+      },
+      "allTimes": [0.0122, 0.0126, 0.0121, 0.0119, 0.0119, 0.0133, 0.0129, 0.0122, 0.0124, 0.0126]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00158,
+        "median": 0.0016,
+        "std": 8.7178e-05,
+        "p5": -1.28855e-231,
+        "p95": 0.0016,
+        "min": 0.0015,
+        "max": 0.0018
+      },
+      "allTimes": [0.0018, 0.0016, 0.0015, 0.0016, 0.0015, 0.0016, 0.0016, 0.0015, 0.0016, 0.0015]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00031,
+        "median": 0.0003,
+        "std": 7e-05,
+        "p5": -1.292e-231,
+        "p95": 0.0003,
+        "min": 0.0002,
+        "max": 0.0005
+      },
+      "allTimes": [0.0005, 0.0003, 0.0003, 0.0003, 0.0002, 0.0003, 0.0003, 0.0003, 0.0003, 0.0003]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00016,
+        "median": 0.00015,
+        "std": 6.63325e-05,
+        "p5": -1.28886e-231,
+        "p95": 0.0002,
+        "min": 0.0001,
+        "max": 0.0003
+      },
+      "allTimes": [0.0001, 0.0003, 0.0002, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002, 0.0002, 0.0002]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.0004,
+        "median": 0.0004,
+        "std": 4.47214e-05,
+        "p5": -1.28831e-231,
+        "p95": 0.0004,
+        "min": 0.0003,
+        "max": 0.0005
+      },
+      "allTimes": [0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0003, 0.0004, 0.0004, 0.0005]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.02045,
+        "median": 0.0204,
+        "std": 0.000143178,
+        "p5": -1.29138e-231,
+        "p95": 0.0206,
+        "min": 0.0202,
+        "max": 0.0207
+      },
+      "allTimes": [0.0206, 0.0202, 0.0207, 0.0203, 0.0204, 0.0205, 0.0204, 0.0204, 0.0204, 0.0206]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00117,
+        "median": 0.001,
+        "std": 0.000337787,
+        "p5": -1.28855e-231,
+        "p95": 0.0016,
+        "min": 0.0009,
+        "max": 0.002
+      },
+      "allTimes": [0.0011, 0.001, 0.001, 0.0009, 0.0016, 0.002, 0.0012, 0.001, 0.001, 0.0009]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00026,
+        "median": 0.00025,
+        "std": 6.63325e-05,
+        "p5": -1.28949e-231,
+        "p95": 0.0003,
+        "min": 0.0002,
+        "max": 0.0004
+      },
+      "allTimes": [0.0003, 0.0002, 0.0003, 0.0003, 0.0003, 0.0004, 0.0002, 0.0002, 0.0002, 0.0002]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00017,
+        "median": 0.0001,
+        "std": 0.000100499,
+        "p5": -1.29138e-231,
+        "p95": 0.0003,
+        "min": 0.0001,
+        "max": 0.0004
+      },
+      "allTimes": [0.0002, 0.0004, 0.0002, 0.0001, 0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00079,
+        "median": 0.0008,
+        "std": 7e-05,
+        "p5": -1.2898e-231,
+        "p95": 0.0009,
+        "min": 0.0007,
+        "max": 0.0009
+      },
+      "allTimes": [0.0008, 0.0009, 0.0008, 0.0007, 0.0008, 0.0009, 0.0007, 0.0008, 0.0007, 0.0008]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.01922,
+        "median": 0.0206,
+        "std": 0.00386052,
+        "p5": -1.29138e-231,
+        "p95": 0.0212,
+        "min": 0.0116,
+        "max": 0.0236
+      },
+      "allTimes": [0.0116, 0.0118, 0.0236, 0.0206, 0.0205, 0.0207, 0.0206, 0.0212, 0.0205, 0.0211]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00156,
+        "median": 0.0015,
+        "std": 9.16515e-05,
+        "p5": -1.29043e-231,
+        "p95": 0.0016,
+        "min": 0.0015,
+        "max": 0.0018
+      },
+      "allTimes": [0.0018, 0.0016, 0.0015, 0.0016, 0.0015, 0.0016, 0.0015, 0.0015, 0.0015, 0.0015]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00022,
+        "median": 0.0002,
+        "std": 4e-05,
+        "p5": -1.29138e-231,
+        "p95": 0.0003,
+        "min": 0.0002,
+        "max": 0.0003
+      },
+      "allTimes": [0.0003, 0.0002, 0.0002, 0.0003, 0.0002, 0.0002, 0.0002, 0.0002, 0.0002, 0.0002]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00157,
+        "median": 0.00145,
+        "std": 0.000328786,
+        "p5": -1.3005e-231,
+        "p95": 0.0019,
+        "min": 0.0013,
+        "max": 0.0024
+      },
+      "allTimes": [0.0024, 0.0019, 0.0014, 0.0013, 0.0016, 0.0015, 0.0013, 0.0013, 0.0014, 0.0016]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00074,
+        "median": 0.00075,
+        "std": 9.16515e-05,
+        "p5": -1.28949e-231,
+        "p95": 0.0008,
+        "min": 0.0006,
+        "max": 0.0009
+      },
+      "allTimes": [0.0009, 0.0008, 0.0008, 0.0008, 0.0007, 0.0007, 0.0008, 0.0007, 0.0006, 0.0006]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.01669,
+        "median": 0.01925,
+        "std": 0.00349784,
+        "p5": -1.28855e-231,
+        "p95": 0.0195,
+        "min": 0.0114,
+        "max": 0.0197
+      },
+      "allTimes": [0.0193, 0.0192, 0.0195, 0.0193, 0.0193, 0.0197, 0.0158, 0.0114, 0.0115, 0.0119]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00097,
+        "median": 0.00095,
+        "std": 9e-05,
+        "p5": -1.29641e-231,
+        "p95": 0.001,
+        "min": 0.0009,
+        "max": 0.0012
+      },
+      "allTimes": [0.0012, 0.001, 0.001, 0.0009, 0.0009, 0.0009, 0.0009, 0.0009, 0.001, 0.001]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00029,
+        "median": 0.0003,
+        "std": 7e-05,
+        "p5": -1.28886e-231,
+        "p95": 0.0004,
+        "min": 0.0002,
+        "max": 0.0004
+      },
+      "allTimes": [0.0004, 0.0004, 0.0003, 0.0002, 0.0003, 0.0003, 0.0003, 0.0003, 0.0002, 0.0002]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.0007,
+        "median": 0.0007,
+        "std": 0.000118322,
+        "p5": -1.292e-231,
+        "p95": 0.0008,
+        "min": 0.0005,
+        "max": 0.0009
+      },
+      "allTimes": [0.0008, 0.0009, 0.0007, 0.0008, 0.0008, 0.0006, 0.0006, 0.0006, 0.0005, 0.0007]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00087,
+        "median": 0.00085,
+        "std": 7.81025e-05,
+        "p5": -1.29609e-231,
+        "p95": 0.001,
+        "min": 0.0008,
+        "max": 0.001
+      },
+      "allTimes": [0.001, 0.0009, 0.0009, 0.0008, 0.0008, 0.001, 0.0008, 0.0008, 0.0008, 0.0009]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.02046,
+        "median": 0.0204,
+        "std": 0.000303974,
+        "p5": -1.29861e-231,
+        "p95": 0.0206,
+        "min": 0.0202,
+        "max": 0.0213
+      },
+      "allTimes": [0.0205, 0.0204, 0.0204, 0.0204, 0.0206, 0.0202, 0.0202, 0.0203, 0.0203, 0.0213]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00097,
+        "median": 0.001,
+        "std": 0.000100499,
+        "p5": -1.30081e-231,
+        "p95": 0.001,
+        "min": 0.0008,
+        "max": 0.0012
+      },
+      "allTimes": [0.0012, 0.001, 0.001, 0.0009, 0.0009, 0.0009, 0.001, 0.001, 0.001, 0.0008]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00024,
+        "median": 0.0002,
+        "std": 4.89898e-05,
+        "p5": -1.29609e-231,
+        "p95": 0.0003,
+        "min": 0.0002,
+        "max": 0.0003
+      },
+      "allTimes": [0.0003, 0.0003, 0.0002, 0.0003, 0.0003, 0.0002, 0.0002, 0.0002, 0.0002, 0.0002]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00149,
+        "median": 0.0015,
+        "std": 9.43398e-05,
+        "p5": -1.29704e-231,
+        "p95": 0.0016,
+        "min": 0.0014,
+        "max": 0.0017
+      },
+      "allTimes": [0.0017, 0.0015, 0.0015, 0.0014, 0.0015, 0.0014, 0.0015, 0.0014, 0.0014, 0.0016]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00061,
+        "median": 0.0006,
+        "std": 5.38516e-05,
+        "p5": -1.29452e-231,
+        "p95": 0.0007,
+        "min": 0.0005,
+        "max": 0.0007
+      },
+      "allTimes": [0.0007, 0.0006, 0.0007, 0.0006, 0.0006, 0.0005, 0.0006, 0.0006, 0.0006, 0.0006]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.01207,
+        "median": 0.012,
+        "std": 0.00032573,
+        "p5": -1.29704e-231,
+        "p95": 0.0122,
+        "min": 0.0116,
+        "max": 0.0129
+      },
+      "allTimes": [0.0129, 0.0122, 0.0119, 0.012, 0.0118, 0.0116, 0.0121, 0.012, 0.012, 0.0122]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00159,
+        "median": 0.0016,
+        "std": 9.43398e-05,
+        "p5": -1.29263e-231,
+        "p95": 0.0017,
+        "min": 0.0015,
+        "max": 0.0018
+      },
+      "allTimes": [0.0018, 0.0017, 0.0016, 0.0015, 0.0016, 0.0016, 0.0015, 0.0015, 0.0016, 0.0015]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00055,
+        "median": 0.0005,
+        "std": 0.00015,
+        "p5": -1.29767e-231,
+        "p95": 0.0007,
+        "min": 0.0004,
+        "max": 0.0009
+      },
+      "allTimes": [0.0009, 0.0007, 0.0006, 0.0006, 0.0005, 0.0004, 0.0005, 0.0004, 0.0004, 0.0005]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00023,
+        "median": 0.0002,
+        "std": 4.58258e-05,
+        "p5": -1.29609e-231,
+        "p95": 0.0003,
+        "min": 0.0002,
+        "max": 0.0003
+      },
+      "allTimes": [0.0002, 0.0002, 0.0002, 0.0002, 0.0003, 0.0003, 0.0002, 0.0002, 0.0003, 0.0002]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.0011,
+        "median": 0.0011,
+        "std": 6.32456e-05,
+        "p5": -1.29452e-231,
+        "p95": 0.0012,
+        "min": 0.001,
+        "max": 0.0012
+      },
+      "allTimes": [0.0011, 0.0011, 0.0012, 0.0011, 0.001, 0.0011, 0.0011, 0.0011, 0.0012, 0.001]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.02042,
+        "median": 0.0204,
+        "std": 0.000289137,
+        "p5": -1.29704e-231,
+        "p95": 0.0205,
+        "min": 0.0201,
+        "max": 0.0212
+      },
+      "allTimes": [0.0205, 0.0204, 0.0205, 0.0202, 0.0201, 0.0203, 0.0204, 0.0204, 0.0202, 0.0212]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.0015,
+        "median": 0.0015,
+        "std": 6.32456e-05,
+        "p5": -1.30081e-231,
+        "p95": 0.0016,
+        "min": 0.0014,
+        "max": 0.0016
+      },
+      "allTimes": [0.0016, 0.0016, 0.0015, 0.0015, 0.0014, 0.0015, 0.0015, 0.0014, 0.0015, 0.0015]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00023,
+        "median": 0.0002,
+        "std": 4.58258e-05,
+        "p5": -1.28949e-231,
+        "p95": 0.0003,
+        "min": 0.0002,
+        "max": 0.0003
+      },
+      "allTimes": [0.0002, 0.0002, 0.0003, 0.0002, 0.0003, 0.0002, 0.0002, 0.0002, 0.0002, 0.0003]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00018,
+        "median": 0.0002,
+        "std": 7.48331e-05,
+        "p5": -1.28917e-231,
+        "p95": 0.0003,
+        "min": 0.0001,
+        "max": 0.0003
+      },
+      "allTimes": [0.0003, 0.0001, 0.0002, 0.0001, 0.0001, 0.0002, 0.0002, 0.0002, 0.0001, 0.0003]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.0004,
+        "median": 0.0004,
+        "std": 5.42101e-20,
+        "p5": -1.292e-231,
+        "p95": 0.0004,
+        "min": 0.0004,
+        "max": 0.0004
+      },
+      "allTimes": [0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.01158,
+        "median": 0.01155,
+        "std": 9.79796e-05,
+        "p5": -1.29578e-231,
+        "p95": 0.0117,
+        "min": 0.0115,
+        "max": 0.0118
+      },
+      "allTimes": [0.0116, 0.0116, 0.0116, 0.0115, 0.0118, 0.0115, 0.0115, 0.0115, 0.0115, 0.0117]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00095,
+        "median": 0.0009,
+        "std": 8.06226e-05,
+        "p5": -1.29326e-231,
+        "p95": 0.0011,
+        "min": 0.0009,
+        "max": 0.0011
+      },
+      "allTimes": [0.0011, 0.0011, 0.0009, 0.001, 0.0009, 0.0009, 0.0009, 0.0009, 0.0009, 0.0009]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 100,
+      "repetitions": 10,
+      "success": true,
+      "statistics": {
+        "mean": 0.00049,
+        "median": 0.0005,
+        "std": 5.38516e-05,
+        "p5": -1.29263e-231,
+        "p95": 0.0005,
+        "min": 0.0004,
+        "max": 0.0006
+      },
+      "allTimes": [0.0005, 0.0005, 0.0006, 0.0004, 0.0005, 0.0005, 0.0005, 0.0005, 0.0004, 0.0005]
+    }
+  ]
+}

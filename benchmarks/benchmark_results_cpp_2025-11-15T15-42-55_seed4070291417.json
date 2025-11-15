@@ -1,0 +1,650 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-15 15:42:55",
+    "seed": 4070291417,
+    "repetitions": 5,
+    "methodology": "Academic Rigor Benchmarking v1.0"
+  },
+  "results": [
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 118.899,
+        "median": 118.382,
+        "std": 0.933365,
+        "p5": -3.8061e-270,
+        "p95": 118.674,
+        "min": 118.328,
+        "max": 120.75
+      },
+      "allTimes": [118.382, 118.363, 118.328, 118.674, 120.75]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 213.856,
+        "median": 213.087,
+        "std": 1.59004,
+        "p5": -3.81812e-270,
+        "p95": 214.623,
+        "min": 212.406,
+        "max": 216.619
+      },
+      "allTimes": [214.623, 213.087, 212.543, 212.406, 216.619]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 173.499,
+        "median": 173.223,
+        "std": 1.55671,
+        "p5": -3.81812e-270,
+        "p95": 174.88,
+        "min": 171.412,
+        "max": 175.618
+      },
+      "allTimes": [174.88, 173.223, 172.363, 175.618, 171.412]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 73.1821,
+        "median": 72.626,
+        "std": 1.76101,
+        "p5": -3.81719e-270,
+        "p95": 72.6978,
+        "min": 71.934,
+        "max": 76.6486
+      },
+      "allTimes": [76.6486, 71.934, 72.6978, 72.626, 72.0041]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 25.9668,
+        "median": 25.933,
+        "std": 0.269559,
+        "p5": -3.81442e-270,
+        "p95": 26.1789,
+        "min": 25.5086,
+        "max": 26.2912
+      },
+      "allTimes": [26.2912, 26.1789, 25.933, 25.9221, 25.5086]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 0.96714,
+        "median": 0.9676,
+        "std": 0.0191238,
+        "p5": -3.8061e-270,
+        "p95": 0.9859,
+        "min": 0.9352,
+        "max": 0.9872
+      },
+      "allTimes": [0.9352, 0.9598, 0.9859, 0.9676, 0.9872]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 193.589,
+        "median": 193.057,
+        "std": 0.979722,
+        "p5": -3.79131e-270,
+        "p95": 194.623,
+        "min": 192.352,
+        "max": 194.864
+      },
+      "allTimes": [193.049, 194.864, 194.623, 193.057, 192.352]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 132.851,
+        "median": 133.99,
+        "std": 2.19202,
+        "p5": -3.82126e-270,
+        "p95": 134.47,
+        "min": 129.572,
+        "max": 135.258
+      },
+      "allTimes": [129.572, 130.965, 133.99, 135.258, 134.47]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 34.4901,
+        "median": 34.4727,
+        "std": 0.0967684,
+        "p5": -3.80333e-270,
+        "p95": 34.5338,
+        "min": 34.3835,
+        "max": 34.6528
+      },
+      "allTimes": [34.6528, 34.4727, 34.5338, 34.4078, 34.3835]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 5.3104,
+        "median": 5.2471,
+        "std": 0.534122,
+        "p5": -3.81257e-270,
+        "p95": 5.3499,
+        "min": 4.546,
+        "max": 6.2173
+      },
+      "allTimes": [4.546, 6.2173, 5.2471, 5.3499, 5.1917]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 33.6114,
+        "median": 33.4654,
+        "std": 0.351665,
+        "p5": -3.81257e-270,
+        "p95": 33.8982,
+        "min": 33.1553,
+        "max": 34.1276
+      },
+      "allTimes": [34.1276, 33.8982, 33.4107, 33.4654, 33.1553]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 196.15,
+        "median": 195.777,
+        "std": 0.859938,
+        "p5": -3.81534e-270,
+        "p95": 196.173,
+        "min": 195.421,
+        "max": 197.795
+      },
+      "allTimes": [195.421, 195.777, 197.795, 196.173, 195.585]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 129.15,
+        "median": 129.07,
+        "std": 1.26923,
+        "p5": -3.79871e-270,
+        "p95": 129.256,
+        "min": 127.606,
+        "max": 131.409
+      },
+      "allTimes": [131.409, 129.07, 128.407, 127.606, 129.256]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 42.2238,
+        "median": 42.4643,
+        "std": 0.450942,
+        "p5": -3.8024e-270,
+        "p95": 42.4811,
+        "min": 41.662,
+        "max": 42.7921
+      },
+      "allTimes": [42.4811, 41.662, 42.4643, 41.7197, 42.7921]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 5.4986,
+        "median": 5.5017,
+        "std": 0.099502,
+        "p5": -3.78947e-270,
+        "p95": 5.5399,
+        "min": 5.3679,
+        "max": 5.6579
+      },
+      "allTimes": [5.4256, 5.3679, 5.6579, 5.5017, 5.5399]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 98.6171,
+        "median": 99.4472,
+        "std": 1.36421,
+        "p5": -3.80333e-270,
+        "p95": 99.7259,
+        "min": 96.9561,
+        "max": 99.9929
+      },
+      "allTimes": [99.4472, 99.7259, 99.9929, 96.9633, 96.9561]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 218.344,
+        "median": 218.501,
+        "std": 0.983542,
+        "p5": -3.78669e-270,
+        "p95": 219.291,
+        "min": 216.946,
+        "max": 219.47
+      },
+      "allTimes": [216.946, 218.501, 219.47, 219.291, 217.512]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 164.55,
+        "median": 163.629,
+        "std": 1.3799,
+        "p5": -3.8061e-270,
+        "p95": 165.888,
+        "min": 163.092,
+        "max": 166.523
+      },
+      "allTimes": [166.523, 165.888, 163.62, 163.629, 163.092]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 69.9019,
+        "median": 69.7344,
+        "std": 2.20717,
+        "p5": -3.80425e-270,
+        "p95": 70.5558,
+        "min": 67.1177,
+        "max": 73.6499
+      },
+      "allTimes": [69.7344, 73.6499, 68.4517, 70.5558, 67.1177]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 22.7105,
+        "median": 22.8265,
+        "std": 0.420275,
+        "p5": -3.8061e-270,
+        "p95": 22.9784,
+        "min": 21.9728,
+        "max": 23.1965
+      },
+      "allTimes": [23.1965, 22.9784, 22.8265, 22.5781, 21.9728]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 39.604,
+        "median": 39.5987,
+        "std": 0.0247604,
+        "p5": -3.81812e-270,
+        "p95": 39.6006,
+        "min": 39.5802,
+        "max": 39.6513
+      },
+      "allTimes": [39.5891, 39.5802, 39.6006, 39.5987, 39.6513]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 200.102,
+        "median": 200.079,
+        "std": 0.256312,
+        "p5": -3.80425e-270,
+        "p95": 200.123,
+        "min": 199.774,
+        "max": 200.554
+      },
+      "allTimes": [199.774, 200.123, 199.978, 200.079, 200.554]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 142.5,
+        "median": 142.152,
+        "std": 2.79509,
+        "p5": -3.81812e-270,
+        "p95": 142.371,
+        "min": 139.932,
+        "max": 147.743
+      },
+      "allTimes": [139.932, 147.743, 142.152, 142.371, 140.299]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 44.825,
+        "median": 45.0521,
+        "std": 1.20551,
+        "p5": -3.81812e-270,
+        "p95": 45.7546,
+        "min": 43.1535,
+        "max": 46.3909
+      },
+      "allTimes": [43.774, 45.7546, 45.0521, 43.1535, 46.3909]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 10.0768,
+        "median": 10.0593,
+        "std": 0.148248,
+        "p5": -3.81627e-270,
+        "p95": 10.0739,
+        "min": 9.9125,
+        "max": 10.3501
+      },
+      "allTimes": [10.0739, 10.3501, 9.9125, 10.0593, 9.988]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 75.787,
+        "median": 75.8427,
+        "std": 0.29026,
+        "p5": -3.78947e-270,
+        "p95": 75.8797,
+        "min": 75.4141,
+        "max": 76.2494
+      },
+      "allTimes": [75.4141, 75.5489, 75.8797, 76.2494, 75.8427]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 9274.1,
+        "median": 9327.61,
+        "std": 81.7603,
+        "p5": -3.81627e-270,
+        "p95": 9337.47,
+        "min": 9159.77,
+        "max": 9354.9
+      },
+      "allTimes": [9327.61, 9354.9, 9337.47, 9190.77, 9159.77]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 154.69,
+        "median": 154.739,
+        "std": 0.533879,
+        "p5": -3.82181e-270,
+        "p95": 154.869,
+        "min": 153.869,
+        "max": 155.507
+      },
+      "allTimes": [154.468, 153.869, 154.739, 155.507, 154.869]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 46.2506,
+        "median": 46.4078,
+        "std": 0.5909,
+        "p5": -3.82274e-270,
+        "p95": 46.5562,
+        "min": 45.1052,
+        "max": 46.7953
+      },
+      "allTimes": [45.1052, 46.7953, 46.4078, 46.5562, 46.3887]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 14.2502,
+        "median": 14.1531,
+        "std": 0.245004,
+        "p5": -3.78577e-270,
+        "p95": 14.5325,
+        "min": 13.9655,
+        "max": 14.55
+      },
+      "allTimes": [14.55, 13.9655, 14.1531, 14.5325, 14.05]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 1.0286,
+        "median": 1.0128,
+        "std": 0.0376565,
+        "p5": -3.78947e-270,
+        "p95": 1.0144,
+        "min": 1.0053,
+        "max": 1.1036
+      },
+      "allTimes": [1.0128, 1.0144, 1.0069, 1.0053, 1.1036]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 18459.3,
+        "median": 18395.1,
+        "std": 116.17,
+        "p5": -3.78669e-270,
+        "p95": 18527.8,
+        "min": 18339.2,
+        "max": 18654.2
+      },
+      "allTimes": [18395.1, 18654.2, 18380.2, 18339.2, 18527.8]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 134.822,
+        "median": 135.789,
+        "std": 1.81235,
+        "p5": -3.79623e-270,
+        "p95": 136.336,
+        "min": 132.55,
+        "max": 136.719
+      },
+      "allTimes": [132.715, 132.55, 136.719, 136.336, 135.789]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 31.6246,
+        "median": 31.6432,
+        "std": 0.319772,
+        "p5": -3.80277e-270,
+        "p95": 31.7381,
+        "min": 31.2887,
+        "max": 32.1533
+      },
+      "allTimes": [31.6432, 31.2887, 32.1533, 31.7381, 31.2995]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 5.44968,
+        "median": 5.4203,
+        "std": 0.523518,
+        "p5": -3.81997e-270,
+        "p95": 5.4343,
+        "min": 4.7538,
+        "max": 6.3726
+      },
+      "allTimes": [4.7538, 6.3726, 5.4203, 5.4343, 5.2674]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 1.22886,
+        "median": 1.0135,
+        "std": 0.295324,
+        "p5": -3.8087e-270,
+        "p95": 1.569,
+        "min": 0.9754,
+        "max": 1.6106
+      },
+      "allTimes": [0.9758, 0.9754, 1.0135, 1.569, 1.6106]
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 195.171,
+        "median": 194.238,
+        "std": 1.9273,
+        "p5": -3.8037e-270,
+        "p95": 195.102,
+        "min": 193.544,
+        "max": 198.893
+      },
+      "allTimes": [194.077, 195.102, 193.544, 194.238, 198.893]
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 128.55,
+        "median": 128.753,
+        "std": 0.544192,
+        "p5": -3.79664e-270,
+        "p95": 128.848,
+        "min": 127.519,
+        "max": 129.087
+      },
+      "allTimes": [128.545, 127.519, 128.753, 128.848, 129.087]
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 34.8271,
+        "median": 34.7817,
+        "std": 0.162026,
+        "p5": -3.78983e-270,
+        "p95": 34.951,
+        "min": 34.611,
+        "max": 35.0657
+      },
+      "allTimes": [35.0657, 34.611, 34.951, 34.726, 34.7817]
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000000,
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 5.22924,
+        "median": 4.9822,
+        "std": 0.543139,
+        "p5": -3.80573e-270,
+        "p95": 5.1744,
+        "min": 4.8121,
+        "max": 6.2882
+      },
+      "allTimes": [6.2882, 5.1744, 4.9822, 4.8893, 4.8121]
+    }
+  ]
+}
