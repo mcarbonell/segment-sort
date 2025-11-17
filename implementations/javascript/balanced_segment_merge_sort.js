@@ -1,7 +1,11 @@
 /**
- * Sorts an array using the On-the-Fly Balanced Merge Strategy.
- * This algorithm identifies naturally sorted segments and merges them on-the-fly
- * using a stack to maintain balanced sizes, achieving O(log n) space complexity.
+ * On-the-Fly Balanced Merge Sort - JavaScript Implementation
+ * Author: Mario Raúl Carbonell Martínez
+ * Date: November 2025
+ * 
+ * An adaptive sorting algorithm that identifies naturally sorted segments
+ * and merges them on-the-fly using a stack-based balanced approach.
+ * Achieves O(log n) space complexity and O(n log n) time complexity.
  *
  * @param {Array<number>} arr The array to sort (will be mutated).
  * @returns {Array<number>} The mutated sorted array.
@@ -46,50 +50,6 @@ function onTheFlyBalancedMergeSort(arr) {
     return arr;
 }
 
-/**
- * Merges two sorted arrays into a single sorted array.
- *
- * @param {Array<number>} left The first sorted array.
- * @param {Array<number>} right The second sorted array.
- * @returns {Array<number>} The merged and sorted array.
- */
-function mergeTwoArrays(left, right) {
-    if (!left || left.length === 0) {
-        return [...right];
-    }
-    if (!right || right.length === 0) {
-        return [...left];
-    }
-
-    const result = [];
-    let i = 0;
-    let j = 0;
-
-    // Merge while both arrays have elements
-    while (i < left.length && j < right.length) {
-        if (left[i] <= right[j]) {
-            result.push(left[i]);
-            i++;
-        } else {
-            result.push(right[j]);
-            j++;
-        }
-    }
-
-    // Add remaining elements from left array
-    while (i < left.length) {
-        result.push(left[i]);
-        i++;
-    }
-
-    // Add remaining elements from right array
-    while (j < right.length) {
-        result.push(right[j]);
-        j++;
-    }
-
-    return result;
-}
 
 function reverseSlice(arr, start, end) {
     let i = start;
