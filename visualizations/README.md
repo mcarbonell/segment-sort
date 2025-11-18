@@ -10,6 +10,7 @@ This folder contains visualization tools to better understand how the Segment So
 - `heap_merge.svg` - Heap merging animation
 
 ### 2. Interactive Animations
+- **`on_the_fly_visualizer.html`** - **NEW: Comprehensive interactive JavaScript visualizer for On-the-Fly Balanced Merge Sort**
 - `interactive_demo.html` - Interactive JavaScript demo
 - `segment_animation.py` - Python animation with matplotlib
 

@@ -1,74 +1,149 @@
-# Makefile for C++ Benchmarks
-# Compiles the benchmark suite for Segment Sort algorithm
+# Benchmarks Makefile
+# ===================
 
-CXX = g++
-CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
-SRC_DIR = ../implementations/cpp
-BENCHMARK_DIR = .
+# Default targets
+.PHONY: all test clean help js cpp python
 
-# Source files
-BENCHMARK_SRC = cpp_benchmarks.cpp
-ALGORITHM_SRC = $(SRC_DIR)/balanced_segment_merge_sort.cpp
-
-# Object files
-BENCHMARK_OBJ = cpp_benchmarks.o
-ALGORITHM_OBJ = balanced_segment_merge_sort.o
-
-# Executable
-TARGET = cpp_benchmarks
+# Language-specific directories
+JS_DIR = languages/javascript
+CPP_DIR = languages/cpp
+PYTHON_DIR = languages/python
 
 # Default target
-all: $(TARGET)
+all: js cpp python
 
-# Link the executable
-$(TARGET): $(BENCHMARK_OBJ) $(ALGORITHM_OBJ)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# JavaScript benchmarks
+js:
+	@echo "🚀 Running JavaScript benchmarks..."
+	@cd $(JS_DIR) && node js_benchmarks.js 100000 --reps 5
 
-# Compile benchmark source
-cpp_benchmarks.o: cpp_benchmarks.cpp cpp_benchmarks.h
-	$(CXX) $(CXXFLAGS) -I$(BENCHMARK_DIR) -I$(SRC_DIR) -c cpp_benchmarks.cpp
+js-quick:
+	@echo "⚡ Running quick JavaScript benchmark..."
+	@cd $(JS_DIR) && node js_benchmarks.js 10000 --reps 3
 
-# Compile algorithm source
-balanced_segment_merge_sort.o: $(ALGORITHM_SRC)
-	$(CXX) $(CXXFLAGS) -I$(BENCHMARK_DIR) -c $(ALGORITHM_SRC) -o balanced_segment_merge_sort.o
+# C++ benchmarks
+cpp:
+	@echo "⚙️  Compiling and running C++ benchmarks..."
+	@cd $(CPP_DIR) && ./compile.bat
+	@cd $(CPP_DIR) && cpp_benchmarks.exe 100000
 
-# Clean build artifacts
+cpp-test:
+	@echo "🧪 Running C++ benchmarks with smaller dataset..."
+	@cd $(CPP_DIR) && cpp_benchmarks.exe 50000
+
+# Python benchmarks  
+python:
+	@echo "🐍 Running Python benchmarks..."
+	@cd $(PYTHON_DIR) && python python_benchmarks.py 100000 --repetitions 5
+
+python-quick:
+	@echo "⚡ Running quick Python benchmark..."
+	@cd $(PYTHON_DIR) && python python_benchmarks.py 10000 --repetitions 3
+
+# Analysis scripts
+compare-quicksorts:
+	@echo "🔬 Comparing QuickSort implementations..."
+	@cd scripts && node compare_quicksorts.js
+
+# Development tools
+debug:
+	@echo "🐛 Running debug tools..."
+	@cd tools && python debug_segments.py 1000
+
+validate:
+	@echo "✅ Running validation tests..."
+	@cd tools && python test_comparison.py
+
+# Cross-language comparison (when implemented)
+cross-lang:
+	@echo "🌐 Running cross-language comparison..."
+	@echo "Note: This target will be implemented when multi-language comparisons are added"
+
+# Results management
+archive-results:
+	@echo "📁 Archiving old benchmark results..."
+	@mkdir -p results/archive
+	@find results -name "*.json" -not -path "*/archive/*" -exec mv {} results/archive/ \;
+	@echo "✅ Results archived"
+
+show-results:
+	@echo "📊 Available benchmark results:"
+	@ls -la results/ 2>/dev/null || echo "No results directory found"
+	@echo ""
+	@echo "Archived results:"
+	@ls -la results/archive/ 2>/dev/null || echo "No archived results"
+
+# Cleanup
 clean:
-	rm -f $(BENCHMARK_OBJ) $(ALGORITHM_OBJ) $(TARGET) benchmark_results_cpp_*.json
+	@echo "🧹 Cleaning benchmark artifacts..."
+	@# Remove C++ executables
+	@rm -f $(CPP_DIR)/cpp_benchmarks.exe
+	@rm -f $(CPP_DIR)/segmentsort_go
+	@# Remove Python cache
+	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	@find . -name "*.pyc" -delete 2>/dev/null || true
+	@# Remove temporary files
+	@rm -f *.tmp
+	@echo "✅ Cleanup completed"
 
-# Run benchmarks with default settings
-run: $(TARGET)
-	./$(TARGET)
+clean-results:
+	@echo "🗑️  Cleaning benchmark results (keeping last 5)..."
+	@cd results && ls -t *.json 2>/dev/null | tail -n +6 | xargs -I {} mv {} archive/ 2>/dev/null || echo "No old results to clean"
 
-# Run with specific settings
-run-10k: $(TARGET)
-	./$(TARGET) 10000
+# Documentation
+docs:
+	@echo "📚 Benchmark documentation:"
+	@echo "Main README: ./README.md"
+	@echo "Languages: ./languages/README.md"
+	@echo "Scripts: ./scripts/README.md"
+	@echo "Tools: ./tools/README.md"
 
-run-50k: $(TARGET)
-	./$(TARGET) 50000
+# Testing
+test: js-quick python-quick
+	@echo "🧪 Basic functionality tests completed"
 
-run-100k: $(TARGET)
-	./$(TARGET) 100000
+validate-all:
+	@echo "🔍 Running comprehensive validation..."
+	@$(MAKE) validate
+	@$(MAKE) compare-quicksorts
+	@echo "✅ All validations completed"
 
-# Help target
+# Help
 help:
-	@echo "Available targets:"
-	@echo "  all          - Build the benchmark executable (default)"
-	@echo "  clean        - Remove build artifacts and result files"
-	@echo "  run          - Run benchmarks with default settings (100k elements, 10 reps)"
-	@echo "  run-10k      - Run benchmarks with 10,000 elements"
-	@echo "  run-50k      - Run benchmarks with 50,000 elements"
-	@echo "  run-100k     - Run benchmarks with 100,000 elements"
-	@echo "  help         - Show this help message"
+	@echo "🎯 Segment Sort Benchmarks - Available Commands"
+	@echo "=============================================="
 	@echo ""
-	@echo "Benchmark usage:"
-	@echo "  ./cpp_benchmarks [sizes...] [--reps repetitions] [--seed seed]"
+	@echo "📊 Main Targets:"
+	@echo "  all              - Run all language benchmarks"
+	@echo "  js               - Run JavaScript benchmarks (100K elements)"
+	@echo "  cpp              - Run C++ benchmarks (100K elements)"
+	@echo "  python           - Run Python benchmarks (100K elements)"
 	@echo ""
-	@echo "Examples:"
-	@echo "  ./cpp_benchmarks                    # Default: 100k elements, 10 repeticiones"
-	@echo "  ./cpp_benchmarks 50000              # Single size"
-	@echo "  ./cpp_benchmarks 10000 50000        # Multiple sizes"
-	@echo "  ./cpp_benchmarks --reps 30 100000   # Custom repetitions"
-	@echo "  ./cpp_benchmarks --seed 42 50000    # Custom seed"
-
-.PHONY: all clean run run-10k run-50k run-100k help
+	@echo "⚡ Quick Tests:"
+	@echo "  js-quick         - JavaScript benchmarks with 10K elements"
+	@echo "  python-quick     - Python benchmarks with 10K elements"
+	@echo "  test             - Run quick tests for all languages"
+	@echo ""
+	@echo "🔬 Analysis:"
+	@echo "  compare-quicksorts - Compare QuickSort implementations"
+	@echo "  validate-all       - Run all validation tests"
+	@echo ""
+	@echo "🛠️  Development:"
+	@echo "  debug              - Run debugging tools"
+	@echo "  validate           - Cross-implementation validation"
+	@echo "  docs               - Show documentation locations"
+	@echo ""
+	@echo "📁 Results Management:"
+	@echo "  show-results       - List available benchmark results"
+	@echo "  archive-results    - Move old results to archive"
+	@echo "  clean-results      - Clean up old benchmark results"
+	@echo ""
+	@echo "🧹 Maintenance:"
+	@echo "  clean              - Remove temporary files and executables"
+	@echo "  help               - Show this help message"
+	@echo ""
+	@echo "📝 Usage Examples:"
+	@echo "  make js           # Run JavaScript benchmarks"
+	@echo "  make cpp-test     # Quick C++ test with 50K elements"
+	@echo "  make compare-quicksorts  # Validate QuickSort implementations"
+	@echo "  make validate     # Ensure all implementations are correct"

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On-the-Fly Balanced Merge Sort Visualizer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .header-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .visualization {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .segment-info {
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #34495e;
+        }
+
+        .segment-info h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .array-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .array-visualization {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2px;
+            margin: 20px 0;
+            min-height: 80px;
+        }
+
+        .array-element {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, #74c0fc, #339af0);
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .array-element.special {
+            background: linear-gradient(45deg, #ff8787, #fa5252);
+            border-color: #e03131;
+            transform: scale(1.1);
+        }
+
+        .array-element.segment {
+            background: linear-gradient(45deg, #69db7c, #40c057);
+            border-color: #2f9e44;
+        }
+
+        .element-value {
+            font-size: 12px;
+        }
+
+        .element-index {
+            position: absolute;
+            top: -18px;
+            font-size: 10px;
+            color: #555;
+        }
+
+        .stack-visualization {
+            min-height: 200px;
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .stack-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .stack-layers {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-height: 120px;
+        }
+
+        .stack-segment {
+            background: linear-gradient(45deg, #ffe066, #fab005);
+            border: 2px solid #e67700;
+            border-radius: 8px;
+            padding: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            min-width: 50px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .stack-segment.current {
+            background: linear-gradient(45deg, #ff8787, #fa5252);
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .stack-size {
+            font-size: 10px;
+            margin-bottom: 2px;
+        }
+
+        .step-info {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .step-description {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .status {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .explanation-panel {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .explanation-panel h3 {
+            margin-top: 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .explanation-text {
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .test-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .test-case-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .test-case-btn:hover {
+            background: #27ae60;
+            transform: translateY(-1px);
+        }
+
+        .merge-animation {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .merge-animation.visible {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button {
+                width: 200px;
+            }
+
+            .array-visualization {
+                gap: 1px;
+            }
+
+            .array-element {
+                width: 35px;
+                height: 35px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 On-the-Fly Balanced Merge Sort Visualizer</h1>
+
+        <div class="header-info">
+            <strong>Algoritmo:</strong> Tu innovación "On-the-Fly Balanced Merge Sort" (complejidad O(log n) espacio,
+            supera a V8 builtin sort por 27%)<br>
+            <strong>Estado:</strong> <span id="status">Listo para comenzar</span> |
+            <strong>Paso actual:</strong> <span id="currentStep">0</span> |
+            <strong>Total pasos:</strong> <span id="totalSteps">0</span>
+        </div>
+
+        <div class="test-cases">
+            <button class="test-case-btn" onclick="loadTestCase([5, 3, 8, 4, 2, 7, 1, 6])">Mini Array</button>
+            <button class="test-case-btn" onclick="loadTestCase([9, 2, 3, 4, 5, 6, 7, 8, 1])">Mostly Sorted</button>
+            <button class="test-case-btn" onclick="loadTestCase([1, 3, 5, 7, 9, 8, 6, 4, 2])">Two Segments</button>
+            <button class="test-case-btn" onclick="loadTestCase([8, 7, 6, 1, 2, 3, 4, 5])">Clear Segments</button>
+            <button class="test-case-btn" onclick="loadTestCase(generateRandomArray(12))">Random Array</button>
+            <button class="test-case-btn" onclick="loadTestCase([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])">Already
+                Sorted</button>
+        </div>
+
+        <div class="controls">
+            <button class="btn-primary" id="startBtn" onclick="startVisualization()">▶️ Iniciar</button>
+            <button class="btn-warning" id="stepBtn" onclick="step()" disabled>⏭️ Siguiente Paso</button>
+            <button class="btn-danger" id="resetBtn" onclick="reset()">🔄 Reset</button>
+            <button class="btn-secondary" id="autoStepBtn" onclick="toggleAutoStep()">[ ] Auto Paso</button>
+        </div>
+
+        <div class="visualization">
+            <div class="segment-info">
+                <h3>📊 Estadísticas del Algoritmo</h3>
+                <div class="stats-panel">
+                    <div class="stat">
+                        <div class="stat-value" id="totalSegments">0</div>
+                        <div class="stat-label">Segmentos Detectados</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="stackDepth">0</div>
+                        <div class="stat-label">Profundidad Stack</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="comparisons">0</div>
+                        <div class="stat-label">Comparaciones</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="merges">0</div>
+                        <div class="stat-label">Merges Realizados</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="array-container">
+                <h3>🔢 Array Actual (con segmentos resaltados)</h3>
+                <div class="array-visualization" id="arrayVisualization"></div>
+            </div>
+
+            <div class="stack-visualization">
+                <h3 class="stack-title">📚 Stack de Segmentos</h3>
+                <div class="stack-layers" id="stackVisualization"></div>
+            </div>
+
+            <div class="step-info">
+                <div class="step-description" id="stepDescription">Esperando para comenzar...</div>
+                <div class="status" id="stepStatus">Array original listo para procesar</div>
+            </div>
+        </div>
+
+        <div class="explanation-panel">
+            <h3>📚 Cómo Funciona el Algoritmo</h3>
+            <div class="explanation-text">
+                <p><strong>On-the-Fly Balanced Merge Sort</strong> identifica automáticamente segmentos naturales en tus
+                    datos (runs crecientes o decrecientes) y los fusiona usando una estrategia balanceada que evita
+                    merges ineficientes entre segmentos de tamaños muy diferentes.</p>
+
+                <p><strong>Fase 1:</strong> Se escanea el array identificando segmentos y agregándolos al stack
+                    manteniendo el balance de tamaños.</p>
+
+                <p><strong>Fase 2:</strong> Cuando el stack tiene más de un segmento, se fusionan los dos últimos usando
+                    merge simétrico.</p>
+
+                <p><em>La clave es mantener segmentos de tamaño creciente en el stack, lo que garantiza merges
+                        eficientes O(log n).</em></p>
+            </div>
+        </div>
+
+        <div class="merge-animation" id="mergeAnimation">
+            <strong>🔗 Merging en Progreso...</strong><br>
+            Combinando segmentos para mantener el balance óptimo.
+        </div>
+    </div>
+
+    <script>
+        class OnTheFlyVisualizer {
+            constructor() {
+                this.originalArray = [];
+                this.currentArray = [];
+                this.segmentsStack = [];
+                this.currentStep = 0;
+                this.totalSteps = 0;
+                this.isRunning = false;
+                this.autoStep = false;
+                this.autoStepInterval = null;
+                this.comparisons = 0;
+                this.merges = 0;
+                this.stepHistory = [];
+                this.currentIndex = 0;
+                this.animationElements = [];
+
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === ' ') {
+                        e.preventDefault();
+                        if (!this.isRunning) {
+                            this.startVisualization();
+                        } else {
+                            this.step();
+                        }
+                    }
+                    if (e.key === 'r' || e.key === 'R') {
+                        this.reset();
+                    }
+                });
+            }
+
+            loadArray(arr) {
+                this.originalArray = [...arr];
+                this.currentArray = [...arr];
+                this.reset();
+                this.render();
+            }
+
+            reset() {
+                this.currentArray = [...this.originalArray];
+                this.segmentsStack = [];
+                this.currentStep = 0;
+                this.totalSteps = 0;
+                this.isRunning = false;
+                this.comparisons = 0;
+                this.merges = 0;
+                this.stepHistory = [];
+                this.currentIndex = 0;
+                if (this.autoStepInterval) {
+                    clearInterval(this.autoStepInterval);
+                    this.autoStepInterval = null;
+                }
+                this.autoStep = false;
+                this.updateControls();
+                this.updateStats();
+            }
+
+            startVisualization() {
+                if (this.isRunning) return;
+                this.isRunning = true;
+                this.currentStep = 0;
+                this.totalSteps = this.estimateSteps();
+                this.updateControls();
+                this.step();
+            }
+
+            estimateSteps() {
+                // Rough estimation: scanning + potential merges per segment
+                const n = this.currentArray.length;
+                return n + Math.ceil(Math.log2(n)) * 2;
+            }
+
+            step() {
+                if (!this.isRunning) return;
+
+                this.currentStep++;
+                this.executeStep();
+                this.updateStepInfo();
+                this.render();
+
+                if (this.isSorted()) {
+                    this.finishVisualization();
+                }
+            }
+
+            executeStep() {
+                this.stepHistory.push({
+                    array: [...this.currentArray],
+                    stack: this.segmentsStack.map(s => [s[0], s[1]]),
+                    description: '',
+                    status: ''
+                });
+
+                // Phase 1: Scan and add segments to stack
+                if (this.currentIndex < this.currentArray.length) {
+                    const seg = this.detectSegment(this.currentIndex);
+                    let currentStart = seg[0];
+                    let currentEnd = seg[1];
+                    this.currentIndex = currentEnd;
+
+                    // Balance the stack
+                    while (this.segmentsStack.length > 0) {
+                        const top = this.segmentsStack[this.segmentsStack.length - 1];
+                        const topLen = top[1] - top[0];
+                        const currentLen = currentEnd - currentStart;
+
+                        if (currentLen < topLen) break;
+
+                        this.segmentsStack.pop();
+                        this.symmerge(top[0], currentStart, currentEnd);
+                        currentStart = top[0];
+                        this.merges++;
+                    }
+
+                    this.segmentsStack.push([currentStart, currentEnd]);
+
+                    this.stepHistory[this.stepHistory.length - 1].description =
+                        `Escaneando segmento [${seg[0]}:${seg[1]}] y agregándolo al stack`;
+                    this.stepHistory[this.stepHistory.length - 1].status =
+                        `Segmento agregado. Stack balanceado.`;
+                }
+                // Phase 2: Final merges
+                else if (this.segmentsStack.length > 1) {
+                    const a = this.segmentsStack.pop();
+                    const b = this.segmentsStack.pop();
+                    this.symmerge(b[0], a[0], a[1]);
+                    this.segmentsStack.push([b[0], a[1]]);
+                    this.merges++;
+
+                    this.stepHistory[this.stepHistory.length - 1].description =
+                        `Merge final: combinando últimos dos segmentos del stack`;
+                    this.stepHistory[this.stepHistory.length - 1].status =
+                        `Merge completado. ${this.segmentsStack.length} segmentos restantes.`;
+                }
+            }
+
+            detectSegment(start) {
+                const n = this.currentArray.length;
+                if (start >= n) return [start, start];
+
+                let end = start + 1;
+                if (end < n && this.currentArray[start] > this.currentArray[end]) {
+                    // Decreasing segment - reverse it
+                    while (end < n && this.currentArray[end - 1] > this.currentArray[end]) {
+                        end++;
+                    }
+                    this.reverseSlice(start, end);
+                    return [start, end];
+                } else {
+                    // Increasing segment
+                    while (end < n && this.currentArray[end - 1] <= this.currentArray[end]) {
+                        end++;
+                    }
+                    return [start, end];
+                }
+            }
+
+            reverseSlice(start, end) {
+                let i = start, j = end - 1;
+                while (i < j) {
+                    [this.currentArray[i], this.currentArray[j]] =
+                        [this.currentArray[j], this.currentArray[i]];
+                    i++; j--;
+                }
+            }
+
+            symmerge(first, middle, last) {
+                if (first >= middle || middle >= last) return;
+                if (last - first === 1) return;
+                if (last - first === 2) {
+                    this.comparisons++;
+                    if (this.currentArray[middle] < this.currentArray[first]) {
+                        [this.currentArray[first], this.currentArray[middle]] =
+                            [this.currentArray[middle], this.currentArray[first]];
+                    }
+                    return;
+                }
+
+                const mid1 = Math.floor((first + middle) / 2);
+                const value = this.currentArray[mid1];
+                const mid2 = this.lowerBound(middle, last, value);
+                const newMid = mid1 + (mid2 - middle);
+                this.rotateRange(mid1, middle, mid2);
+                this.symmerge(first, mid1, newMid);
+                this.symmerge(newMid + 1, mid2, last);
+            }
+
+            lowerBound(start, end, value) {
+                let left = start, right = end;
+                while (left < right) {
+                    const mid = Math.floor((left + right) / 2);
+                    if (this.currentArray[mid] < value) {
+                        left = mid + 1;
+                    } else {
+                        right = mid;
+                    }
+                }
+                return left;
+            }
+
+            rotateRange(first, middle, last) {
+                this.reverseSlice(first, middle);
+                this.reverseSlice(middle, last);
+                this.reverseSlice(first, last);
+            }
+
+            isSorted() {
+                for (let i = 1; i < this.currentArray.length; i++) {
+                    this.comparisons++;
+                    if (this.currentArray[i] < this.currentArray[i - 1]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            finishVisualization() {
+                this.isRunning = false;
+                if (this.autoStepInterval) {
+                    clearInterval(this.autoStepInterval);
+                    this.autoStepInterval = null;
+                }
+                this.updateControls();
+                this.stepHistory.push({
+                    array: [...this.currentArray],
+                    stack: this.segmentsStack.map(s => [s[0], s[1]]),
+                    description: '✅ ORDENACIÓN COMPLETADA',
+                    status: 'Array completamente ordenado'
+                });
+            }
+
+            toggleAutoStep() {
+                this.autoStep = !this.autoStep;
+                if (this.autoStep) {
+                    this.startAutoStep();
+                } else {
+                    this.stopAutoStep();
+                }
+            }
+
+            startAutoStep() {
+                if (this.autoStepInterval) clearInterval(this.autoStepInterval);
+                this.autoStepInterval = setInterval(() => {
+                    if (this.isRunning && !this.isSorted()) {
+                        this.step();
+                    } else {
+                        this.stopAutoStep();
+                    }
+                }, 1200);
+            }
+
+            stopAutoStep() {
+                if (this.autoStepInterval) {
+                    clearInterval(this.autoStepInterval);
+                    this.autoStepInterval = null;
+                }
+                this.autoStep = false;
+                this.updateControls();
+            }
+
+            updateControls() {
+                document.getElementById('startBtn').disabled = this.isRunning;
+                document.getElementById('stepBtn').disabled = !this.isRunning || this.isSorted();
+                document.getElementById('autoStepBtn').textContent = this.autoStep ? '⏸️ Detener Auto' : '▶️ Auto Paso';
+                document.getElementById('status').textContent = this.isRunning ? 'Ejecutando' : 'Pausado';
+            }
+
+            updateStats() {
+                document.getElementById('totalSegments').textContent = this.segmentsStack.length;
+                document.getElementById('stackDepth').textContent = this.segmentsStack.length;
+                document.getElementById('comparisons').textContent = this.comparisons;
+                document.getElementById('merges').textContent = this.merges;
+                document.getElementById('currentStep').textContent = this.currentStep;
+                document.getElementById('totalSteps').textContent = this.totalSteps;
+            }
+
+            updateStepInfo() {
+                const currentStepData = this.stepHistory[this.stepHistory.length - 1];
+                if (currentStepData) {
+                    document.getElementById('stepDescription').textContent = currentStepData.description || 'Procesando...';
+                    document.getElementById('stepStatus').textContent = currentStepData.status || 'Trabajando en el algoritmo';
+                }
+            }
+
+            render() {
+                this.renderArray();
+                this.renderStack();
+                this.updateStats();
+                this.showMergeAnimation();
+            }
+
+            renderArray() {
+                const container = document.getElementById('arrayVisualization');
+                container.innerHTML = '';
+
+                this.currentArray.forEach((value, index) => {
+                    const element = document.createElement('div');
+                    element.className = 'array-element';
+                    element.innerHTML = `
+                        <div class="element-index">${index}</div>
+                        <div class="element-value">${value}</div>
+                    `;
+
+                    // Highlight current scanning position
+                    if (!this.isSorted() && this.currentIndex <= index) {
+                        element.classList.add('special');
+                    }
+
+                    // Highlight segments
+                    for (const segment of this.segmentsStack) {
+                        if (index >= segment[0] && index < segment[1]) {
+                            element.classList.add('segment');
+                        }
+                    }
+
+                    container.appendChild(element);
+                });
+            }
+
+            renderStack() {
+                const container = document.getElementById('stackVisualization');
+                container.innerHTML = '';
+
+                this.segmentsStack.forEach((segment, index) => {
+                    const segmentDiv = document.createElement('div');
+                    segmentDiv.className = 'stack-segment';
+                    const size = segment[1] - segment[0];
+
+                    segmentDiv.innerHTML = `
+                        <div class="stack-size">Size: ${size}</div>
+                        <div>[${segment[0]}, ${segment[1]})</div>
+                    `;
+
+                    // Highlight current segment
+                    if (index === this.segmentsStack.length - 1 && this.segmentsStack.length > 1) {
+                        segmentDiv.classList.add('current');
+                    }
+
+                    container.appendChild(segmentDiv);
+                });
+            }
+
+            showMergeAnimation() {
+                const animation = document.getElementById('mergeAnimation');
+                if (this.merges > 0 && this.segmentsStack.length > 1) {
+                    animation.classList.add('visible');
+                    setTimeout(() => {
+                        animation.classList.remove('visible');
+                    }, 1500);
+                }
+            }
+        }
+
+        // Global visualizer instance
+        const visualizer = new OnTheFlyVisualizer();
+
+        // Helper functions
+        function generateRandomArray(size) {
+            return Array.from({ length: size }, () => Math.floor(Math.random() * 100));
+        }
+
+        function loadTestCase(arr) {
+            visualizer.loadArray(arr);
+        }
+
+        function startVisualization() {
+            visualizer.startVisualization();
+        }
+
+        function step() {
+            visualizer.step();
+        }
+
+        function reset() {
+            visualizer.reset();
+        }
+
+        function toggleAutoStep() {
+            visualizer.toggleAutoStep();
+        }
+
+        // Initialize with a default array
+        loadTestCase([5, 3, 8, 4, 2, 7, 1, 6]);
+
+        // Keyboard shortcuts info
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('On-the-Fly Balanced Merge Sort Visualizer loaded!');
+            console.log('Keyboard shortcuts:');
+            console.log('  Space: Start visualization or step');
+            console.log('  R: Reset');
+        });
+    </script>
+</body>
+
+</html>
