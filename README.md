@@ -64,7 +64,7 @@ The C implementation focuses on low-level optimization and memory efficiency. It
 | **10-Segments** | Top-10,000 | **1.40 ms** | 1.62 ms | ✅ **x1.15 Faster** |
 | **Random** | Top-1,000 | 9.17 ms | 0.83 ms | Slower (Overhead on chaos) |
 
-**Key Insight**: The Iterator is the superior choice when you cannot afford to copy the source array (memory limits) or when the data has structure (e.g., time-series logs).
+**Key Insight**: The Iterator is the superior choice when you cannot afford to copy the source array (memory limits) or when the data has structure (e.g., time-series logs). 100% Zero-Copy/Memory-Safe
 
 ### 3. JavaScript Performance (Node.js V8)
 
