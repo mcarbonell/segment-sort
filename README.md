@@ -27,7 +27,13 @@ The project has evolved into a portfolio of three distinct implementations, each
 - **Characteristics**: **O(log n) memory** (Optimal), O(n log n) time.
 - **Highlight**: **110x Faster than QSort** on pre-sorted data (C implementation).
 
-#### 3. **[SegmentSort Iterator](implementations/cpp/SegmentSortIterator.h)** (C++ Lazy Evaluator)
+#### 3. **[Block Merge Segment Sort](implementations/javascript/block_merge_segment_sort.js)** (New! Hybrid Optimization)
+- **Approach**: Uses a small auxiliary buffer ($\sqrt{N}$) to perform linear-time merges.
+- **Best Use Case**: **General Purpose High Performance**.
+- **Characteristics**: **O(N log N)** worst-case time, **O($\sqrt{N}$)** memory.
+- **Highlight**: **2x Faster than QuickSort** on random data (JS), while keeping O(N) for sorted data.
+
+#### 4. **[SegmentSort Iterator](implementations/cpp/SegmentSortIterator.h)** (C++ Lazy Evaluator)
 - **Approach**: Zero-copy lazy evaluation using a Min-Heap cursor over the immutable source.
 - **Best Use Case**: **Top-K Queries**, Paging, Streaming, and Read-Only data sources.
 - **Characteristics**: **Zero-Copy**, O(K) auxiliary memory, O(N) setup.
@@ -68,13 +74,22 @@ The C implementation focuses on low-level optimization and memory efficiency. It
 
 ### 3. JavaScript Performance (Node.js V8)
 
-*Benchmark run on 1,000,000 elements.*
+*Benchmark run on 1,000,000 elements (Random Data).*
 
-| Algorithm | Global Avg | vs builtinSort | Note |
+| Algorithm | Time (Avg) | vs QuickSort | vs Builtin | Verdict |
+| :--- | :--- | :--- | :--- | :--- |
+| **Block Merge Segment Sort** | **88 ms** | **2x Faster** | **27% Faster** | 👑 **New Champion** |
+| Balanced Segment Sort | 172 ms | Similar | -40% Slower | Excellent Memory/Speed balance |
+| Optimized QuickSort | 182 ms | Baseline | -50% Slower | Standard Reference |
+| Builtin Sort (V8) | 120 ms* | 1.5x Slower | Baseline | *Varies by engine* |
+
+*Benchmark run on 1,000,000 elements (Structured Data).*
+
+| Data Type | Block Merge Segment Sort | QuickSort | Verdict |
 | :--- | :--- | :--- | :--- |
-| **On-the-Fly Balanced** | **69.39 ms** | **27% faster** | **Best Overall** |
-| builtinSort (V8) | 95.80 ms | Baseline | |
-| SegmentSort Original | 292.76 ms | -67% slower | Legacy |
+| **Sorted** | **0.33 ms** | 0.30 ms | Tie (Both O(N)) |
+| **Reverse** | **3.5 ms** | 243 ms | 🚀 **70x Faster** |
+| **Nearly Sorted** | **21.6 ms** | 212 ms | 🔥 **10x Faster** |
 
 ---
 
@@ -160,7 +175,12 @@ segment-sort/
 5. **Robust**: Immune to worst-case scenarios that catastrophically affect quicksort and other algorithms.
 
 ### Limitations
-1. **Slight Overhead**: Small performance penalty on completely random data compared to non-stable, O(n) memory sorts.
+1. **Slight Overhead**: Small performance penalty on completely random data compared to non-stable, O(n) memory sorts (Original Version). **Solved** in Block Merge variant.
+
+### Block Merge Variant Analysis
+- **Time**: O(N log N) worst case.
+- **Space**: O($\sqrt{N}$) or Fixed Buffer (e.g., 512 elements).
+- **Trade-off**: Uses a tiny amount of extra memory to achieve state-of-the-art speed on random data.
 
 ## 📄 License
 
@@ -171,7 +191,7 @@ This project is under the MIT License - see the [LICENSE](LICENSE) file for deta
 **Segment Sort Algorithm Project**
 - Created by: Mario Raúl Carbonell Martínez
 - Date: November 2025
-- Version: 2.1 (Includes C & Iterator)
+- Version: 2.2 (Includes Block Merge Optimization)
 
 ---
 

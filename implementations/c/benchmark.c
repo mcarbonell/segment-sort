@@ -6,6 +6,7 @@
 #include <limits.h>
 
 #include "balanced_segment_merge_sort.h"
+#include "block_merge_segment_sort.h"
 
 // --- Configuration ---
 #define ARRAY_SIZE_LARGE 100000
@@ -122,13 +123,27 @@ void run_single_benchmark(const char* type_name, void (*fill_func)(int*, size_t)
     }
     double avg_q = (total_time_q / reps) * 1000.0; // ms
 
-    // Print results
-    printf("%10.3f ms | %10.3f ms | ", avg_seg, avg_q);
+    // --- Benchmark Block Merge Segment Sort ---
+    double total_time_block = 0;
+    for (int r = 0; r < reps; r++) {
+        memcpy(arr_copy, arr_orig, n * sizeof(int));
+        
+        double start = get_time_sec();
+        block_merge_segment_sort(arr_copy, n);
+        double end = get_time_sec();
+        total_time_block += (end - start);
+        
+        if (r == 0) check_sorted(arr_copy, n, "BlockMerge");
+    }
+    double avg_block = (total_time_block / reps) * 1000.0; // ms
 
-    if (avg_seg < avg_q) {
-        printf("\033[1;32mx%.2f Faster\033[0m\n", avg_q / avg_seg);
+    // Print results
+    printf("%10.3f ms | %10.3f ms | %10.3f ms | ", avg_seg, avg_block, avg_q);
+
+    if (avg_block < avg_q) {
+        printf("\033[1;32mx%.2f Faster (Block)\033[0m\n", avg_q / avg_block);
     } else {
-        printf("\033[1;31mx%.2f Slower\033[0m\n", avg_seg / avg_q);
+        printf("\033[1;31mx%.2f Slower (Block)\033[0m\n", avg_block / avg_q);
     }
 
     free(arr_orig);
@@ -140,8 +155,8 @@ int main() {
     printf("==================================================================================\n");
     printf("   C Benchmark: On-the-Fly Balanced Merge Sort vs std::qsort\n");
     printf("==================================================================================\n");
-    printf("%c-15s | %8s | %10s    | %10s    | %s\n", "Data Type", "Size", "SegmentSort", "QSort", "Verdict");
-    printf("----------------------------------------------------------------------------------\n");
+    printf("%-15s | %8s | %10s    | %10s    | %10s    | %s\n", "Data Type", "Size", "Balanced", "BlockMerge", "QSort", "Verdict");
+    printf("------------------------------------------------------------------------------------------------------------------\n");
 
     // 100k Elements
     run_single_benchmark("Random", fill_random, ARRAY_SIZE_LARGE);

@@ -29,6 +29,7 @@
     // Import Segment Sort implementations
     let segmentSort = null;
     let balancedSegmentMergeSort = null;
+    let blockMergeSegmentSort = null;
 
     if (isNode) {
         try {
@@ -36,6 +37,8 @@
             segmentSort = require('../implementations/javascript/segmentsort_grok.js');
             // Import balanced segment merge sort
             balancedSegmentMergeSort = require('../implementations/javascript/balanced_segment_merge_sort.js');
+            // Import block merge segment sort
+            blockMergeSegmentSort = require('../implementations/javascript/block_merge_segment_sort.js');
         } catch (error) {
             console.error('Error importing SegmentSort implementations:', error.message);
             process.exit(1);
@@ -368,6 +371,12 @@
         balancedSegmentMergeSort: (arr) => {
             const copy = [...arr];
             const result = balancedSegmentMergeSort(copy);
+            return result;
+        },
+
+        blockMergeSegmentSort: (arr) => {
+            const copy = [...arr];
+            const result = blockMergeSegmentSort(copy);
             return result;
         },
 
