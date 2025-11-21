@@ -14,10 +14,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
-// Buffer size for linear merge. 
-// 512 ints = 2KB, fits easily in stack and L1 cache.
-#define BLOCK_MERGE_BUFFER_SIZE 512
+// Buffer size for linear merge.
+// We use sqrt(N) for optimal performance, with min/max bounds for cache efficiency.
+#define BLOCK_MERGE_BUFFER_MIN 256
+#define BLOCK_MERGE_BUFFER_MAX 4096
 
 // Helper: Reverse a slice of the array
 static void bm_reverse_slice(int* arr, size_t start, size_t end) {
@@ -130,7 +132,7 @@ static void bm_merge_with_buffer_right(int* arr, size_t first, size_t middle, si
 }
 
 // Core: Buffered Merge (Hybrid)
-static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last, int* buffer) {
+static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last, int* buffer, size_t buffer_size) {
     if (first >= middle || middle >= last) return;
     
     size_t len1 = middle - first;
@@ -140,11 +142,11 @@ static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last
     if (arr[middle - 1] <= arr[middle]) return;
 
     // Strategy 1: Use buffer if small enough
-    if (len1 <= BLOCK_MERGE_BUFFER_SIZE) {
+    if (len1 <= buffer_size) {
         bm_merge_with_buffer_left(arr, first, middle, last, buffer);
         return;
     }
-    if (len2 <= BLOCK_MERGE_BUFFER_SIZE) {
+    if (len2 <= buffer_size) {
         bm_merge_with_buffer_right(arr, first, middle, last, buffer);
         return;
     }
@@ -158,8 +160,8 @@ static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last
     
     bm_rotate_range(arr, mid1, middle, mid2);
     
-    bm_buffered_merge(arr, first, mid1, newMid, buffer);
-    bm_buffered_merge(arr, newMid + 1, mid2, last, buffer);
+    bm_buffered_merge(arr, first, mid1, newMid, buffer, buffer_size);
+    bm_buffered_merge(arr, newMid + 1, mid2, last, buffer, buffer_size);
 }
 
 /**
@@ -185,9 +187,19 @@ static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last
 void block_merge_segment_sort(int* arr, size_t n) {
     if (n <= 1) return;
 
-    // Stack allocation for buffer (fast, no malloc)
-    // 512 ints = 2KB, fits easily in L1 cache.
-    int buffer[BLOCK_MERGE_BUFFER_SIZE];
+    // Calculate optimal buffer size: sqrt(N) with min/max bounds
+    size_t buffer_size = (size_t)sqrt((double)n);
+    if (buffer_size < BLOCK_MERGE_BUFFER_MIN) buffer_size = BLOCK_MERGE_BUFFER_MIN;
+    if (buffer_size > BLOCK_MERGE_BUFFER_MAX) buffer_size = BLOCK_MERGE_BUFFER_MAX;
+    
+    // Allocate dynamic buffer for optimal performance
+    int* buffer = (int*)malloc(buffer_size * sizeof(int));
+    if (!buffer) {
+        // Fallback to smaller buffer if allocation fails
+        buffer_size = BLOCK_MERGE_BUFFER_MIN;
+        buffer = (int*)malloc(buffer_size * sizeof(int));
+        if (!buffer) return; // Cannot sort without buffer
+    }
     
     // Segment Stack
     // Max depth is log N. For N=2^64, 128 is plenty.
@@ -215,7 +227,7 @@ void block_merge_segment_sort(int* arr, size_t n) {
             }
 
             // Merge top and current
-            bm_buffered_merge(arr, stack[top_idx].start, current_start, current_end, buffer);
+            bm_buffered_merge(arr, stack[top_idx].start, current_start, current_end, buffer, buffer_size);
             
             // Update current segment to include merged part
             current_start = stack[top_idx].start;
@@ -233,11 +245,14 @@ void block_merge_segment_sort(int* arr, size_t n) {
         size_t b_idx = stack_top - 1;
         size_t a_idx = stack_top - 2;
         
-        bm_buffered_merge(arr, stack[a_idx].start, stack[b_idx].start, stack[b_idx].end, buffer);
+        bm_buffered_merge(arr, stack[a_idx].start, stack[b_idx].start, stack[b_idx].end, buffer, buffer_size);
         
         stack[a_idx].end = stack[b_idx].end;
         stack_top--;
     }
+    
+    // Free the dynamic buffer
+    free(buffer);
 }
 
 #endif // BLOCK_MERGE_SEGMENT_SORT_H
