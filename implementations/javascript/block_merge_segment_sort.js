@@ -1,9 +1,10 @@
 /**
- * On-the-Fly Balanced Merge Sort with Block Merge Optimization
+ * Block Merge Segment Sort - JavaScript Implementation
+ * Author: Mario Raúl Carbonell Martínez
+ * Date: November 2025
  * 
- * This version improves upon the original by using a small auxiliary buffer 
- * (O(sqrt N) or fixed size) to perform linear-time merges for smaller segments,
- * significantly reducing the overhead of rotations on random data.
+ * An adaptive sorting algorithm that identifies naturally sorted segments
+ * and merges them on-the-fly using a stack-based balanced approach.
  * 
  * Complexity:
  * - Time: O(N log N) (approaches this as buffer usage increases)

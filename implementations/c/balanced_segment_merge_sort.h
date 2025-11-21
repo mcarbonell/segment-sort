@@ -1,3 +1,13 @@
+/**
+ * On-the-Fly Balanced Merge Sort - C Implementation
+ * Author: Mario Raúl Carbonell Martínez
+ * Date: November 2025
+ * 
+ * An adaptive sorting algorithm that identifies naturally sorted segments
+ * and merges them on-the-fly using a stack-based balanced approach.
+ * Achieves O(log n) space complexity and O(n log n) time complexity.
+ */
+ 
 #ifndef SEGMENT_SORT_H
 #define SEGMENT_SORT_H
 

@@ -1,3 +1,13 @@
+/**
+ * Block Merge Segment Sort - C Implementation
+ * Author: Mario Raúl Carbonell Martínez
+ * Date: November 2025
+ * 
+ * An adaptive sorting algorithm that identifies naturally sorted segments
+ * and merges them on-the-fly using a stack-based balanced approach.
+ * Achieves O(sqrt N) space complexity and O(N log N) time complexity.
+ */
+
 #ifndef BLOCK_MERGE_SEGMENT_SORT_H
 #define BLOCK_MERGE_SEGMENT_SORT_H
 
