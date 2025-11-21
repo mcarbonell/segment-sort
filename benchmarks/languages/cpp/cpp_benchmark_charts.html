@@ -1,0 +1,276 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>C++ Benchmark Results - Block Merge Sort</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }
+            .container { max_width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 30px; }
+            .chart-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); height: 400px; }
+            h1 { text-align: center; color: #1a1a1a; margin-bottom: 40px; }
+            h3 { text-align: center; color: #555; margin-bottom: 20px; }
+            .summary { max_width: 800px; margin: 0 auto 40px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        </style>
+    </head>
+    <body>
+        <h1>Block Merge Segment Sort - C++ Performance Analysis</h1>
+        
+        <div class="summary">
+            <h2>Resumen de Ejecución</h2>
+            <p><strong>Tamaño de Array:</strong> 500,000 elementos</p>
+            <p><strong>Plataforma:</strong> C++ (MinGW g++)</p>
+            <p>Este dashboard muestra el rendimiento comparativo del nuevo algoritmo <em>Block Merge Segment Sort</em> frente a implementaciones estándar.</p>
+        </div>
+
+        <div class="container">
+            
+        <div class="chart-container">
+            <h3>Aleatorio (500,000 Elements)</h3>
+            <canvas id="chart_Aleatorio"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_Aleatorio'), {
+                type: 'bar',
+                data: {
+                    labels: ["std::sort (Introsort)", "Block Merge (New)", "Heap Sort", "Balanced Segment", "QuickSort", "Segment Sort (Original)", "Merge Sort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [13.9232, 24.5445, 36.8752, 55.6603, 61.7027, 72.5286, 83.8898],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: Aleatorio' }
+                    }
+                }
+            });
+        </script>
+        
+        <div class="chart-container">
+            <h3>Ordenado (500,000 Elements)</h3>
+            <canvas id="chart_Ordenado"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_Ordenado'), {
+                type: 'bar',
+                data: {
+                    labels: ["Block Merge (New)", "Balanced Segment", "std::sort (Introsort)", "Segment Sort (Original)", "Heap Sort", "QuickSort", "Merge Sort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [0.33675, 0.5656, 2.45504, 2.88826, 17.811, 51.7105, 74.7669],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: Ordenado' }
+                    }
+                }
+            });
+        </script>
+        
+        <div class="chart-container">
+            <h3>Inverso (500,000 Elements)</h3>
+            <canvas id="chart_Inverso"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_Inverso'), {
+                type: 'bar',
+                data: {
+                    labels: ["std::sort (Introsort)", "Segment Sort (Original)", "Block Merge (New)", "Balanced Segment", "Heap Sort", "QuickSort", "Merge Sort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [2.48026, 3.17099, 6.49778, 16.3332, 20.5179, 53.4414, 72.5969],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: Inverso' }
+                    }
+                }
+            });
+        </script>
+        
+        <div class="chart-container">
+            <h3>K-sorted (500,000 Elements)</h3>
+            <canvas id="chart_K_sorted"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_K_sorted'), {
+                type: 'bar',
+                data: {
+                    labels: ["std::sort (Introsort)", "Block Merge (New)", "Heap Sort", "Balanced Segment", "Segment Sort (Original)", "QuickSort", "Merge Sort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [11.8939, 21.8386, 33.2756, 48.0916, 60.305, 63.2861, 80.1703],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: K-sorted' }
+                    }
+                }
+            });
+        </script>
+        
+        <div class="chart-container">
+            <h3>NearlySorted (500,000 Elements)</h3>
+            <canvas id="chart_NearlySorted"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_NearlySorted'), {
+                type: 'bar',
+                data: {
+                    labels: ["std::sort (Introsort)", "Block Merge (New)", "Balanced Segment", "Heap Sort", "Segment Sort (Original)", "QuickSort", "Merge Sort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [4.80054, 8.89688, 18.174, 20.817, 39.1297, 55.8921, 67.8581],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: NearlySorted' }
+                    }
+                }
+            });
+        </script>
+        
+        <div class="chart-container">
+            <h3>Duplicados (500,000 Elements)</h3>
+            <canvas id="chart_Duplicados"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_Duplicados'), {
+                type: 'bar',
+                data: {
+                    labels: ["std::sort (Introsort)", "Block Merge (New)", "Heap Sort", "Balanced Segment", "Segment Sort (Original)", "Merge Sort", "QuickSort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [7.51855, 18.3555, 22.571, 37.0707, 39.8061, 75.0528, 2297.51],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: Duplicados' }
+                    }
+                }
+            });
+        </script>
+        
+        <div class="chart-container">
+            <h3>Plateau (500,000 Elements)</h3>
+            <canvas id="chart_Plateau"></canvas>
+        </div>
+        <script>
+            new Chart(document.getElementById('chart_Plateau'), {
+                type: 'bar',
+                data: {
+                    labels: ["Block Merge (New)", "Balanced Segment", "std::sort (Introsort)", "Segment Sort (Original)", "Heap Sort", "Merge Sort", "QuickSort"],
+                    datasets: [{
+                        label: 'Time (ms)',
+                        data: [0.46861, 0.80778, 2.30377, 2.90629, 15.8935, 63.6658, 4587.12],
+                        backgroundColor: ["rgba(255, 99, 132, 0.7)", "rgba(54, 162, 235, 0.7)", "rgba(255, 206, 86, 0.7)", "rgba(75, 192, 192, 0.7)", "rgba(153, 102, 255, 0.7)", "rgba(255, 159, 64, 0.7)", "rgba(199, 199, 199, 0.7)"],
+                        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(199, 199, 199, 1)"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Time (ms) - Lower is Better' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Benchmark Results: Plateau' }
+                    }
+                }
+            });
+        </script>
+        
+        </div>
+    </body>
+    </html>
+    

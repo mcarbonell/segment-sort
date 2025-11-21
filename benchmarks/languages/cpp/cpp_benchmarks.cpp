@@ -24,6 +24,7 @@
 
 // Import Segment Sort implementation
 #include "cpp_benchmarks.h"
+#include "../../../implementations/cpp/block_merge_segment_sort.h"
 
 // On-the-Fly Balanced Merge Sort Implementation
 /**
@@ -742,6 +743,11 @@ std::vector<Sorter> getSorters() {
             std::vector<int> copy = arr;
             return onTheFlyBalancedMergeSort(copy);
         }},
+        {"blockMergeSegmentSort", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy);
+            return copy;
+        }},
         {"segmentSortOriginal", segmentSortOriginal},
         {"quickSort", quickSort},
         {"mergeSort", mergeSort},
@@ -936,14 +942,10 @@ void exportResults(const std::vector<BenchmarkResult>& results, const std::vecto
     auto time_t = std::chrono::system_clock::to_time_t(now);
     auto tm = *std::localtime(&time_t);
     
-    std::ostringstream filename;
-    filename << "benchmark_results_cpp_" 
-             << std::put_time(&tm, "%Y-%m-%dT%H-%M-%S")
-             << "_seed" << rng.getSeed() << ".json";
-    
-    std::ofstream file(filename.str());
+    std::string filename = "results.json";
+    std::ofstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "[ERROR] No se pudo crear el archivo de resultados\n";
+        std::cerr << "[ERROR] No se pudo crear el archivo de resultados: " << filename << " Error: " << strerror(errno) << "\n";
         return;
     }
     
@@ -961,6 +963,7 @@ void exportResults(const std::vector<BenchmarkResult>& results, const std::vecto
         file << "    {\n";
         file << "      \"algorithm\": \"" << result.algorithm << "\",\n";
         file << "      \"size\": " << result.size << ",\n";
+        file << "      \"dataType\": \"" << result.dataType << "\",\n";
         file << "      \"repetitions\": " << result.repetitions << ",\n";
         file << "      \"success\": " << (result.success ? "true" : "false") << ",\n";
         
@@ -994,7 +997,7 @@ void exportResults(const std::vector<BenchmarkResult>& results, const std::vecto
     file << "}\n";
     file.close();
     
-    std::cout << "[EXPORT] Resultados exportados a: " << filename.str() << "\n";
+    std::cout << "[EXPORT] Resultados exportados a: " << filename << "\n";
 }
 
 // Command line argument parsing
