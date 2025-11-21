@@ -15,7 +15,7 @@
  * - benchmarks/scripts/merge_sort_reference.js
  * - benchmarks/scripts/heap_sort_reference.js
  * - benchmarks/scripts/builtin_sort_reference.js
- * - implementations/javascript/segmentsort_corrected.js
+ * - implementations/javascript/segmentsort.js
  * - implementations/javascript/balanced_segment_merge_sort.js
  */
 
@@ -34,7 +34,7 @@
     if (isNode) {
         try {
             // Import hybrid SegmentSort implementation (detects when to use segment sort vs builtin)
-            segmentSort = require('../implementations/javascript/segmentsort_grok.js');
+            segmentSort = require('../implementations/javascript/segmentsort.js');
             // Import balanced segment merge sort
             balancedSegmentMergeSort = require('../implementations/javascript/balanced_segment_merge_sort.js');
             // Import block merge segment sort

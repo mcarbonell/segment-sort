@@ -1,22 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Benchmark Results</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <style>
-            body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
-            .container { max_width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px; }
-            .chart-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-            h1 { text-align: center; color: #333; }
-            h3 { text-align: center; color: #666; }
-        </style>
-    </head>
-    <body>
-        <h1>Block Merge Segment Sort - Benchmark Dashboard</h1>
-        <div class="container">
-            
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Sort - Benchmark Visualizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .file-selector {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .file-selector label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .file-selector input[type="file"] {
+            padding: 8px 12px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .file-selector button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .file-selector button:hover {
+            background: #5568d3;
+        }
+
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .info-card p {
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .ranking-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .ranking-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .medal {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>📊 Segment Sort Benchmark Visualizer</h1>
+        <p>Análisis visual de rendimiento de algoritmos de ordenación</p>
+    </div>
+
+    <div class="controls">
+        <div class="file-selector">
+            <label>📁 Cargar archivo JSON:</label>
+            <input type="file" id="fileInput" accept=".json" />
+            <button onclick="loadSampleData()">📊 Cargar Datos de Ejemplo</button>
         </div>
-    </body>
-    </html>
-    
+
+        <div id="infoPanel" class="info-panel" style="display: none;">
+            <div class="info-card">
+                <h4>Plataforma</h4>
+                <p id="infoPlatform">-</p>
+            </div>
+            <div class="info-card">
+                <h4>Timestamp</h4>
+                <p id="infoTimestamp">-</p>
+            </div>
+            <div class="info-card">
+                <h4>Seed</h4>
+                <p id="infoSeed">-</p>
+            </div>
+            <div class="info-card">
+                <h4>Total Tests</h4>
+                <p id="infoTests">-</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorContainer"></div>
+    <div id="loadingContainer"></div>
+    <div class="container" id="chartsContainer"></div>
+
+    <script>
+        let currentData = null;
+
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        processData(data);
+                    } catch (error) {
+                        showError('Error al parsear el archivo JSON: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `<div class="error-message">❌ ${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        function showLoading(show) {
+            const loadingContainer = document.getElementById('loadingContainer');
+            if (show) {
+                loadingContainer.innerHTML = '<div class="loading">⏳ Procesando datos...</div>';
+            } else {
+                loadingContainer.innerHTML = '';
+            }
+        }
+
+        function processData(data) {
+            showLoading(true);
+            currentData = data;
+
+            // Update info panel
+            const infoPanel = document.getElementById('infoPanel');
+            infoPanel.style.display = 'grid';
+
+            document.getElementById('infoPlatform').textContent = data.metadata?.platform || 'Unknown';
+            document.getElementById('infoTimestamp').textContent = data.metadata?.timestamp
+                ? new Date(data.metadata.timestamp * 1000).toLocaleString()
+                : 'Unknown';
+            document.getElementById('infoSeed').textContent = data.metadata?.seed || 'Unknown';
+            document.getElementById('infoTests').textContent = data.results?.length || 0;
+
+            // Process results
+            const results = data.results || [];
+
+            // Group by data type
+            const byDataType = {};
+            const byAlgorithm = {};
+
+            results.forEach(result => {
+                if (!result.success) return;
+
+                const dataType = result.dataType;
+                const algorithm = result.algorithm;
+                const mean = result.statistics?.mean || 0;
+
+                if (!byDataType[dataType]) {
+                    byDataType[dataType] = {};
+                }
+                byDataType[dataType][algorithm] = mean;
+
+                if (!byAlgorithm[algorithm]) {
+                    byAlgorithm[algorithm] = { sum: 0, count: 0, times: [] };
+                }
+                byAlgorithm[algorithm].sum += mean;
+                byAlgorithm[algorithm].count++;
+                byAlgorithm[algorithm].times.push(mean);
+            });
+
+            // Clear container
+            const container = document.getElementById('chartsContainer');
+            container.innerHTML = '';
+
+            // Create charts for each data type
+            Object.keys(byDataType).forEach(dataType => {
+                createDataTypeChart(dataType, byDataType[dataType]);
+            });
+
+            // Create global ranking chart
+            createGlobalRankingChart(byAlgorithm);
+
+            // Create comparison table
+            createComparisonTable(byDataType, byAlgorithm);
+
+            showLoading(false);
+        }
+
+        function createDataTypeChart(dataType, algorithms) {
+            const container = document.getElementById('chartsContainer');
+
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'chart-container';
+            chartDiv.innerHTML = `
+                <h3>📊 ${dataType}</h3>
+                <div class="chart-wrapper">
+                    <canvas id="chart-${dataType.replace(/\s+/g, '-')}"></canvas>
+                </div>
+            `;
+            container.appendChild(chartDiv);
+
+            const ctx = chartDiv.querySelector('canvas').getContext('2d');
+
+            const labels = Object.keys(algorithms);
+            const values = Object.values(algorithms);
+
+            // Sort by value
+            const sorted = labels.map((label, i) => ({ label, value: values[i] }))
+                .sort((a, b) => a.value - b.value);
+
+            const colors = [
+                'rgba(102, 126, 234, 0.8)',
+                'rgba(118, 75, 162, 0.8)',
+                'rgba(237, 100, 166, 0.8)',
+                'rgba(255, 154, 158, 0.8)',
+                'rgba(250, 208, 196, 0.8)',
+                'rgba(155, 193, 188, 0.8)',
+                'rgba(72, 149, 239, 0.8)'
+            ];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sorted.map(s => s.label),
+                    datasets: [{
+                        label: 'Tiempo (ms)',
+                        data: sorted.map(s => s.value),
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.parsed.y.toFixed(3)} ms`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Tiempo (ms)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createGlobalRankingChart(byAlgorithm) {
+            const container = document.getElementById('chartsContainer');
+
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'chart-container';
+            chartDiv.innerHTML = `
+                <h3>🏆 Ranking Global (Promedio)</h3>
+                <div class="chart-wrapper">
+                    <canvas id="chart-global"></canvas>
+                </div>
+            `;
+            container.appendChild(chartDiv);
+
+            const ctx = chartDiv.querySelector('canvas').getContext('2d');
+
+            const algorithms = Object.keys(byAlgorithm).map(alg => ({
+                name: alg,
+                mean: byAlgorithm[alg].sum / byAlgorithm[alg].count
+            })).sort((a, b) => a.mean - b.mean);
+
+            const colors = [
+                'rgba(255, 215, 0, 0.8)',    // Gold
+                'rgba(192, 192, 192, 0.8)',  // Silver
+                'rgba(205, 127, 50, 0.8)',   // Bronze
+                'rgba(102, 126, 234, 0.8)',
+                'rgba(118, 75, 162, 0.8)',
+                'rgba(237, 100, 166, 0.8)',
+                'rgba(155, 193, 188, 0.8)'
+            ];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: algorithms.map(a => a.name),
+                    datasets: [{
+                        label: 'Tiempo Promedio (ms)',
+                        data: algorithms.map(a => a.mean),
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.parsed.x.toFixed(3)} ms`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Tiempo Promedio (ms)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createComparisonTable(byDataType, byAlgorithm) {
+            const container = document.getElementById('chartsContainer');
+
+            const tableDiv = document.createElement('div');
+            tableDiv.className = 'chart-container';
+            tableDiv.style.gridColumn = '1 / -1';
+
+            const algorithms = Object.keys(byAlgorithm).map(alg => ({
+                name: alg,
+                mean: byAlgorithm[alg].sum / byAlgorithm[alg].count
+            })).sort((a, b) => a.mean - b.mean);
+
+            const medals = ['🥇', '🥈', '🥉'];
+
+            let tableHTML = `
+                <h3>📋 Tabla Comparativa Completa</h3>
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Ranking</th>
+                            <th>Algoritmo</th>
+                            <th>Promedio Global (ms)</th>
+                            <th>Mejor Caso</th>
+                            <th>Peor Caso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            algorithms.forEach((alg, index) => {
+                const medal = index < 3 ? `<span class="medal">${medals[index]}</span>` : `${index + 1}.`;
+                const times = byAlgorithm[alg.name].times;
+                const best = Math.min(...times);
+                const worst = Math.max(...times);
+
+                tableHTML += `
+                    <tr>
+                        <td>${medal}</td>
+                        <td><strong>${alg.name}</strong></td>
+                        <td>${alg.mean.toFixed(3)}</td>
+                        <td>${best.toFixed(3)}</td>
+                        <td>${worst.toFixed(3)}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            tableDiv.innerHTML = tableHTML;
+            container.appendChild(tableDiv);
+        }
+
+        function loadSampleData() {
+            // Try to load the most recent benchmark file
+            fetch('.')
+                .then(response => response.text())
+                .then(html => {
+                    // Parse directory listing to find JSON files
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = Array.from(doc.querySelectorAll('a'))
+                        .map(a => a.getAttribute('href'))
+                        .filter(href => href && href.endsWith('.json') && href.includes('benchmark_results'));
+
+                    if (links.length > 0) {
+                        // Load the first JSON file found
+                        return fetch(links[0]);
+                    } else {
+                        throw new Error('No se encontraron archivos de benchmark JSON');
+                    }
+                })
+                .then(response => response.json())
+                .then(data => processData(data))
+                .catch(error => {
+                    showError('No se pudieron cargar datos de ejemplo. Por favor, selecciona un archivo JSON manualmente.');
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+
+</html>

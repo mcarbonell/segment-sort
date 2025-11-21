@@ -2,15 +2,16 @@
 # ===================
 
 # Default targets
-.PHONY: all test clean help js cpp python
+.PHONY: all test clean help js c cpp python
 
 # Language-specific directories
 JS_DIR = languages/javascript
+C_DIR = ../implementations/c
 CPP_DIR = languages/cpp
 PYTHON_DIR = languages/python
 
 # Default target
-all: js cpp python
+all: js c cpp python
 
 # JavaScript benchmarks
 js:
@@ -20,6 +21,23 @@ js:
 js-quick:
 	@echo "⚡ Running quick JavaScript benchmark..."
 	@cd $(JS_DIR) && node js_benchmarks.js 10000 --reps 3
+
+# C benchmarks
+c:
+	@echo "⚙️  Compiling and running C benchmarks..."
+	@gcc -O3 -o c_benchmarks.exe c_benchmarks.c -lm -I..
+	@./c_benchmarks.exe 500000 --reps 5
+
+c-quick:
+	@echo "⚡ Running quick C benchmark..."
+	@gcc -O3 -o c_benchmarks.exe c_benchmarks.c -lm -I..
+	@./c_benchmarks.exe 10000 --reps 3
+
+c-compile:
+	@echo "🔨 Compiling C benchmarks..."
+	@gcc -O3 -o c_benchmarks.exe c_benchmarks.c -lm -I..
+	@echo "✅ Compilation completed"
+
 
 # C++ benchmarks
 cpp:
@@ -116,13 +134,18 @@ help:
 	@echo "📊 Main Targets:"
 	@echo "  all              - Run all language benchmarks"
 	@echo "  js               - Run JavaScript benchmarks (100K elements)"
+	@echo "  c                - Run C benchmarks (500K elements)"
 	@echo "  cpp              - Run C++ benchmarks (100K elements)"
 	@echo "  python           - Run Python benchmarks (100K elements)"
 	@echo ""
 	@echo "⚡ Quick Tests:"
 	@echo "  js-quick         - JavaScript benchmarks with 10K elements"
+	@echo "  c-quick          - C benchmarks with 10K elements"
 	@echo "  python-quick     - Python benchmarks with 10K elements"
 	@echo "  test             - Run quick tests for all languages"
+	@echo ""
+	@echo "🔨 Compilation:"
+	@echo "  c-compile        - Compile C benchmarks only"
 	@echo ""
 	@echo "🔬 Analysis:"
 	@echo "  compare-quicksorts - Compare QuickSort implementations"
