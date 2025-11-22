@@ -362,11 +362,11 @@
 
     // Algorithm definitions
     const sorters = {
-        segmentSort: (arr) => {
-            const copy = [...arr];
-            const result = segmentSort(copy);
-            return result;
-        },
+        // segmentSort: (arr) => {
+        //     const copy = [...arr];
+        //     const result = segmentSort(copy);
+        //     return result;
+        // },
 
         balancedSegmentMergeSort: (arr) => {
             const copy = [...arr];
@@ -380,23 +380,23 @@
             return result;
         },
 
-        optimizedQuickSort: (arr) => {
-            const copy = [...arr];
-            const result = optimizedQuickSort(copy);
-            return result;
-        },
+        // optimizedQuickSort: (arr) => {
+        //     const copy = [...arr];
+        //     const result = optimizedQuickSort(copy);
+        //     return result;
+        // },
 
-        mergeSort: (arr) => {
-            const copy = [...arr];
-            const result = mergeSort(copy);
-            return result;
-        },
+        // mergeSort: (arr) => {
+        //     const copy = [...arr];
+        //     const result = mergeSort(copy);
+        //     return result;
+        // },
 
-        heapSort: (arr) => {
-            const copy = [...arr];
-            const result = heapSort(copy);
-            return result;
-        },
+        // heapSort: (arr) => {
+        //     const copy = [...arr];
+        //     const result = heapSort(copy);
+        //     return result;
+        // },
 
         builtinSort: (arr) => {
             const copy = [...arr];
@@ -508,7 +508,7 @@
 
         // Export results
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const filename = `benchmark_results_clean_${timestamp}_seed${currentSeed}.json`;
+        const filename = `benchmark_results_js_${timestamp}_seed${currentSeed}.json`;
         const results = {
             metadata: {
                 timestamp: new Date().toISOString(),

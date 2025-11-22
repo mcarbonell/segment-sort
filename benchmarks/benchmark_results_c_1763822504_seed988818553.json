@@ -1,0 +1,418 @@
+{
+  "metadata": {
+    "timestamp": "1763822504",
+    "seed": 988818553,
+    "platform": "C",
+    "methodology": "Clean Benchmark with Optimized References v1.0"
+  },
+  "results": [
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 1246.549,
+        "median": 1242.452,
+        "std": 7.078,
+        "min": 1238.576,
+        "max": 1257.731,
+        "p5": 1238.576,
+        "p95": 1257.731
+      },
+      "allTimes": [1238.576, 1257.731, 1242.265, 1242.452, 1251.719]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 540.741,
+        "median": 537.385,
+        "std": 7.322,
+        "min": 533.518,
+        "max": 553.456,
+        "p5": 533.518,
+        "p95": 553.456
+      },
+      "allTimes": [537.385, 553.456, 535.162, 533.518, 544.186]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 404.763,
+        "median": 401.973,
+        "std": 6.692,
+        "min": 397.303,
+        "max": 415.133,
+        "p5": 397.303,
+        "p95": 415.133
+      },
+      "allTimes": [409.846, 397.303, 415.133, 399.561, 401.973]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 2.118,
+        "median": 2.121,
+        "std": 0.016,
+        "min": 2.090,
+        "max": 2.139,
+        "p5": 2.090,
+        "p95": 2.139
+      },
+      "allTimes": [2.122, 2.090, 2.139, 2.121, 2.118]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 2.794,
+        "median": 2.229,
+        "std": 1.150,
+        "min": 2.197,
+        "max": 5.095,
+        "p5": 2.197,
+        "p95": 5.095
+      },
+      "allTimes": [2.197, 2.246, 2.229, 2.205, 5.095]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 117.401,
+        "median": 114.231,
+        "std": 6.413,
+        "min": 112.354,
+        "max": 129.916,
+        "p5": 112.354,
+        "p95": 129.916
+      },
+      "allTimes": [116.704, 114.231, 112.354, 113.799, 129.916]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 417.161,
+        "median": 417.223,
+        "std": 3.800,
+        "min": 412.088,
+        "max": 423.374,
+        "p5": 412.088,
+        "p95": 423.374
+      },
+      "allTimes": [412.088, 418.451, 417.223, 423.374, 414.668]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 180.842,
+        "median": 180.573,
+        "std": 1.771,
+        "min": 178.957,
+        "max": 183.678,
+        "p5": 178.957,
+        "p95": 183.678
+      },
+      "allTimes": [183.678, 179.124, 178.957, 181.876, 180.573]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 128.414,
+        "median": 127.300,
+        "std": 2.445,
+        "min": 125.973,
+        "max": 132.427,
+        "p5": 125.973,
+        "p95": 132.427
+      },
+      "allTimes": [132.427, 126.384, 129.987, 127.300, 125.973]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 1066.276,
+        "median": 1063.909,
+        "std": 6.221,
+        "min": 1061.104,
+        "max": 1078.525,
+        "p5": 1061.104,
+        "p95": 1078.525
+      },
+      "allTimes": [1061.104, 1064.049, 1063.909, 1078.525, 1063.791]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 450.129,
+        "median": 450.148,
+        "std": 2.125,
+        "min": 446.704,
+        "max": 453.392,
+        "p5": 446.704,
+        "p95": 453.392
+      },
+      "allTimes": [450.507, 449.892, 453.392, 446.704, 450.148]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 359.056,
+        "median": 357.471,
+        "std": 2.305,
+        "min": 356.941,
+        "max": 362.469,
+        "p5": 356.941,
+        "p95": 362.469
+      },
+      "allTimes": [362.469, 357.471, 361.186, 357.211, 356.941]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 468.545,
+        "median": 468.138,
+        "std": 9.169,
+        "min": 459.311,
+        "max": 485.362,
+        "p5": 459.311,
+        "p95": 485.362
+      },
+      "allTimes": [459.311, 485.362, 468.589, 468.138, 461.324]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 204.857,
+        "median": 203.218,
+        "std": 2.763,
+        "min": 202.944,
+        "max": 210.164,
+        "p5": 202.944,
+        "p95": 210.164
+      },
+      "allTimes": [202.948, 202.944, 210.164, 205.012, 203.218]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 195.380,
+        "median": 193.553,
+        "std": 2.414,
+        "min": 193.280,
+        "max": 198.904,
+        "p5": 193.280,
+        "p95": 198.904
+      },
+      "allTimes": [197.689, 193.553, 198.904, 193.475, 193.280]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 848.597,
+        "median": 850.724,
+        "std": 4.252,
+        "min": 843.427,
+        "max": 852.762,
+        "p5": 843.427,
+        "p95": 852.762
+      },
+      "allTimes": [843.499, 852.762, 843.427, 852.572, 850.724]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 385.133,
+        "median": 385.533,
+        "std": 1.032,
+        "min": 383.150,
+        "max": 386.134,
+        "p5": 383.150,
+        "p95": 386.134
+      },
+      "allTimes": [385.253, 383.150, 385.533, 385.594, 386.134]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 196.167,
+        "median": 195.055,
+        "std": 2.582,
+        "min": 193.421,
+        "max": 200.182,
+        "p5": 193.421,
+        "p95": 200.182
+      },
+      "allTimes": [200.182, 194.035, 198.143, 193.421, 195.055]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 2.407,
+        "median": 2.295,
+        "std": 0.307,
+        "min": 2.156,
+        "max": 2.983,
+        "p5": 2.156,
+        "p95": 2.983
+      },
+      "allTimes": [2.158, 2.295, 2.156, 2.444, 2.983]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 2.693,
+        "median": 2.416,
+        "std": 0.540,
+        "min": 2.253,
+        "max": 3.689,
+        "p5": 2.253,
+        "p95": 3.689
+      },
+      "allTimes": [2.253, 2.416, 2.274, 3.689, 2.833]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 44.422,
+        "median": 44.428,
+        "std": 0.845,
+        "min": 43.418,
+        "max": 45.925,
+        "p5": 43.418,
+        "p95": 45.925
+      },
+      "allTimes": [45.925, 44.464, 43.875, 43.418, 44.428]
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 2.140,
+        "median": 2.134,
+        "std": 0.047,
+        "min": 2.060,
+        "max": 2.192,
+        "p5": 2.060,
+        "p95": 2.192
+      },
+      "allTimes": [2.192, 2.134, 2.129, 2.184, 2.060]
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 10000000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 2.836,
+        "median": 2.479,
+        "std": 0.644,
+        "min": 2.146,
+        "max": 3.633,
+        "p5": 2.146,
+        "p95": 3.633
+      },
+      "allTimes": [2.146, 3.633, 3.594, 2.479, 2.329]
+    },
+    {
+      "algorithm": "qsort",
+      "size": 10000000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "success": true,
+      "statistics": {
+        "mean": 116.905,
+        "median": 116.916,
+        "std": 0.834,
+        "min": 115.937,
+        "max": 118.292,
+        "p5": 115.937,
+        "p95": 118.292
+      },
+      "allTimes": [118.292, 117.202, 116.916, 115.937, 116.180]
+    }
+  ]
+}
