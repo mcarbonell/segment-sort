@@ -718,6 +718,16 @@ std::vector<Sorter> getSorters() {
             segment_sort::block_merge_segment_sort(copy);
             return copy;
         }},
+        {"blockMergeSegmentSort_x2", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 2.0);
+            return copy;
+        }},
+        {"blockMergeSegmentSort_x4", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 4.0);
+            return copy;
+        }},
         {"segmentSortOriginal", segmentSortOriginal},
 
         {"mergeSort", mergeSort},

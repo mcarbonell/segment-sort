@@ -165,16 +165,24 @@ namespace segment_sort {
      * 
      * @tparam T Type of elements to sort (must be comparable).
      * @param arr Vector to sort.
+     * @param buffer_factor Factor to multiply sqrt(N) for buffer size (default 1.0).
      */
     template<typename T>
-    void block_merge_segment_sort(std::vector<T>& arr) {
+    void block_merge_segment_sort(std::vector<T>& arr, double buffer_factor = 1.0) {
         size_t n = arr.size();
         if (n <= 1) return;
 
-        // Calculate optimal buffer size: sqrt(N) with min/max bounds
-        size_t buffer_size = (size_t)std::sqrt((double)n);
+        // Calculate optimal buffer size: sqrt(N) * factor with min/max bounds
+        size_t base_size = (size_t)std::sqrt((double)n);
+        size_t buffer_size = (size_t)(base_size * buffer_factor);
+        
         if (buffer_size < BLOCK_MERGE_BUFFER_MIN) buffer_size = BLOCK_MERGE_BUFFER_MIN;
-        if (buffer_size > BLOCK_MERGE_BUFFER_MAX) buffer_size = BLOCK_MERGE_BUFFER_MAX;
+        // We allow the buffer to grow beyond MAX if factor > 1, but still keep a sanity limit
+        // or we can just respect the factor. Let's respect the factor but keep a hard cap for safety if needed.
+        // For this experiment, let's relax the MAX bound if factor is high, or scale the MAX bound.
+        // Let's scale the MAX bound by the factor as well.
+        size_t max_limit = (size_t)(BLOCK_MERGE_BUFFER_MAX * buffer_factor);
+        if (buffer_size > max_limit) buffer_size = max_limit;
 
         // Reusable buffer
         std::vector<T> buffer;
