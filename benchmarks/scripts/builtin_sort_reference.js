@@ -25,8 +25,11 @@
  * @returns {number[]} - New sorted array (original unchanged)
  */
 function builtinSort(arr) {
+
+    return arr.sort((a, b) => a - b);
+
     // Create a copy to avoid modifying the original
-    return [...arr].sort((a, b) => a - b);
+    // return [...arr].sort((a, b) => a - b);
 }
 
 /**

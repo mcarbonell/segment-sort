@@ -6,7 +6,22 @@
 #include <limits.h>
 
 #include "balanced_segment_merge_sort.h"
-#include "block_merge_segment_sort.h"
+
+// Include the appropriate BlockMerge version based on compile-time flag
+#if defined(USE_V1)
+    #include "block_merge_segment_sort_1.h"
+    #define VERSION_NAME "v1"
+#elif defined(USE_V2)
+    #include "block_merge_segment_sort.h"
+    #define VERSION_NAME "v2"
+#elif defined(USE_V3)
+    #include "block_merge_segment_sort_3.h"
+    #define VERSION_NAME "v3"
+#else
+    // Default to v2
+    #include "block_merge_segment_sort.h"
+    #define VERSION_NAME "v2"
+#endif
 
 // --- Configuration ---
 #define ARRAY_SIZE_LARGE 100000
@@ -123,7 +138,7 @@ void run_single_benchmark(const char* type_name, void (*fill_func)(int*, size_t)
     }
     double avg_q = (total_time_q / reps) * 1000.0; // ms
 
-    // --- Benchmark Block Merge Segment Sort ---
+    // --- Benchmark Block Merge (selected version) ---
     double total_time_block = 0;
     for (int r = 0; r < reps; r++) {
         memcpy(arr_copy, arr_orig, n * sizeof(int));
@@ -141,9 +156,9 @@ void run_single_benchmark(const char* type_name, void (*fill_func)(int*, size_t)
     printf("%10.3f ms | %10.3f ms | %10.3f ms | ", avg_seg, avg_block, avg_q);
 
     if (avg_block < avg_q) {
-        printf("\033[1;32mx%.2f Faster (Block)\033[0m\n", avg_q / avg_block);
+        printf("\033[1;32mx%.2f Faster\033[0m\n", avg_q / avg_block);
     } else {
-        printf("\033[1;31mx%.2f Slower (Block)\033[0m\n", avg_block / avg_q);
+        printf("\033[1;31mx%.2f Slower\033[0m\n", avg_block / avg_q);
     }
 
     free(arr_orig);
@@ -158,10 +173,11 @@ int main(int argc, char* argv[]) {
 
     printf("\n");
     printf("==================================================================================\n");
-    printf("   C Benchmark: On-the-Fly Balanced Merge Sort vs std::qsort\n");
+    printf("   C Benchmark: BlockMerge %s vs Balanced Merge Sort vs std::qsort\n", VERSION_NAME);
     printf("==================================================================================\n");
-    printf("%-15s | %8s | %10s    | %10s    | %10s    | %s\n", "Data Type", "Size", "Balanced", "BlockMerge", "QSort", "Verdict");
-    printf("------------------------------------------------------------------------------------------------------------------\n");
+    printf("%-15s | %8s | %10s    | %10s    | %10s    | %s\n", 
+           "Data Type", "Size", "Balanced", "BlockMerge", "QSort", "Verdict");
+    printf("----------------------------------------------------------------------------------\n");
 
     run_single_benchmark("Random", fill_random, size);
     run_single_benchmark("Sorted", fill_sorted, size);

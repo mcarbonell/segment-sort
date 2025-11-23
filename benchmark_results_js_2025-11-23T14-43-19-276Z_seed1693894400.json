@@ -1,0 +1,339 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-23T14:43:19.276Z",
+    "seed": 1693894400,
+    "node_version": "v24.10.0",
+    "platform": "win32",
+    "arch": "x64",
+    "repetitions": 10,
+    "methodology": "Clean Benchmark with Optimized References v1.0",
+    "dependencies": {
+      "optimized_quicksort": "./scripts/optimized_quicksort.js",
+      "merge_sort_reference": "./scripts/merge_sort_reference.js",
+      "heap_sort_reference": "./scripts/heap_sort_reference.js",
+      "builtin_sort_reference": "./scripts/builtin_sort_reference.js",
+      "segmentsort_corrected": "../implementations/javascript/segmentsort_corrected.js",
+      "balanced_segment_merge_sort": "../implementations/javascript/balanced_segment_merge_sort.js"
+    }
+  },
+  "results": [
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "Aleatorio",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=4, arr2[2]=102",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "Aleatorio",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=4, arr2[2]=102",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "Aleatorio",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 10: arr[9]=109, arr[10]=11",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "Ordenado",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "Ordenado",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "Ordenado",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 13: arr[12]=109, arr[13]=11",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "Inverso",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 1: arr1[1]=2, arr2[1]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "Inverso",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 1: arr1[1]=2, arr2[1]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "Inverso",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 4: arr[3]=1000, arr[4]=101",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "K-sorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "K-sorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "K-sorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 13: arr[12]=109, arr[13]=11",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "NearlySorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "NearlySorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "NearlySorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 13: arr[12]=109, arr[13]=11",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "Duplicados",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 46: arr1[46]=5, arr2[46]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "Duplicados",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 46: arr1[46]=5, arr2[46]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "Duplicados",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 414: arr[413]=45, arr[414]=5",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "Plateau",
+      "repetitions": 10,
+      "statistics": {
+        "mean": 0.00303,
+        "median": 0.003,
+        "std": 0.00026095976701399773,
+        "p5": 0.0027,
+        "p95": 0.0036,
+        "min": 0.0027,
+        "max": 0.0036
+      },
+      "allTimes": [
+        0.003,
+        0.003,
+        0.0028,
+        0.003,
+        0.0036,
+        0.003,
+        0.003,
+        0.0034,
+        0.0028,
+        0.0027
+      ],
+      "success": true,
+      "referenceValidated": true
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "Plateau",
+      "repetitions": 10,
+      "statistics": {
+        "mean": 0.162,
+        "median": 0.1353,
+        "std": 0.10159043262039985,
+        "p5": 0.0782,
+        "p95": 0.4045,
+        "min": 0.0782,
+        "max": 0.4045
+      },
+      "allTimes": [
+        0.1317,
+        0.4045,
+        0.1389,
+        0.1394,
+        0.2818,
+        0.0782,
+        0.0795,
+        0.2014,
+        0.082,
+        0.0826
+      ],
+      "success": true,
+      "referenceValidated": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "Plateau",
+      "repetitions": 10,
+      "statistics": {
+        "mean": 0.01115,
+        "median": 0.01075,
+        "std": 0.0012475976915656743,
+        "p5": 0.0103,
+        "p95": 0.0147,
+        "min": 0.0103,
+        "max": 0.0147
+      },
+      "allTimes": [
+        0.011,
+        0.0105,
+        0.0103,
+        0.0107,
+        0.0117,
+        0.011,
+        0.0103,
+        0.0108,
+        0.0105,
+        0.0147
+      ],
+      "success": true,
+      "referenceValidated": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 1000,
+      "dataType": "SegmentSorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "blockMergeSegmentSort",
+      "size": 1000,
+      "dataType": "SegmentSorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Reference comparison failed: Different values at index 2: arr1[2]=2, arr2[2]=10",
+      "referenceValidated": false
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 1000,
+      "dataType": "SegmentSorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Validation failed: Array not sorted at index 13: arr[12]=109, arr[13]=11",
+      "referenceValidated": false
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 /**
- * On-the-Fly Balanced Merge Sort - C Implementation
+ * On-the-Fly Balanced Block Merge Sort - C Implementation
  * Author: Mario Raúl Carbonell Martínez
  * Date: November 2025
  * 

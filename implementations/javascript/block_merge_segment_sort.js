@@ -11,7 +11,9 @@
  * - Space: O(sqrt N) or O(1) depending on configuration
  */
 
-const BUFFER_SIZE = 512; // Small fixed buffer to keep memory O(1) effectively
+// Fixed buffer size for optimal performance (fits in L2 cache).
+// 64K elements = 256KB for int arrays
+const BUFFER_SIZE = 65536;
 
 function blockMergeSegmentSort(arr) {
     if (!arr || arr.length <= 1) {
