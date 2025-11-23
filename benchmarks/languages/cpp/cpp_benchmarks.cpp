@@ -539,6 +539,12 @@ std::vector<int> builtinSort(const std::vector<int>& arr) {
     return copy;
 }
 
+std::vector<int> stableSort(const std::vector<int>& arr) {
+    std::vector<int> copy = arr;
+    std::stable_sort(copy.begin(), copy.end());
+    return copy;
+}
+
 // Original SegmentSort implementation using priority queue for k-way merge
 std::vector<int> segmentSortOriginal(const std::vector<int>& arr) {
     int n = arr.size();
@@ -752,7 +758,8 @@ std::vector<Sorter> getSorters() {
         {"quickSort", quickSort},
         {"mergeSort", mergeSort},
         {"heapSort", heapSort},
-        {"builtinSort", builtinSort}
+        {"std::sort", builtinSort},
+        {"std::stable_sort", stableSort}
     };
 }
 

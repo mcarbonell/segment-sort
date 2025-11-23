@@ -108,7 +108,16 @@ void run_benchmark(const string& name, void (*fill_func)(vector<int>&), size_t n
     }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    size_t size = 1000000;
+    if (argc > 1) {
+        try {
+            size = std::stoull(argv[1]);
+        } catch (...) {
+            std::cerr << "Invalid size argument. Using default: " << size << std::endl;
+        }
+    }
+
     cout << "\n==========================================================================================" << endl;
     cout << "   C++ Benchmark: Block Merge Segment Sort vs std::sort vs std::stable_sort" << endl;
     cout << "==========================================================================================" << endl;
@@ -119,10 +128,10 @@ int main() {
          << "Verdict (vs std::sort)" << endl;
     cout << "------------------------------------------------------------------------------------------" << endl;
 
-    run_benchmark("Random", fill_random, 1000000);
-    run_benchmark("Sorted", fill_sorted, 1000000);
-    run_benchmark("Reverse", fill_reverse, 1000000);
-    run_benchmark("Nearly Sorted", fill_nearly_sorted, 1000000);
+    run_benchmark("Random", fill_random, size);
+    run_benchmark("Sorted", fill_sorted, size);
+    run_benchmark("Reverse", fill_reverse, size);
+    run_benchmark("Nearly Sorted", fill_nearly_sorted, size);
 
     cout << "==========================================================================================" << endl;
     return 0;

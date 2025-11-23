@@ -17,8 +17,9 @@
 #include <iterator>
 
 // Buffer size for linear merge.
-// 512 elements fits easily in L1/L2 cache.
-const size_t BLOCK_MERGE_BUFFER_SIZE = 512;
+// We use sqrt(N) for optimal performance, with min/max bounds for cache efficiency.
+const size_t BLOCK_MERGE_BUFFER_MIN = 256;
+const size_t BLOCK_MERGE_BUFFER_MAX = 4096;
 
 namespace segment_sort {
 
@@ -111,7 +112,7 @@ namespace segment_sort {
 
     // Core: Buffered Merge (Hybrid)
     template<typename T>
-    void buffered_merge(std::vector<T>& arr, size_t first, size_t middle, size_t last, std::vector<T>& buffer) {
+    void buffered_merge(std::vector<T>& arr, size_t first, size_t middle, size_t last, std::vector<T>& buffer, size_t buffer_limit) {
         if (first >= middle || middle >= last) return;
 
         size_t len1 = middle - first;
@@ -121,11 +122,11 @@ namespace segment_sort {
         if (arr[middle - 1] <= arr[middle]) return;
 
         // Strategy 1: Use buffer if small enough
-        if (len1 <= BLOCK_MERGE_BUFFER_SIZE) {
+        if (len1 <= buffer_limit) {
             merge_with_buffer_left(arr, first, middle, last, buffer);
             return;
         }
-        if (len2 <= BLOCK_MERGE_BUFFER_SIZE) {
+        if (len2 <= buffer_limit) {
             merge_with_buffer_right(arr, first, middle, last, buffer);
             return;
         }
@@ -141,8 +142,8 @@ namespace segment_sort {
 
         rotate_range(arr, mid1, middle, mid2);
 
-        buffered_merge(arr, first, mid1, newMid, buffer);
-        buffered_merge(arr, newMid + 1, mid2, last, buffer);
+        buffered_merge(arr, first, mid1, newMid, buffer, buffer_limit);
+        buffered_merge(arr, newMid + 1, mid2, last, buffer, buffer_limit);
     }
 
     /**
@@ -170,10 +171,14 @@ namespace segment_sort {
         size_t n = arr.size();
         if (n <= 1) return;
 
+        // Calculate optimal buffer size: sqrt(N) with min/max bounds
+        size_t buffer_size = (size_t)std::sqrt((double)n);
+        if (buffer_size < BLOCK_MERGE_BUFFER_MIN) buffer_size = BLOCK_MERGE_BUFFER_MIN;
+        if (buffer_size > BLOCK_MERGE_BUFFER_MAX) buffer_size = BLOCK_MERGE_BUFFER_MAX;
+
         // Reusable buffer
-        // 512 elements fits easily in L1/L2 cache.
         std::vector<T> buffer;
-        buffer.reserve(BLOCK_MERGE_BUFFER_SIZE);
+        buffer.reserve(buffer_size);
 
         struct Segment { size_t start; size_t end; };
         std::vector<Segment> stack;
@@ -201,7 +206,7 @@ namespace segment_sort {
 
                 // Merge top and current
                 stack.pop_back();
-                buffered_merge(arr, top.start, current_start, current_end, buffer);
+                buffered_merge(arr, top.start, current_start, current_end, buffer, buffer_size);
                 
                 current_start = top.start;
             }
@@ -215,7 +220,7 @@ namespace segment_sort {
             Segment b = stack.back(); stack.pop_back();
             Segment a = stack.back(); stack.pop_back();
 
-            buffered_merge(arr, a.start, b.start, b.end, buffer);
+            buffered_merge(arr, a.start, b.start, b.end, buffer, buffer_size);
             stack.push_back({a.start, b.end});
         }
     }
