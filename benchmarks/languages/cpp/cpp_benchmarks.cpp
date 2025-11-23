@@ -283,8 +283,7 @@ struct BenchmarkResult {
 };
 
 // Forward declarations for sorting algorithms
-void quickSortRecursive(std::vector<int>& arr, int low, int high);
-int partition(std::vector<int>& arr, int low, int high);
+
 
 // Forward declarations for benchmark functions
 std::vector<int> mergeVectors(const std::vector<int>& left, const std::vector<int>& right);
@@ -422,41 +421,6 @@ std::vector<int> generateReverseArray(size_t size, int min_val = 0, int max_val 
 }
 
 // Sorting algorithms implementations
-std::vector<int> quickSort(const std::vector<int>& arr) {
-    std::vector<int> copy = arr;
-    if (copy.size() <= 1) return copy;
-    quickSortRecursive(copy, 0, static_cast<int>(copy.size()) - 1);
-    return copy;
-}
-
-void quickSortRecursive(std::vector<int>& arr, int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSortRecursive(arr, low, pi - 1);
-        quickSortRecursive(arr, pi + 1, high);
-    }
-}
-
-int partition(std::vector<int>& arr, int low, int high) {
-    int mid = (low + high) / 2;
-    if (arr[mid] < arr[low]) std::swap(arr[mid], arr[low]);
-    if (arr[high] < arr[low]) std::swap(arr[high], arr[low]);
-    if (arr[high] < arr[mid]) std::swap(arr[high], arr[mid]);
-    
-    // Place median at end
-    std::swap(arr[mid], arr[high]);
-    int pivot = arr[high];
-    int i = low - 1;
-    
-    for (int j = low; j < high; ++j) {
-        if (arr[j] <= pivot) {
-            ++i;
-            std::swap(arr[i], arr[j]);
-        }
-    }
-    std::swap(arr[i + 1], arr[high]);
-    return i + 1;
-}
 
 std::vector<int> mergeSort(const std::vector<int>& arr) {
     if (arr.size() <= 1) return arr;
@@ -755,7 +719,7 @@ std::vector<Sorter> getSorters() {
             return copy;
         }},
         {"segmentSortOriginal", segmentSortOriginal},
-        {"quickSort", quickSort},
+
         {"mergeSort", mergeSort},
         {"heapSort", heapSort},
         {"std::sort", builtinSort},
