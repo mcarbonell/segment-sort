@@ -150,7 +150,12 @@ void run_single_benchmark(const char* type_name, void (*fill_func)(int*, size_t)
     free(arr_copy);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    size_t size = ARRAY_SIZE_HUGE;
+    if (argc > 1) {
+        size = strtoull(argv[1], NULL, 10);
+    }
+
     printf("\n");
     printf("==================================================================================\n");
     printf("   C Benchmark: On-the-Fly Balanced Merge Sort vs std::qsort\n");
@@ -158,21 +163,11 @@ int main() {
     printf("%-15s | %8s | %10s    | %10s    | %10s    | %s\n", "Data Type", "Size", "Balanced", "BlockMerge", "QSort", "Verdict");
     printf("------------------------------------------------------------------------------------------------------------------\n");
 
-    // 100k Elements
-    run_single_benchmark("Random", fill_random, ARRAY_SIZE_LARGE);
-    run_single_benchmark("Sorted", fill_sorted, ARRAY_SIZE_LARGE);
-    run_single_benchmark("Reverse", fill_reverse, ARRAY_SIZE_LARGE);
-    run_single_benchmark("Nearly Sorted", fill_nearly_sorted, ARRAY_SIZE_LARGE);
-    run_single_benchmark("Duplicates", fill_duplicates, ARRAY_SIZE_LARGE);
-
-    printf("----------------------------------------------------------------------------------\n");
-    
-    // 1M Elements
-    run_single_benchmark("Random", fill_random, ARRAY_SIZE_HUGE);
-    run_single_benchmark("Sorted", fill_sorted, ARRAY_SIZE_HUGE);
-    run_single_benchmark("Reverse", fill_reverse, ARRAY_SIZE_HUGE);
-    run_single_benchmark("Nearly Sorted", fill_nearly_sorted, ARRAY_SIZE_HUGE);
-    run_single_benchmark("Duplicates", fill_duplicates, ARRAY_SIZE_HUGE);
+    run_single_benchmark("Random", fill_random, size);
+    run_single_benchmark("Sorted", fill_sorted, size);
+    run_single_benchmark("Reverse", fill_reverse, size);
+    run_single_benchmark("Nearly Sorted", fill_nearly_sorted, size);
+    run_single_benchmark("Duplicates", fill_duplicates, size);
 
     printf("==================================================================================\n\n");
     

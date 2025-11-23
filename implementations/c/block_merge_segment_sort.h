@@ -16,10 +16,9 @@
 #include <stdio.h>
 #include <math.h>
 
-// Buffer size for linear merge.
-// We use sqrt(N) for optimal performance, with min/max bounds for cache efficiency.
-#define BLOCK_MERGE_BUFFER_MIN 256
-#define BLOCK_MERGE_BUFFER_MAX 4096
+// Fixed buffer size for optimal performance (fits in L2 cache).
+// 64K elements = 256KB for int arrays
+#define BLOCK_MERGE_DEFAULT_BUFFER_SIZE 65536
 
 // Helper: Reverse a slice of the array
 static void bm_reverse_slice(int* arr, size_t start, size_t end) {
@@ -173,13 +172,13 @@ static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last
  * 
  * @details
  * This algorithm detects sorted segments and merges them using a stack-based
- * approach to maintain balance. It uses a small fixed-size buffer (512 elements)
+ * approach to maintain balance. It uses a fixed 64K element buffer (256KB)
  * to perform fast linear-time merges. If segments are too large for the buffer,
  * it falls back to a rotation-based in-place merge (SymMerge) to split them.
  * 
  * Complexity:
  * - Time: O(N log N) worst case, O(N) best case (sorted/reverse).
- * - Space: O(log N) stack + O(1) buffer (2KB).
+ * - Space: O(1) - fixed 256KB buffer + O(log N) stack.
  * 
  * @param arr Pointer to the array to sort.
  * @param n Number of elements in the array.
@@ -187,16 +186,14 @@ static void bm_buffered_merge(int* arr, size_t first, size_t middle, size_t last
 void block_merge_segment_sort(int* arr, size_t n) {
     if (n <= 1) return;
 
-    // Calculate optimal buffer size: sqrt(N) with min/max bounds
-    size_t buffer_size = (size_t)sqrt((double)n);
-    if (buffer_size < BLOCK_MERGE_BUFFER_MIN) buffer_size = BLOCK_MERGE_BUFFER_MIN;
-    if (buffer_size > BLOCK_MERGE_BUFFER_MAX) buffer_size = BLOCK_MERGE_BUFFER_MAX;
+    // Use fixed buffer size for optimal performance
+    size_t buffer_size = BLOCK_MERGE_DEFAULT_BUFFER_SIZE;
     
-    // Allocate dynamic buffer for optimal performance
+    // Allocate dynamic buffer
     int* buffer = (int*)malloc(buffer_size * sizeof(int));
     if (!buffer) {
         // Fallback to smaller buffer if allocation fails
-        buffer_size = BLOCK_MERGE_BUFFER_MIN;
+        buffer_size = 256;
         buffer = (int*)malloc(buffer_size * sizeof(int));
         if (!buffer) return; // Cannot sort without buffer
     }

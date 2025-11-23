@@ -16,10 +16,9 @@
 #include <cmath>
 #include <iterator>
 
-// Buffer size for linear merge.
-// We use sqrt(N) for optimal performance, with min/max bounds for cache efficiency.
-const size_t BLOCK_MERGE_BUFFER_MIN = 256;
-const size_t BLOCK_MERGE_BUFFER_MAX = 4096;
+// Fixed buffer size for optimal performance (fits in L2 cache).
+// 64K elements = 256KB for int arrays, 512KB for double arrays
+const size_t BLOCK_MERGE_DEFAULT_BUFFER_SIZE = 65536;
 
 namespace segment_sort {
 
@@ -155,34 +154,22 @@ namespace segment_sort {
      * 
      * @details
      * This algorithm detects sorted segments and merges them using a stack-based
-     * approach to maintain balance. It uses a small fixed-size buffer (512 elements)
+     * approach to maintain balance. It uses a fixed 64K element buffer (256KB for int)
      * to perform fast linear-time merges. If segments are too large for the buffer,
      * it falls back to a rotation-based in-place merge (SymMerge) to split them.
      * 
      * Complexity:
      * - Time: O(N log N) worst case, O(N) best case (sorted/reverse).
-     * - Space: O(log N) stack + O(1) buffer (2KB).
+     * - Space: O(1) - fixed 256KB buffer + O(log N) stack.
      * 
      * @tparam T Type of elements to sort (must be comparable).
      * @param arr Vector to sort.
-     * @param buffer_factor Factor to multiply sqrt(N) for buffer size (default 1.0).
+     * @param buffer_size Size of the merge buffer (default 65536).
      */
     template<typename T>
-    void block_merge_segment_sort(std::vector<T>& arr, double buffer_factor = 1.0) {
+    void block_merge_segment_sort(std::vector<T>& arr, size_t buffer_size = BLOCK_MERGE_DEFAULT_BUFFER_SIZE) {
         size_t n = arr.size();
         if (n <= 1) return;
-
-        // Calculate optimal buffer size: sqrt(N) * factor with min/max bounds
-        size_t base_size = (size_t)std::sqrt((double)n);
-        size_t buffer_size = (size_t)(base_size * buffer_factor);
-        
-        if (buffer_size < BLOCK_MERGE_BUFFER_MIN) buffer_size = BLOCK_MERGE_BUFFER_MIN;
-        // We allow the buffer to grow beyond MAX if factor > 1, but still keep a sanity limit
-        // or we can just respect the factor. Let's respect the factor but keep a hard cap for safety if needed.
-        // For this experiment, let's relax the MAX bound if factor is high, or scale the MAX bound.
-        // Let's scale the MAX bound by the factor as well.
-        size_t max_limit = (size_t)(BLOCK_MERGE_BUFFER_MAX * buffer_factor);
-        if (buffer_size > max_limit) buffer_size = max_limit;
 
         // Reusable buffer
         std::vector<T> buffer;
