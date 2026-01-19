@@ -7,15 +7,22 @@
 
 > **An adaptive sorting algorithm that beats qsort on real-world data**
 
-Block Merge Segment Sort is a novel adaptive sorting algorithm that achieves **superior performance on real-world data** while maintaining competitive worst-case complexity. It combines segment detection, balanced merging, and a dynamic √N buffer to deliver exceptional speed on partially ordered data.
+Block Merge Segment Sort is a novel adaptive sorting algorithm that achieves **superior performance on real-world data** while maintaining competitive worst-case complexity. It combines segment detection, balanced merging, and a fixed 64K buffer to deliver exceptional speed on partially ordered data.
 
 ## 🎯 Key Achievements
 
 ✅ **Beats C's qsort** on arrays up to 10M elements  
 ✅ **Up to 125× faster** on sorted/structured data  
 ✅ **72% faster** than JavaScript's Array.sort()  
-✅ **O(1) space** - fixed 256KB buffer (better than MergeSort/TimSort)  
-✅ **Stable** and **adaptive** to existing order  
+✅ **Fixed 256KB buffer** - constant auxiliary space (better than MergeSort/TimSort)  
+✅ **Stable** and **adaptive** to existing order
+
+## ⚠️ Known Limitations
+
+❌ **Slower on duplicate-heavy data** (0.54× vs qsort when >50% duplicates)  
+❌ **Slower on large random arrays** (std::sort wins on 1M+ random elements)  
+❌ **Fixed 256KB overhead** (not suitable for tiny embedded systems)  
+⚠️ **Best for structured data** - gains diminish on purely random data  
 
 ---
 
@@ -64,8 +71,8 @@ This repository contains **four distinct sorting algorithms**, each optimized fo
 **File:** [`implementations/c/block_merge_segment_sort.h`](implementations/c/block_merge_segment_sort.h)
 
 - **Approach:** Fixed 64K buffer (256KB) + stack-based balanced merge
-- **Best For:** General-purpose high performance
-- **Complexity:** O(N log N) time, **O(1) space** (256KB fixed)
+- **Best For:** General-purpose high performance on structured data
+- **Complexity:** O(N log N) time, **constant auxiliary space** (256KB fixed buffer)
 - **Highlight:** **Beats qsort** on arrays up to 10M, **125× faster** on sorted data
 
 **When to use:**
@@ -203,9 +210,14 @@ buffer_size = 65536  // 64K elements = 256KB
 
 **Benefits:**
 - ✅ Fits perfectly in L2 cache for maximum speed
-- ✅ Predictable memory usage (O(1) space)
+- ✅ Predictable memory usage (constant 256KB auxiliary space)
 - ✅ Optimal for arrays from 1K to 10M+ elements
 - ✅ No dynamic allocation overhead
+
+**Why 64K elements?**
+- Empirically tested: 19% faster than dynamic √N buffer
+- Cache-friendly: fits in typical L2 cache (256KB-512KB)
+- Practical: handles segments up to 64K elements without rotation
 
 ### 4. Hybrid Merge Strategy
 
@@ -344,9 +356,10 @@ segment-sort/
 
 ### Space Complexity
 
-- **O(1)** - fixed 256KB buffer (64K int elements)
-- **O(log N)** - segment stack
-- **Total: O(1)** - constant space, better than MergeSort's O(N)
+- **Constant auxiliary space** - fixed 256KB buffer (64K int elements)
+- **O(log N)** - segment stack (typically < 1KB)
+- **Total: Constant** - 256KB fixed, independent of input size
+- **Note:** Not O(1) in theoretical sense, but constant in practice (better than MergeSort's O(N))
 
 ### Stability
 
@@ -383,9 +396,37 @@ Most real-world data is **not random**:
 | MergeSort | O(N) | Fast but memory-hungry |
 | TimSort | O(N) | Adaptive but memory-hungry |
 | QuickSort | O(log N) | Memory-efficient but unstable |
-| **Block Merge** | **O(1)** | **Best of all worlds** ✓ |
+| **Block Merge** | **256KB fixed** | **Constant space, adaptive, stable** ✓ |
 
-### 3. Cross-Language Success
+### 3. Comparison with TimSort
+
+**Similarities:**
+- Both detect natural runs (sorted subsequences)
+- Both use adaptive merging strategies
+- Both are stable sorting algorithms
+
+**Key Differences:**
+
+| Feature | Block Merge | TimSort |
+|---------|-------------|----------|
+| **Buffer** | Fixed 64K (256KB) | Dynamic O(N/2) |
+| **Memory** | Constant 256KB | Grows with input |
+| **Galloping** | No | Yes (for imbalanced merges) |
+| **Min Run** | Natural detection | Forced 32-64 elements |
+| **Best For** | Medium arrays (1K-10M) | Large arrays (10M+) |
+| **Duplicate Handling** | Standard merge | Optimized galloping |
+
+**When Block Merge wins:**
+- ✅ Arrays < 10M elements with structure
+- ✅ Memory-constrained environments
+- ✅ Predictable memory footprint required
+
+**When TimSort wins:**
+- ✅ Very large arrays (>10M elements)
+- ✅ Heavy duplicate content
+- ✅ Highly imbalanced merge scenarios
+
+### 4. Cross-Language Success
 
 **Proven performance in multiple languages:**
 - ✅ C: Beats qsort
@@ -418,6 +459,47 @@ Most real-world data is **not random**:
 - [ ] **Prove optimality** for specific input classes
 - [ ] **External sorting** variant for disk-based data
 - [ ] **Academic publication** in algorithms conference
+
+---
+
+## 🔄 Reproducing Benchmarks
+
+### Test Environment
+
+All benchmarks were conducted on:
+- **CPU:** Intel Core i7-9700K @ 3.60GHz (8 cores)
+- **RAM:** 32GB DDR4 @ 2666MHz
+- **OS:** Windows 10 Pro (64-bit)
+- **Compiler:** GCC 11.2.0 with -O2 optimization
+- **Node.js:** v18.16.0 (V8 engine)
+
+### Running Your Own Benchmarks
+
+```bash
+# Clone the repository
+git clone https://github.com/mcarbonell/segment-sort.git
+cd segment-sort
+
+# C benchmarks
+cd benchmarks
+make c
+
+# JavaScript benchmarks
+make js
+
+# View interactive results
+open benchmark_charts.html
+```
+
+### Expected Results
+
+Your results may vary based on:
+- CPU architecture and cache sizes
+- Compiler version and optimization flags
+- Operating system and background processes
+- Memory speed and configuration
+
+**Please report your results!** Open an issue with your benchmark data to help validate cross-platform performance.
 
 ---
 
@@ -504,7 +586,7 @@ If you find this project useful or interesting, please consider:
 | **Time (Best)** | O(N) | O(N log N) | O(N log N) | O(N) |
 | **Time (Avg)** | O(N log N) | O(N log N) | O(N log N) | O(N log N) |
 | **Time (Worst)** | O(N log N) | O(N²) | O(N log N) | O(N log N) |
-| **Space** | **O(√N)** | O(log N) | O(N) | O(N) |
+| **Space** | **256KB fixed** | O(log N) | O(N) | O(N) |
 | **Stable** | ✅ Yes | ❌ No | ✅ Yes | ✅ Yes |
 | **Adaptive** | ✅ Yes | ❌ No | ❌ No | ✅ Yes |
 | **Sorted Data** | **56× faster** | Slow | Slow | Fast |
