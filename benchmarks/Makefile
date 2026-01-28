@@ -6,7 +6,7 @@
 
 # Language-specific directories
 JS_DIR = languages/javascript
-C_DIR = ../implementations/c
+C_DIR = languages/c
 CPP_DIR = languages/cpp
 PYTHON_DIR = languages/python
 
@@ -25,13 +25,13 @@ js-quick:
 # C benchmarks
 c:
 	@echo "⚙️  Compiling and running C benchmarks..."
-	@gcc -O3 -o c_benchmarks.exe c_benchmarks.c -lm -I..
-	@./c_benchmarks.exe 500000 --reps 5
+	@cd $(C_DIR) && gcc -O3 -o c_benchmarks.exe c_benchmarks.c generators.c stats.c utils.c -lm -I../../implementations/c
+	@cd $(C_DIR) && ./c_benchmarks.exe 500000 --reps 5
 
 c-quick:
 	@echo "⚡ Running quick C benchmark..."
-	@gcc -O3 -o c_benchmarks.exe c_benchmarks.c -lm -I..
-	@./c_benchmarks.exe 10000 --reps 3
+	@cd $(C_DIR) && gcc -O3 -o c_benchmarks.exe c_benchmarks.c generators.c stats.c utils.c -lm -I../../implementations/c
+	@cd $(C_DIR) && ./c_benchmarks.exe 10000 --reps 3
 
 c-compile:
 	@echo "🔨 Compiling C benchmarks..."

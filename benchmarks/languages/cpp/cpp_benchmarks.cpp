@@ -713,9 +713,24 @@ std::vector<Sorter> getSorters() {
             std::vector<int> copy = arr;
             return onTheFlyBalancedMergeSort(copy);
         }},
-        {"blockMergeSegmentSort", [](const std::vector<int>& arr) {
+        {"blockMergeSegmentSort DEF", [](const std::vector<int>& arr) {
             std::vector<int> copy = arr;
             segment_sort::block_merge_segment_sort(copy);
+            return copy;
+        }},
+        {"blockMergeSegmentSort_512", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 512);
+            return copy;
+        }},
+        {"blockMergeSegmentSort_1k", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 1024);
+            return copy;
+        }},
+        {"blockMergeSegmentSort_2k", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 2048);
             return copy;
         }},
         {"blockMergeSegmentSort_4k", [](const std::vector<int>& arr) {
@@ -743,6 +758,31 @@ std::vector<Sorter> getSorters() {
             segment_sort::block_merge_segment_sort(copy, 65536);
             return copy;
         }},
+        {"blockMergeSegmentSort_128k", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 131072);
+            return copy;
+        }},        
+         {"blockMergeSegmentSort_256k", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 262144);
+            return copy;
+        }},        
+         {"blockMergeSegmentSort_512k", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 524288);
+            return copy;
+        }},        
+         {"blockMergeSegmentSort_1M", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 1048576);
+            return copy;
+        }},             
+         {"blockMergeSegmentSort_2M", [](const std::vector<int>& arr) {
+            std::vector<int> copy = arr;
+            segment_sort::block_merge_segment_sort(copy, 2097152);
+            return copy;
+        }},             
         {"segmentSortOriginal", segmentSortOriginal},
 
         {"mergeSort", mergeSort},
@@ -898,7 +938,7 @@ void runBenchmarks(const std::vector<size_t>& sizes, int repetitions = 10, bool 
                 std::string status = result.success ? "[OK]" : "[ERROR]";
 
                 if (result.success) {
-                    std::cout << "   " << std::left << std::setw(25) << sorter.name
+                    std::cout << "   " << std::left << std::setw(26) << sorter.name
                               << " | " << std::right << std::setw(6) << size
                               << " | " << std::left << std::setw(18) << testCase.shortName
                               << " | " << std::right << std::setw(9) << std::fixed << std::setprecision(3) << result.statistics.mean

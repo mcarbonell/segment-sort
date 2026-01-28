@@ -1,0 +1,933 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-19T18:05:36.248Z",
+    "seed": 405532160,
+    "node_version": "v24.13.0",
+    "platform": "win32",
+    "arch": "x64",
+    "repetitions": 3,
+    "methodology": "Academic Rigor Benchmarking v1.0"
+  },
+  "results": [
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "Aleatorio",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.7802,
+        "median": 1.662,
+        "std": 0.18047204769714348,
+        "p5": 1.6434,
+        "p95": 2.0352,
+        "min": 1.6434,
+        "max": 2.0352
+      },
+      "allTimes": [
+        2.0352,
+        1.662,
+        1.6434
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "Aleatorio",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.9198666666666666,
+        "median": 0.8509,
+        "std": 0.13848914117078717,
+        "p5": 0.7956,
+        "p95": 1.1131,
+        "min": 0.7956,
+        "max": 1.1131
+      },
+      "allTimes": [
+        0.7956,
+        0.8509,
+        1.1131
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "Aleatorio",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "Aleatorio",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 3.0931666666666664,
+        "median": 3.2631,
+        "std": 0.5383439379760449,
+        "p5": 2.3655,
+        "p95": 3.6509,
+        "min": 2.3655,
+        "max": 3.6509
+      },
+      "allTimes": [
+        3.2631,
+        3.6509,
+        2.3655
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "Aleatorio",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.0436333333333332,
+        "median": 1.0244,
+        "std": 0.032721484617229,
+        "p5": 1.0168,
+        "p95": 1.0897,
+        "min": 1.0168,
+        "max": 1.0897
+      },
+      "allTimes": [
+        1.0244,
+        1.0897,
+        1.0168
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "Aleatorio",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.2509333333333332,
+        "median": 1.1539,
+        "std": 0.14680305022565282,
+        "p5": 1.1405,
+        "p95": 1.4584,
+        "min": 1.1405,
+        "max": 1.4584
+      },
+      "allTimes": [
+        1.4584,
+        1.1539,
+        1.1405
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "Ordenado",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.19483333333333333,
+        "median": 0.1796,
+        "std": 0.028676858653315252,
+        "p5": 0.1699,
+        "p95": 0.235,
+        "min": 0.1699,
+        "max": 0.235
+      },
+      "allTimes": [
+        0.235,
+        0.1699,
+        0.1796
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "Ordenado",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.6828666666666666,
+        "median": 0.7125,
+        "std": 0.10927464888476601,
+        "p5": 0.5367,
+        "p95": 0.7994,
+        "min": 0.5367,
+        "max": 0.7994
+      },
+      "allTimes": [
+        0.7994,
+        0.5367,
+        0.7125
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "Ordenado",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "Ordenado",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.7487000000000001,
+        "median": 1.75,
+        "std": 0.017945658713646246,
+        "p5": 1.7261,
+        "p95": 1.77,
+        "min": 1.7261,
+        "max": 1.77
+      },
+      "allTimes": [
+        1.75,
+        1.7261,
+        1.77
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "Ordenado",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.3149666666666666,
+        "median": 1.3422,
+        "std": 0.09509168674962543,
+        "p5": 1.1873,
+        "p95": 1.4154,
+        "min": 1.1873,
+        "max": 1.4154
+      },
+      "allTimes": [
+        1.1873,
+        1.4154,
+        1.3422
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "Ordenado",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.2265,
+        "median": 0.232,
+        "std": 0.01445429578591315,
+        "p5": 0.2067,
+        "p95": 0.2408,
+        "min": 0.2067,
+        "max": 0.2408
+      },
+      "allTimes": [
+        0.2067,
+        0.2408,
+        0.232
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "Inverso",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.22266666666666668,
+        "median": 0.1671,
+        "std": 0.09426997872540806,
+        "p5": 0.1455,
+        "p95": 0.3554,
+        "min": 0.1455,
+        "max": 0.3554
+      },
+      "allTimes": [
+        0.3554,
+        0.1455,
+        0.1671
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "Inverso",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.0372000000000001,
+        "median": 1.0586,
+        "std": 0.20631282073589127,
+        "p5": 0.7745,
+        "p95": 1.2785,
+        "min": 0.7745,
+        "max": 1.2785
+      },
+      "allTimes": [
+        1.2785,
+        1.0586,
+        0.7745
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "Inverso",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "Inverso",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 2.697866666666666,
+        "median": 2.2268,
+        "std": 0.9241722398389214,
+        "p5": 1.8776,
+        "p95": 3.9892,
+        "min": 1.8776,
+        "max": 3.9892
+      },
+      "allTimes": [
+        2.2268,
+        3.9892,
+        1.8776
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "Inverso",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.0567666666666666,
+        "median": 1.0167,
+        "std": 0.057940275763544324,
+        "p5": 1.0149,
+        "p95": 1.1387,
+        "min": 1.0149,
+        "max": 1.1387
+      },
+      "allTimes": [
+        1.0167,
+        1.1387,
+        1.0149
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "Inverso",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.1412,
+        "median": 0.1227,
+        "std": 0.026873158851662127,
+        "p5": 0.1217,
+        "p95": 0.1792,
+        "min": 0.1217,
+        "max": 0.1792
+      },
+      "allTimes": [
+        0.1792,
+        0.1217,
+        0.1227
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "K-sorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.6516,
+        "median": 1.6429,
+        "std": 0.06377998641162183,
+        "p5": 1.5782,
+        "p95": 1.7337,
+        "min": 1.5782,
+        "max": 1.7337
+      },
+      "allTimes": [
+        1.6429,
+        1.5782,
+        1.7337
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "K-sorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.1301666666666668,
+        "median": 1.0632,
+        "std": 0.1979900727028729,
+        "p5": 0.9282,
+        "p95": 1.3991,
+        "min": 0.9282,
+        "max": 1.3991
+      },
+      "allTimes": [
+        0.9282,
+        1.0632,
+        1.3991
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "K-sorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "K-sorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 2.493866666666667,
+        "median": 2.4857,
+        "std": 0.02203971163352384,
+        "p5": 2.4719,
+        "p95": 2.524,
+        "min": 2.4719,
+        "max": 2.524
+      },
+      "allTimes": [
+        2.4719,
+        2.524,
+        2.4857
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "K-sorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.3024333333333333,
+        "median": 1.2691,
+        "std": 0.06401949355903679,
+        "p5": 1.2462,
+        "p95": 1.392,
+        "min": 1.2462,
+        "max": 1.392
+      },
+      "allTimes": [
+        1.392,
+        1.2462,
+        1.2691
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "K-sorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.4208333333333332,
+        "median": 1.4221,
+        "std": 0.006835853193924643,
+        "p5": 1.4119,
+        "p95": 1.4285,
+        "min": 1.4119,
+        "max": 1.4285
+      },
+      "allTimes": [
+        1.4119,
+        1.4285,
+        1.4221
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "NearlySorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.0551666666666666,
+        "median": 1.0473,
+        "std": 0.012201183913411405,
+        "p5": 1.0458,
+        "p95": 1.0724,
+        "min": 1.0458,
+        "max": 1.0724
+      },
+      "allTimes": [
+        1.0473,
+        1.0724,
+        1.0458
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "NearlySorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.7941666666666666,
+        "median": 0.7289,
+        "std": 0.09378984782776627,
+        "p5": 0.7268,
+        "p95": 0.9268,
+        "min": 0.7268,
+        "max": 0.9268
+      },
+      "allTimes": [
+        0.9268,
+        0.7268,
+        0.7289
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "NearlySorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "NearlySorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 2.1656666666666666,
+        "median": 2.1646,
+        "std": 0.11276070040380015,
+        "p5": 2.0281,
+        "p95": 2.3043,
+        "min": 2.0281,
+        "max": 2.3043
+      },
+      "allTimes": [
+        2.3043,
+        2.1646,
+        2.0281
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "NearlySorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.1801666666666666,
+        "median": 1.1518,
+        "std": 0.09111100677500801,
+        "p5": 1.0855,
+        "p95": 1.3032,
+        "min": 1.0855,
+        "max": 1.3032
+      },
+      "allTimes": [
+        1.1518,
+        1.3032,
+        1.0855
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "NearlySorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.6967333333333333,
+        "median": 0.6754,
+        "std": 0.03746405684860563,
+        "p5": 0.6654,
+        "p95": 0.7494,
+        "min": 0.6654,
+        "max": 0.7494
+      },
+      "allTimes": [
+        0.7494,
+        0.6754,
+        0.6654
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "Duplicados",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.5779333333333334,
+        "median": 1.6007,
+        "std": 0.09072362181678788,
+        "p5": 1.4572,
+        "p95": 1.6759,
+        "min": 1.4572,
+        "max": 1.6759
+      },
+      "allTimes": [
+        1.6759,
+        1.6007,
+        1.4572
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "Duplicados",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 9.090333333333334,
+        "median": 8.7883,
+        "std": 0.47173270915730364,
+        "p5": 8.7262,
+        "p95": 9.7565,
+        "min": 8.7262,
+        "max": 9.7565
+      },
+      "allTimes": [
+        9.7565,
+        8.7262,
+        8.7883
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "Duplicados",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "Duplicados",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 2.4482999999999997,
+        "median": 2.4576,
+        "std": 0.0915616003937604,
+        "p5": 2.3318,
+        "p95": 2.5555,
+        "min": 2.3318,
+        "max": 2.5555
+      },
+      "allTimes": [
+        2.5555,
+        2.3318,
+        2.4576
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "Duplicados",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.1920666666666666,
+        "median": 1.1734,
+        "std": 0.06408105977761464,
+        "p5": 1.1246,
+        "p95": 1.2782,
+        "min": 1.1246,
+        "max": 1.2782
+      },
+      "allTimes": [
+        1.1734,
+        1.2782,
+        1.1246
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "Duplicados",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.9859666666666667,
+        "median": 0.981,
+        "std": 0.008107746638589238,
+        "p5": 0.9795,
+        "p95": 0.9974,
+        "min": 0.9795,
+        "max": 0.9974
+      },
+      "allTimes": [
+        0.9795,
+        0.9974,
+        0.981
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "Plateau",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.19849999999999998,
+        "median": 0.1959,
+        "std": 0.005385783756025361,
+        "p5": 0.1936,
+        "p95": 0.206,
+        "min": 0.1936,
+        "max": 0.206
+      },
+      "allTimes": [
+        0.206,
+        0.1936,
+        0.1959
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "Plateau",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 17.720766666666666,
+        "median": 17.3243,
+        "std": 0.6162292719074255,
+        "p5": 17.2469,
+        "p95": 18.5911,
+        "min": 17.2469,
+        "max": 18.5911
+      },
+      "allTimes": [
+        18.5911,
+        17.2469,
+        17.3243
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "Plateau",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "Plateau",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 2.3766666666666665,
+        "median": 2.0347,
+        "std": 0.6181512562112574,
+        "p5": 1.8509,
+        "p95": 3.2444,
+        "min": 1.8509,
+        "max": 3.2444
+      },
+      "allTimes": [
+        2.0347,
+        3.2444,
+        1.8509
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "Plateau",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.0415999999999999,
+        "median": 1.0287,
+        "std": 0.17362282876012206,
+        "p5": 0.8357,
+        "p95": 1.2604,
+        "min": 0.8357,
+        "max": 1.2604
+      },
+      "allTimes": [
+        0.8357,
+        1.2604,
+        1.0287
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "Plateau",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.09833333333333334,
+        "median": 0.0927,
+        "std": 0.008108568855777747,
+        "p5": 0.0925,
+        "p95": 0.1098,
+        "min": 0.0925,
+        "max": 0.1098
+      },
+      "allTimes": [
+        0.1098,
+        0.0927,
+        0.0925
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 10000,
+      "dataType": "SegmentSorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.1666,
+        "median": 0.1706,
+        "std": 0.01193426439570812,
+        "p5": 0.1504,
+        "p95": 0.1788,
+        "min": 0.1504,
+        "max": 0.1788
+      },
+      "allTimes": [
+        0.1788,
+        0.1706,
+        0.1504
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 10000,
+      "dataType": "SegmentSorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.5942333333333333,
+        "median": 0.5353,
+        "std": 0.08618821780782386,
+        "p5": 0.5313,
+        "p95": 0.7161,
+        "min": 0.5313,
+        "max": 0.7161
+      },
+      "allTimes": [
+        0.5313,
+        0.5353,
+        0.7161
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 10000,
+      "dataType": "SegmentSorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 10000,
+      "dataType": "SegmentSorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.844833333333333,
+        "median": 1.685,
+        "std": 0.2486451063039225,
+        "p5": 1.6535,
+        "p95": 2.196,
+        "min": 1.6535,
+        "max": 2.196
+      },
+      "allTimes": [
+        1.6535,
+        2.196,
+        1.685
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 10000,
+      "dataType": "SegmentSorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 1.3627666666666665,
+        "median": 1.0268,
+        "std": 0.47732232529206314,
+        "p5": 1.0237,
+        "p95": 2.0378,
+        "min": 1.0237,
+        "max": 2.0378
+      },
+      "allTimes": [
+        2.0378,
+        1.0237,
+        1.0268
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 10000,
+      "dataType": "SegmentSorted",
+      "repetitions": 3,
+      "statistics": {
+        "mean": 0.17443333333333333,
+        "median": 0.1747,
+        "std": 0.017310754524925313,
+        "p5": 0.1531,
+        "p95": 0.1955,
+        "min": 0.1531,
+        "max": 0.1955
+      },
+      "allTimes": [
+        0.1955,
+        0.1747,
+        0.1531
+      ],
+      "success": true
+    }
+  ]
+}

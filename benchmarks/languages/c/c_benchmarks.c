@@ -20,227 +20,18 @@
 #include <math.h>
 
 // Include algorithm implementations
-#include "../implementations/c/balanced_segment_merge_sort.h"
-#include "../implementations/c/block_merge_segment_sort.h"
+#include "../../../implementations/c/balanced_segment_merge_sort.h"
+#include "../../../implementations/c/block_merge_segment_sort.h"
+
+// Include modular components
+#include "utils.h"
+#include "generators.h"
+#include "stats.h"
 
 // --- Configuration ---
 #define MAX_REPETITIONS 100
 #define MAX_SIZES 10
 #define MAX_ALGORITHMS 3
-
-// --- LCG Random Number Generator (same as JS) ---
-static unsigned long lcg_seed = 12345;
-
-void set_seed(unsigned long seed) {
-    lcg_seed = seed;
-}
-
-double lcg_random() {
-    const unsigned long a = 1103515245;
-    const unsigned long c = 12345;
-    const unsigned long m = 2147483648UL; // 2^31
-    lcg_seed = (a * lcg_seed + c) % m;
-    return (double)lcg_seed / m;
-}
-
-// --- QSort Comparator ---
-int qsort_cmp(const void *a, const void *b) {
-    int arg1 = *(const int *)a;
-    int arg2 = *(const int *)b;
-    if (arg1 < arg2) return -1;
-    if (arg1 > arg2) return 1;
-    return 0;
-}
-
-// --- Statistics ---
-typedef struct {
-    double mean;
-    double median;
-    double std;
-    double min;
-    double max;
-    double p5;
-    double p95;
-} Statistics;
-
-int compare_doubles(const void *a, const void *b) {
-    double diff = (*(double*)a - *(double*)b);
-    return (diff > 0) - (diff < 0);
-}
-
-Statistics calculate_stats(double* times, int count) {
-    Statistics stats = {0};
-    if (count == 0) return stats;
-    
-    // Sort times for percentiles
-    double* sorted = (double*)malloc(count * sizeof(double));
-    memcpy(sorted, times, count * sizeof(double));
-    qsort(sorted, count, sizeof(double), compare_doubles);
-    
-    // Mean
-    double sum = 0;
-    for (int i = 0; i < count; i++) {
-        sum += times[i];
-    }
-    stats.mean = sum / count;
-    
-    // Median
-    if (count % 2 == 0) {
-        stats.median = (sorted[count/2 - 1] + sorted[count/2]) / 2.0;
-    } else {
-        stats.median = sorted[count/2];
-    }
-    
-    // Standard deviation
-    double variance = 0;
-    for (int i = 0; i < count; i++) {
-        variance += pow(times[i] - stats.mean, 2);
-    }
-    stats.std = sqrt(variance / count);
-    
-    // Min/Max
-    stats.min = sorted[0];
-    stats.max = sorted[count - 1];
-    
-    // Percentiles
-    int p5_idx = (int)(count * 0.05);
-    int p95_idx = (int)(count * 0.95);
-    stats.p5 = sorted[p5_idx];
-    stats.p95 = sorted[p95_idx < count ? p95_idx : count - 1];
-    
-    free(sorted);
-    return stats;
-}
-
-// --- Validation ---
-bool check_sorted(int* arr, size_t n) {
-    for (size_t i = 1; i < n; i++) {
-        if (arr[i-1] > arr[i]) {
-            printf("   [ERROR] Array not sorted at index %zu: arr[%zu]=%d, arr[%zu]=%d\n", 
-                   i, i-1, arr[i-1], i, arr[i]);
-            return false;
-        }
-    }
-    return true;
-}
-
-bool compare_arrays(int* arr1, int* arr2, size_t n) {
-    for (size_t i = 0; i < n; i++) {
-        if (arr1[i] != arr2[i]) {
-            printf("   [ERROR] Arrays differ at index %zu: %d vs %d\n", i, arr1[i], arr2[i]);
-            return false;
-        }
-    }
-    return true;
-}
-
-// --- Data Generators ---
-void generate_random_array(int* arr, size_t n, int min, int max) {
-    for (size_t i = 0; i < n; i++) {
-        arr[i] = min + (int)(lcg_random() * (max - min + 1));
-    }
-}
-
-void generate_sorted_array(int* arr, size_t n, int min, int max) {
-    double step = (double)(max - min) / n;
-    for (size_t i = 0; i < n; i++) {
-        arr[i] = min + (int)(i * step);
-    }
-}
-
-void generate_reverse_array(int* arr, size_t n, int min, int max) {
-    double step = (double)(max - min) / n;
-    for (size_t i = 0; i < n; i++) {
-        arr[i] = max - (int)(i * step);
-    }
-}
-
-void generate_k_sorted_array(int* arr, size_t n, int k, int min, int max) {
-    // First create sorted array
-    generate_sorted_array(arr, n, min, max);
-    
-    // Apply limited swaps
-    for (size_t i = 0; i < n; i++) {
-        size_t max_j = (i + k + 1 < n) ? i + k + 1 : n;
-        size_t j = i + (size_t)(lcg_random() * (max_j - i));
-        if (j < n) {
-            int tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
-        }
-    }
-}
-
-void generate_nearly_sorted_array(int* arr, size_t n, size_t num_swaps, int min, int max) {
-    generate_sorted_array(arr, n, min, max);
-    
-    for (size_t s = 0; s < num_swaps; s++) {
-        size_t i = (size_t)(lcg_random() * n);
-        size_t j = (size_t)(lcg_random() * n);
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-}
-
-void generate_duplicates_array(int* arr, size_t n, int unique_values, int min, int max) {
-    for (size_t i = 0; i < n; i++) {
-        int value_index = (int)(lcg_random() * unique_values);
-        arr[i] = min + (value_index * (max - min) / unique_values);
-    }
-}
-
-void generate_plateau_array(int* arr, size_t n, size_t plateau_size, int min, int max) {
-    size_t num_plateaus = (n + plateau_size - 1) / plateau_size;
-    size_t idx = 0;
-    
-    for (size_t p = 0; p < num_plateaus && idx < n; p++) {
-        int plateau_value = min + (int)(p * (max - min) / num_plateaus);
-        size_t current_plateau_size = (idx + plateau_size <= n) ? plateau_size : n - idx;
-        
-        for (size_t i = 0; i < current_plateau_size; i++) {
-            arr[idx++] = plateau_value;
-        }
-    }
-}
-
-void generate_segment_sorted_array(int* arr, size_t n, size_t segment_size, int min, int max) {
-    size_t num_segments = (n + segment_size - 1) / segment_size;
-    size_t idx = 0;
-    
-    for (size_t s = 0; s < num_segments && idx < n; s++) {
-        size_t segment_start = idx;
-        size_t segment_end = (idx + segment_size <= n) ? idx + segment_size : n;
-        double segment_range = (double)(max - min) / num_segments;
-        int segment_min = min + (int)(s * segment_range);
-        int segment_max = segment_min + (int)segment_range;
-        
-        for (size_t i = segment_start; i < segment_end; i++) {
-            double step = (double)(segment_max - segment_min) / (segment_end - segment_start);
-            arr[i] = segment_min + (int)((i - segment_start) * step);
-        }
-        
-        idx = segment_end;
-    }
-}
-
-// --- High-Resolution Timer ---
-#ifdef _WIN32
-#include <windows.h>
-double get_time_ms() {
-    LARGE_INTEGER frequency, counter;
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&counter);
-    return (double)(counter.QuadPart * 1000.0) / frequency.QuadPart;
-}
-#else
-#include <sys/time.h>
-double get_time_ms() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec * 1000.0 + tv.tv_usec / 1000.0;
-}
-#endif
 
 // --- Benchmark Result Structure ---
 typedef struct {
@@ -331,9 +122,10 @@ void export_results_to_json(BenchmarkResult* results, int result_count, const ch
     fprintf(f, "{\n");
     fprintf(f, "  \"metadata\": {\n");
     fprintf(f, "    \"timestamp\": \"%ld\",\n", (long)time(NULL));
-    fprintf(f, "    \"seed\": %lu,\n", lcg_seed);
+    // Seed is now private to generators, but we can't easily access it here without a getter. 
+    // For now hardcode or ignore printing seed, or add a getter in generators.h
     fprintf(f, "    \"platform\": \"C\",\n");
-    fprintf(f, "    \"methodology\": \"Clean Benchmark with Optimized References v1.0\"\n");
+    fprintf(f, "    \"methodology\": \"Modular C Benchmark v2.0\"\n");
     fprintf(f, "  },\n");
     fprintf(f, "  \"results\": [\n");
     
@@ -572,11 +364,10 @@ int main(int argc, char* argv[]) {
     }
     printf("]\n");
     printf("   - Repeticiones: %d\n", repetitions);
-    printf("   - Seed: %lu\n", lcg_seed);
     printf("   - Validacion: %s\n", validate ? "Habilitada" : "Deshabilitada");
-    printf("   - Version: Clean Benchmark con Referencias Optimizadas\n\n");
+    printf("   - Version: Modular Clean Benchmark v2.0\n\n");
     
-    printf("[*] Iniciando benchmarks C de Segment Sort (Clean Version)\n");
+    printf("[*] Iniciando benchmarks C de Segment Sort (Modular Version)\n");
     printf("[*] Usando implementaciones de referencia optimizadas\n\n");
     
     printf("[*] Configuracion: %d repeticiones, analisis estadistico completo\n", repetitions);
@@ -603,7 +394,7 @@ int main(int argc, char* argv[]) {
             return 1;
         }
         
-        // Test cases (same as JS)
+        // Test cases
         typedef struct {
             const char* name;
             const char* short_name;
@@ -628,15 +419,45 @@ int main(int argc, char* argv[]) {
         for (int tc = 0; tc < num_test_cases; tc++) {
             printf("\n[TEST] %s:\n", test_cases[tc].name);
             
-            // Generate test data
-            if (tc == 0) generate_random_array(arr, n, 0, 1000);
-            else if (tc == 1) generate_sorted_array(arr, n, 0, 1000);
-            else if (tc == 2) generate_reverse_array(arr, n, 0, 1000);
-            else if (tc == 3) generate_k_sorted_array(arr, n, test_cases[tc].param1, 0, 1000);
-            else if (tc == 4) generate_nearly_sorted_array(arr, n, test_cases[tc].param1, 0, 1000);
-            else if (tc == 5) generate_duplicates_array(arr, n, test_cases[tc].param1, 0, 100);
-            else if (tc == 6) generate_plateau_array(arr, n, test_cases[tc].param1, 0, 1000);
-            else if (tc == 7) generate_segment_sorted_array(arr, n, test_cases[tc].param1, 0, 1000);
+            // Try to load dataset first
+            char filename[256];
+            snprintf(filename, sizeof(filename), "../../datasets/%s_%zu.dat", test_cases[tc].short_name, n);
+            // Conversion to lowercase for filename matching if needed, but python script uses:
+            // random, sorted, reverse, ksorted, nearly_sorted, duplicates, plateau
+            // Our short_names are: Aleatorio, Ordenado, Inverso, K-sorted, NearlySorted, Duplicados, Plateau, SegmentSorted
+            // We need to map them.
+            
+            const char* file_suffix = "";
+            if (strcmp(test_cases[tc].short_name, "Aleatorio") == 0) file_suffix = "random";
+            else if (strcmp(test_cases[tc].short_name, "Ordenado") == 0) file_suffix = "sorted";
+            else if (strcmp(test_cases[tc].short_name, "Inverso") == 0) file_suffix = "reverse";
+            else if (strcmp(test_cases[tc].short_name, "K-sorted") == 0) file_suffix = "ksorted";
+            else if (strcmp(test_cases[tc].short_name, "NearlySorted") == 0) file_suffix = "nearly_sorted";
+            else if (strcmp(test_cases[tc].short_name, "Duplicados") == 0) file_suffix = "duplicates";
+            else if (strcmp(test_cases[tc].short_name, "Plateau") == 0) file_suffix = "plateau";
+            else if (strcmp(test_cases[tc].short_name, "SegmentSorted") == 0) file_suffix = "segmentsorted"; // Not generated by script yet?
+            
+            snprintf(filename, sizeof(filename), "../../datasets/%s_%zu.dat", file_suffix, n);
+            
+            int loaded = 0;
+            if (strlen(file_suffix) > 0) {
+                loaded = load_dataset(filename, arr, n);
+            }
+            
+            if (loaded) {
+                 printf("   [INFO] Dataset cargado desde %s\n", filename);
+            } else {
+                 printf("   [INFO] Generando datos dinamicamente...\n");
+                 // Generate test data (Fallback)
+                 if (tc == 0) generate_random_array(arr, n, 0, 1000);
+                 else if (tc == 1) generate_sorted_array(arr, n, 0, 1000);
+                 else if (tc == 2) generate_reverse_array(arr, n, 0, 1000);
+                 else if (tc == 3) generate_k_sorted_array(arr, n, test_cases[tc].param1, 0, 1000);
+                 else if (tc == 4) generate_nearly_sorted_array(arr, n, test_cases[tc].param1, 0, 1000);
+                 else if (tc == 5) generate_duplicates_array(arr, n, test_cases[tc].param1, 0, 100);
+                 else if (tc == 6) generate_plateau_array(arr, n, test_cases[tc].param1, 0, 1000);
+                 else if (tc == 7) generate_segment_sorted_array(arr, n, test_cases[tc].param1, 0, 1000);
+            }
             
             // Generate reference result with qsort
             if (validate) {
@@ -698,13 +519,13 @@ int main(int argc, char* argv[]) {
                 if (result.success) {
                     const char* validation_info = (validate && alg != 2) ? " (vs qsort)" : "";
                     printf("   %-25s | %6zu | %-18s | %9.3f | %11.3f | %8.3f | %s%s\n",
-                        alg_names[alg], n, test_cases[tc].short_name,
-                        result.stats.mean, result.stats.median, result.stats.std,
-                        status, validation_info);
+                         alg_names[alg], n, test_cases[tc].short_name,
+                         result.stats.mean, result.stats.median, result.stats.std,
+                         status, validation_info);
                 } else {
                     printf("   %-25s | %6zu | %-18s | %9s | %11s | %8s | %s\n",
-                        alg_names[alg], n, test_cases[tc].short_name,
-                        "ERROR", "ERROR", "ERROR", status);
+                         alg_names[alg], n, test_cases[tc].short_name,
+                         "ERROR", "ERROR", "ERROR", status);
                     printf("   Error: %s\n", result.error);
                 }
                 
@@ -724,8 +545,7 @@ int main(int argc, char* argv[]) {
     
     // Export to JSON
     char filename[256];
-    snprintf(filename, sizeof(filename), "benchmark_results_c_%ld_seed%lu.json", 
-        (long)time(NULL), lcg_seed);
+    snprintf(filename, sizeof(filename), "benchmark_results_c_%ld.json", (long)time(NULL));
     export_results_to_json(all_results, result_count, filename);
     
     free(all_results);

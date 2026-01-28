@@ -21,9 +21,11 @@
     if (isNode) {
         const fs = require('fs');
         const path = require('path');
-        // segmentSort = require('../implementations/javascript/segmentsort.js');
-        balancedSegmentMergeSort = require('../implementations/javascript/balanced_segment_merge_sort.js');
-        segmentSort = require('../implementations/javascript/segmentsort_corrected.js');
+        // Include algorithm implementations
+        const { blockMergeSegmentSort } = require('../../../implementations/javascript/block_merge_segment_sort.js');
+        const { balancedSegmentMergeSort: bsmSort } = require('../../../implementations/javascript/balanced_segment_merge_sort.js');
+        segmentSort = require('../../../implementations/javascript/segmentsort.js');
+        balancedSegmentMergeSort = bsmSort; // Assign to the existing variable
     } else {
         // En navegador, SegmentSort se cargará dinámicamente
         segmentSort = null;
@@ -532,6 +534,26 @@
         }
     }
 
+
+    // Function to load binary dataset
+    function loadDataset(filename, size) {
+        if (!isNode) return null;
+        try {
+            const fs = require('fs');
+            const path = require('path');
+            const buffer = fs.readFileSync(filename);
+            const arr = [];
+
+            // Read 32-bit little-endian integers
+            for (let i = 0; i < size; i++) {
+                arr.push(buffer.readInt32LE(i * 4));
+            }
+            return arr;
+        } catch (e) {
+            return null;
+        }
+    }
+
     function runBenchmarks(sizes = [100000], repetitions = 10, validateResults = true) {
         console.log('🚀 Iniciando benchmarks JAVASCRIPT de Segment Sort (Metodología Académica)...\n');
         console.log(`📋 Configuración: ${repetitions} repeticiones, análisis estadístico completo\n`);
@@ -545,26 +567,51 @@
             console.log(`\n📊 Probando con arrays de tamaño: ${size}`);
             console.log('-'.repeat(60));
 
-            // Generar datos de prueba con más variedad
-            const randomArray = generateRandomArray(size);
-            const sortedArray = generateSortedArray(size);
-            const reverseArray = generateReverseArray(size);
-            const kSortedArray = generateKSortedArray(size, Math.floor(size * 0.1)); // 10% desalineado
-            const nearlySortedArray = generateNearlySortedArray(size, Math.floor(size * 0.05)); // 5% swaps
-            const duplicatesArray = generateDuplicatesArray(size, 20); // 20 valores únicos
-            const plateauArray = generatePlateauArray(size, Math.floor(size / 10)); // 10 segmentos
-            const segmentSortedArray = generateSegmentSortedArray(size, Math.floor(size / 5)); // 5 segmentos
+            // Mapping for short names to filename suffix
+            const fileSuffixMap = {
+                'Aleatorio': 'random',
+                'Ordenado': 'sorted',
+                'Inverso': 'reverse',
+                'K-sorted': 'ksorted',
+                'NearlySorted': 'nearly_sorted',
+                'Duplicados': 'duplicates',
+                'Plateau': 'plateau',
+                'SegmentSorted': 'segmentsorted'
+            };
 
-            const testCases = [
-                { name: 'Aleatorio', data: randomArray, shortName: 'Aleatorio' },
-                { name: 'Ordenado', data: sortedArray, shortName: 'Ordenado' },
-                { name: 'Inverso', data: reverseArray, shortName: 'Inverso' },
-                { name: 'K-sorted (k=10%)', data: kSortedArray, shortName: 'K-sorted' },
-                { name: 'Nearly Sorted (5% swaps)', data: nearlySortedArray, shortName: 'NearlySorted' },
-                { name: 'Con Duplicados (20 únicos)', data: duplicatesArray, shortName: 'Duplicados' },
-                { name: 'Plateau (10 segmentos)', data: plateauArray, shortName: 'Plateau' },
-                { name: 'Segment Sorted (5 segmentos)', data: segmentSortedArray, shortName: 'SegmentSorted' }
+            const testCasesConfig = [
+                { name: 'Aleatorio', shortName: 'Aleatorio', generator: () => generateRandomArray(size) },
+                { name: 'Ordenado', shortName: 'Ordenado', generator: () => generateSortedArray(size) },
+                { name: 'Inverso', shortName: 'Inverso', generator: () => generateReverseArray(size) },
+                { name: 'K-sorted (k=10%)', shortName: 'K-sorted', generator: () => generateKSortedArray(size, Math.floor(size * 0.1)) },
+                { name: 'Nearly Sorted (5% swaps)', shortName: 'NearlySorted', generator: () => generateNearlySortedArray(size, Math.floor(size * 0.05)) },
+                { name: 'Con Duplicados (20 únicos)', shortName: 'Duplicados', generator: () => generateDuplicatesArray(size, 20) },
+                { name: 'Plateau (10 segmentos)', shortName: 'Plateau', generator: () => generatePlateauArray(size, Math.floor(size / 10)) },
+                { name: 'Segment Sorted (5 segmentos)', shortName: 'SegmentSorted', generator: () => generateSegmentSortedArray(size, Math.floor(size / 5)) }
             ];
+
+            const testCases = [];
+
+            for (const cfg of testCasesConfig) {
+                let data = null;
+                // Try to load dataset
+                const suffix = fileSuffixMap[cfg.shortName];
+                if (suffix && isNode) {
+                    const datasetPath = `../../datasets/${suffix}_${size}.dat`;
+                    data = loadDataset(datasetPath, size);
+                    if (data) {
+                        // console.log(`   [INFO] Dataset cargado: ${datasetPath}`);
+                    }
+                }
+
+                if (!data) {
+                    // Fallback to dynamic generation
+                    // console.log(`   [INFO] Generando datos dinámicamente para ${cfg.name}...`);
+                    data = cfg.generator();
+                }
+
+                testCases.push({ name: cfg.name, data: data, shortName: cfg.shortName });
+            }
 
             for (const testCase of testCases) {
                 console.log(`\n🧪 ${testCase.name}:`);
