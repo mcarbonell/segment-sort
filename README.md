@@ -467,11 +467,11 @@ Most real-world data is **not random**:
 ### Test Environment
 
 All benchmarks were conducted on:
-- **CPU:** Intel Core i7-9700K @ 3.60GHz (8 cores)
-- **RAM:** 32GB DDR4 @ 2666MHz
-- **OS:** Windows 10 Pro (64-bit)
-- **Compiler:** GCC 11.2.0 with -O2 optimization
-- **Node.js:** v18.16.0 (V8 engine)
+- **CPU:** AMD Ryzen 7 8845HS @ 3.80GHz (8 cores)
+- **RAM:** 64GB DDR5 @ 4800 MT/s
+- **OS:** Windows 11 Pro (64-bit)
+- **Compiler:** GCC 15.2.0 with -O2 optimization
+- **Node.js:** v24.13.0 (V8 engine)
 
 ### Running Your Own Benchmarks
 
