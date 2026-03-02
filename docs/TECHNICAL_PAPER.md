@@ -1,4 +1,4 @@
-# Block Merge Segment Sort: An Adaptive O(√N)-Space Sorting Algorithm
+# Block Merge Segment Sort: A Cache-Friendly Adaptive Sorting Algorithm with Fixed-Size Buffer
 
 **Author:** Mario Raúl Carbonell Martínez  
 **Date:** November 2025  
@@ -8,9 +8,9 @@
 
 ## Abstract
 
-We present **Block Merge Segment Sort**, a novel adaptive sorting algorithm that achieves superior performance on real-world data while maintaining competitive worst-case complexity. The algorithm combines three key innovations: (1) on-the-fly detection of naturally sorted segments (runs), (2) a stack-based balanced merge strategy, and (3) a dynamic buffer of size √N for efficient linear-time merging. Our implementation demonstrates significant performance improvements over standard library sorting functions, achieving up to **56× speedup** on sorted data and **2-6% faster** performance on random data for arrays under 2 million elements, while maintaining O(N log N) worst-case time complexity and O(√N) space complexity.
+We present **Block Merge Segment Sort**, an adaptive sorting algorithm that combines established techniques into a practical, cache-friendly configuration. The algorithm integrates three well-known components: (1) on-the-fly detection of naturally sorted segments (runs), (2) a stack-based balanced merge strategy, and (3) a fixed-size buffer (64K elements, 256KB) tuned for L2 cache for efficient linear-time merging. Our implementation demonstrates competitive average-case performance on arrays up to ~1M elements, with up to **56× speedup** on already-sorted data, while using constant auxiliary space (256KB). Performance advantages are strongest on structured data and diminish on larger arrays and random/duplicate-heavy inputs.
 
-**Keywords:** Sorting algorithms, adaptive sorting, segment detection, merge sort, algorithmic optimization
+**Keywords:** Sorting algorithms, adaptive sorting, natural merge sort, segment detection, cache-friendly merging
 
 ---
 
@@ -33,11 +33,11 @@ Traditional comparison-based sorting algorithms treat all input uniformly, achie
 
 This paper presents **Block Merge Segment Sort**, an adaptive sorting algorithm with the following contributions:
 
-1. **Novel hybrid approach** combining segment detection, balanced stack merging, and buffered linear merging
-2. **Dynamic buffer sizing** using √N elements for optimal cache utilization
+1. **Practical hybrid configuration** combining segment detection, balanced stack merging, and buffered linear merging
+2. **Fixed-size buffer** (64K elements) tuned for L2 cache performance
 3. **Comprehensive implementation** in C, JavaScript, and C++ with extensive benchmarking
-4. **Empirical validation** demonstrating superiority over qsort (C standard library) and V8's Array.sort() (JavaScript)
-5. **Practical applicability** with proven performance gains on real-world data patterns
+4. **Empirical evaluation** comparing performance against qsort (C standard library) and V8's Array.sort() (JavaScript) across diverse input patterns
+5. **Practical applicability** with demonstrated performance gains on structured and partially ordered data
 
 ### 1.3 Related Work
 
@@ -48,10 +48,12 @@ This paper presents **Block Merge Segment Sort**, an adaptive sorting algorithm 
 **Adaptive sorting algorithms** like Splaysort and Adaptive Heap Sort have been proposed but often have complex implementations or limited practical adoption.
 
 Our work differs by:
-- Using **O(√N) space** instead of O(N), making it more memory-efficient
-- Achieving **competitive or superior performance** on random data
-- Providing **simpler implementation** suitable for embedded systems
+- Using **constant space** (fixed 256KB buffer) instead of O(N), providing predictable memory usage
+- Achieving **competitive performance** on random data with **superior performance** on structured data
+- Providing a **simpler implementation** compared to TimSort, suitable for embedded systems
 - Demonstrating **cross-language effectiveness** (C, JavaScript, C++)
+
+**Note on prior art:** The individual techniques used in this algorithm are well-established: natural run detection dates to Knuth (1970s), SymMerge was formalized by Kim & Kutzner (2004), and stack-based merge strategies are central to TimSort (Peters, 2002). The contribution of this work is the specific combination and engineering of these techniques with a fixed-size, cache-tuned buffer.
 
 ---
 
@@ -63,7 +65,7 @@ Block Merge Segment Sort operates in three phases:
 
 1. **Segment Detection**: Identify naturally sorted subsequences (runs) in the input
 2. **Balanced Merging**: Merge segments incrementally using a stack-based strategy
-3. **Buffered Merge**: Use a √N-sized buffer for efficient linear-time merging
+3. **Buffered Merge**: Use a fixed-size buffer (64K elements) for efficient linear-time merging
 
 The algorithm processes the array in a single left-to-right pass, detecting segments on-the-fly and merging them immediately to maintain a balanced merge tree.
 
@@ -125,18 +127,17 @@ This ensures the merge tree remains balanced, guaranteeing O(log N) merge depth.
 
 ### 2.4 Buffered Merge Strategy
 
-The key innovation is using a **dynamic buffer of size √N** for efficient merging:
+A key engineering choice is using a **fixed-size buffer** (64K elements, 256KB) for efficient merging:
 
 **Strategy:**
 1. If left segment fits in buffer → copy left to buffer, merge linearly
 2. If right segment fits in buffer → copy right to buffer, merge linearly (backwards)
 3. Otherwise → use SymMerge (rotation-based in-place merge) and recurse
 
-**Buffer Size Calculation:**
+**Buffer Configuration:**
 ```c
-size_t buffer_size = (size_t)sqrt((double)n);
-buffer_size = clamp(buffer_size, MIN_BUFFER, MAX_BUFFER);
-// MIN_BUFFER = 256, MAX_BUFFER = 4096 for cache efficiency
+#define BUFFER_SIZE 65536  // 64K elements = 256KB, tuned for L2 cache
+int buffer[BUFFER_SIZE];   // Fixed allocation, no dynamic sizing needed
 ```
 
 **Linear Merge with Buffer (Left):**
@@ -154,8 +155,8 @@ void merge_with_buffer_left(int* arr, size_t first, size_t mid, size_t last, int
 ```
 
 **Complexity:**
-- **Time:** O(N) for segments fitting in buffer, O(N log N) worst case
-- **Space:** O(√N) for buffer + O(log N) for stack = **O(√N) total**
+- **Time:** O(N) for segments fitting in buffer, O(N log²N) worst case when SymMerge fallback is needed
+- **Space:** O(1) for fixed buffer (256KB) + O(log N) for stack = **O(1) total auxiliary space**
 
 ### 2.5 SymMerge (Rotation-Based Merge)
 
@@ -184,7 +185,7 @@ void symmerge(int* arr, size_t first, size_t mid, size_t last, int* buf, size_t 
 }
 ```
 
-**Complexity:** O(N log N) worst case, but rarely invoked due to buffer.
+**Complexity:** O(N log²N) worst case due to recursive rotations, but rarely invoked in practice since the 64K buffer handles most merge cases.
 
 ---
 
@@ -202,24 +203,25 @@ void symmerge(int* arr, size_t first, size_t mid, size_t last, int* buf, size_t 
 - Each element participates in O(log N) merges
 - Buffered merges are O(N) per level
 
-**Worst Case: O(N log N)**
+**Worst Case: O(N log N)** when all merges fit in buffer; **O(N log²N)** when SymMerge fallback is required
 - Alternating elements (e.g., [1, 3, 2, 4, 3, 5, ...])
 - O(N) segments, each of length 1
 - Balanced merge tree ensures O(log N) depth
-- Total: O(N log N)
+- With 64K buffer, SymMerge fallback is rare for arrays under ~4 billion elements
+- Total: O(N log N) in practice, O(N log²N) theoretical worst case
 
 ### 3.2 Space Complexity
 
-**O(√N) auxiliary space:**
-- Dynamic buffer: √N elements
+**O(1) auxiliary space (constant 256KB):**
+- Fixed buffer: 64K elements (256KB), independent of input size
 - Segment stack: O(log N) entries
-- Total: O(√N) dominant term
+- Total: Θ(1) in practice (256KB fixed)
 
 **Comparison:**
 - MergeSort: O(N)
-- TimSort: O(N)
+- TimSort: O(N/2)
 - QuickSort: O(log N) (stack only)
-- **Block Merge Segment Sort: O(√N)** ✓
+- **Block Merge Segment Sort: O(1) (256KB fixed)** ✓
 
 ### 3.3 Stability
 
@@ -240,7 +242,7 @@ The algorithm is **highly adaptive** to existing order:
 - **Exchanges (E):** Minimum swaps to sort
 
 **Performance:**
-- O(N + R log R) when R runs exist
+- O(N + R log R) when R runs exist (when all merges fit in buffer; O(N log²N) theoretical worst case with SymMerge fallback)
 - O(N) when R = 1 (sorted or reverse)
 - Graceful degradation as disorder increases
 
@@ -252,26 +254,20 @@ The algorithm is **highly adaptive** to existing order:
 
 **Key Features:**
 - Pure C99, zero external dependencies
-- Dynamic buffer allocation with fallback
+- Fixed-size buffer (64K elements = 256KB), tuned for L2 cache
 - Optimized for cache locality
 - Compiler optimizations (-O3)
 
-**Buffer Management:**
+**Buffer Configuration:**
 ```c
+#define BUFFER_SIZE 65536  // Fixed 64K elements = 256KB
+
 void block_merge_segment_sort(int* arr, size_t n) {
-    size_t buffer_size = (size_t)sqrt((double)n);
-    buffer_size = clamp(buffer_size, 256, 4096);
-    
-    int* buffer = (int*)malloc(buffer_size * sizeof(int));
-    if (!buffer) {
-        buffer_size = 256;  // Fallback
-        buffer = (int*)malloc(buffer_size * sizeof(int));
-        if (!buffer) return;  // Cannot sort
-    }
+    int buffer[BUFFER_SIZE];  // Fixed allocation on stack
+    // No dynamic allocation needed - buffer size is constant
+    // regardless of input size
     
     // ... sorting logic ...
-    
-    free(buffer);
 }
 ```
 
@@ -421,21 +417,24 @@ void block_merge_segment_sort(int* arr, size_t n) {
 
 | Metric | TimSort | Block Merge | Winner |
 |--------|---------|-------------|--------|
-| **Space** | O(N) | **O(√N)** | Block ✓ |
+| **Space** | O(N/2) | **O(1) (256KB)** | Block ✓ |
 | **Sorted** | O(N) | O(N) | Tie |
 | **Random** | O(N log N) | O(N log N) | Tie |
 | **Complexity** | High | **Medium** | Block ✓ |
-| **Adoption** | Python, Java | **New** | - |
+| **Adoption** | Python, Java | **New** | TimSort |
 
 **Advantages over TimSort:**
-- **Better space complexity:** √N vs N
+- **More predictable space usage:** constant 256KB vs O(N)
 - **Simpler implementation:** Easier to understand and maintain
 - **Cross-language effectiveness:** Proven in C, JS, C++
 
 **TimSort advantages:**
-- **More mature:** Decades of optimization
-- **Galloping mode:** Optimized for specific patterns
-- **Wide adoption:** Battle-tested in production
+- **More mature:** Over two decades of production hardening in Python and Java
+- **Galloping mode:** Optimized for imbalanced merges and specific patterns
+- **Wide adoption:** Battle-tested, extensively edge-case handled
+- **Better duplicate handling:** Optimized galloping for equal elements
+
+**Important caveat:** TimSort has been battle-tested for over two decades in Python and Java, with sophisticated galloping mode for imbalanced merges and extensive edge-case handling. Block Merge Segment Sort is a newer, simpler approach that trades those refinements for predictable memory usage.
 
 ---
 
@@ -459,7 +458,7 @@ void block_merge_segment_sort(int* arr, size_t n) {
 - Top-K queries on structured data
 
 **4. Embedded Systems**
-- Memory-constrained devices (O(√N) space)
+- Memory-constrained devices (constant 256KB space)
 - Real-time sorting with predictable performance
 - IoT data processing
 
@@ -481,21 +480,17 @@ void block_merge_segment_sort(int* arr, size_t n) {
 **Optimal approach:**
 ```c
 void smart_sort(int* arr, size_t n) {
-    if (n < 2_000_000) {
-        // Block Merge is superior for small-medium arrays
-        block_merge_segment_sort(arr, n);
+    if (n <= 1_000_000) {
+        block_merge_segment_sort(arr, n);  // Competitive for small-medium arrays
     }
     else if (has_structure(arr, n)) {
-        // Block Merge dominates on structured data
-        block_merge_segment_sort(arr, n);
+        block_merge_segment_sort(arr, n);  // Dominates on structured data
     }
     else if (high_duplicate_ratio(arr, n)) {
-        // qsort handles duplicates better
-        qsort(arr, n, sizeof(int), compare);
+        qsort(arr, n, sizeof(int), compare);  // Better with duplicates
     }
     else {
-        // qsort is ~10% better on very large random arrays
-        qsort(arr, n, sizeof(int), compare);
+        qsort(arr, n, sizeof(int), compare);  // Better on large random arrays
     }
 }
 ```
@@ -576,25 +571,25 @@ void smart_sort(int* arr, size_t n) {
 
 ## 8. Conclusion
 
-We have presented **Block Merge Segment Sort**, a novel adaptive sorting algorithm that achieves superior performance on real-world data while maintaining competitive worst-case complexity. Our key contributions include:
+We have presented **Block Merge Segment Sort**, an adaptive sorting algorithm that combines established techniques — natural run detection, stack-based balanced merging, and buffered/SymMerge hybrid merging — into a practical, cache-friendly configuration. Our key contributions include:
 
-1. **Hybrid approach** combining segment detection, balanced merging, and buffered linear merging
-2. **Dynamic √N buffer** for optimal cache utilization and space efficiency
-3. **Empirical validation** showing 2-6% improvement over qsort on average, with up to 56× speedup on structured data
+1. **Practical hybrid configuration** combining segment detection, balanced merging, and buffered linear merging with SymMerge fallback
+2. **Fixed-size buffer** (256KB) for cache-friendly merging with predictable, constant space usage
+3. **Empirical evaluation** showing competitive performance with qsort on average, with up to 56× speedup on structured data
 4. **Cross-language effectiveness** demonstrated in C, JavaScript, and C++
-5. **Practical applicability** with proven performance on real-world data patterns
+5. **Practical applicability** with demonstrated performance gains on structured and partially ordered data
 
 ### 8.1 Key Achievements
 
-✅ **Beats qsort** on arrays < 2M elements (2-6% faster)  
-✅ **Dominates on structured data** (up to 56× faster)  
-✅ **Better space complexity** than MergeSort/TimSort (√N vs N)  
-✅ **Simpler implementation** than TimSort  
+✅ **Competitive with qsort** on arrays ≤1M elements, with advantages on structured data  
+✅ **Dominates on structured data** (up to 56× faster on sorted input)  
+✅ **Constant, predictable space** (256KB) vs MergeSort/TimSort's O(N)  
+✅ **Simpler implementation** than TimSort (though less battle-tested)  
 ✅ **Cross-language portability** (C, JavaScript, C++)  
 
 ### 8.2 Impact
 
-This work demonstrates that **significant improvements over standard library implementations are still possible** through careful algorithm design and implementation. The algorithm is particularly valuable for:
+This work demonstrates that **careful engineering of known sorting techniques can yield practical performance benefits**, particularly on structured data. The algorithm is particularly valuable for:
 
 - **Embedded systems** with memory constraints
 - **Real-time applications** with structured data
@@ -645,33 +640,31 @@ Algorithm: BlockMergeSegmentSort(arr, n)
 Input: Array arr of n elements
 Output: Sorted array arr
 
-1. Calculate buffer_size = sqrt(n)
-2. Clamp buffer_size to [MIN_BUFFER, MAX_BUFFER]
-3. Allocate buffer of size buffer_size
+1. buffer_size = BUFFER_SIZE  // Fixed 64K elements (256KB)
+2. Allocate buffer of size buffer_size
+3. Initialize empty stack
 
-4. Initialize empty stack
+4. i = 0
+5. while i < n:
+6.     end = DetectSegment(arr, i, n)
+7.     current = Segment(i, end)
+8.     i = end
+9.    
+10.    while stack is not empty and stack.top.length < current.length:
+11.        top = stack.pop()
+12.        BufferedMerge(arr, top.start, current.start, current.end, buffer, buffer_size)
+13.        current.start = top.start
+14.    
+15.    stack.push(current)
 
-5. i = 0
-6. while i < n:
-7.     end = DetectSegment(arr, i, n)
-8.     current = Segment(i, end)
-9.     i = end
-10.    
-11.    while stack is not empty and stack.top.length < current.length:
-12.        top = stack.pop()
-13.        BufferedMerge(arr, top.start, current.start, current.end, buffer, buffer_size)
-14.        current.start = top.start
-15.    
-16.    stack.push(current)
+16. while stack.size > 1:
+17.     b = stack.pop()
+18.     a = stack.pop()
+19.     BufferedMerge(arr, a.start, b.start, b.end, buffer, buffer_size)
+20.     a.end = b.end
+21.     stack.push(a)
 
-17. while stack.size > 1:
-18.     b = stack.pop()
-19.     a = stack.pop()
-20.     BufferedMerge(arr, a.start, b.start, b.end, buffer, buffer_size)
-21.     a.end = b.end
-22.     stack.push(a)
-
-23. Free buffer
+22. Free buffer
 
 Algorithm: DetectSegment(arr, start, n)
 1. if start >= n: return start

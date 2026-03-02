@@ -122,8 +122,8 @@ int main()
         cout << x << " ";
     }
     cout << "\n";
-    SegmentSort *ss = new SegmentSort();
-    ss->sort(v);
+    SegmentSort ss;
+    ss.sort(v);
 
     cout << "Vector ordenado: ";
     for (int x : v)

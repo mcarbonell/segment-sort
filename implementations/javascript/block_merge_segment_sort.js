@@ -21,18 +21,18 @@ function blockMergeSegmentSort(arr) {
     }
 
     const n = arr.length;
-    // Create a single reusable buffer
-    // We use a fixed size or sqrt(N), whichever is smaller/appropriate. 
-    // For 1M elements, sqrt(N) = 1000. 512 is a good sweet spot for cache.
-    const buffer = new Array(BUFFER_SIZE);
+    const bufferSize = Math.min(BUFFER_SIZE, n);
+    const buffer = new Array(bufferSize);
 
     const segmentsStack = [];
     let i = 0;
 
     while (i < n) {
-        const seg = detectSegmentIndices(arr, i, n);
+        const seg = detectSegmentEnhanced(arr, i, n);
         let currentStart = seg[0];
         let currentEnd = seg[1];
+        let currentIsFlat = seg[2];
+        let currentFlatVal = seg[3];
         i = currentEnd;
 
         while (segmentsStack.length > 0) {
@@ -45,18 +45,30 @@ function blockMergeSegmentSort(arr) {
             }
 
             segmentsStack.pop();
-            bufferedMerge(arr, top[0], currentStart, currentEnd, buffer);
-            currentStart = top[0];
+
+            if (top[2] && currentIsFlat && top[3] === currentFlatVal) {
+                currentStart = top[0];
+                currentIsFlat = true;
+            } else {
+                bufferedMerge(arr, top[0], currentStart, currentEnd, buffer, bufferSize);
+                currentStart = top[0];
+                currentIsFlat = false;
+            }
         }
 
-        segmentsStack.push([currentStart, currentEnd]);
+        segmentsStack.push([currentStart, currentEnd, currentIsFlat, currentFlatVal]);
     }
 
     while (segmentsStack.length > 1) {
-        const a = segmentsStack.pop();
-        const b = segmentsStack.pop();
-        bufferedMerge(arr, b[0], a[0], a[1], buffer);
-        segmentsStack.push([b[0], a[1]]);
+        const right = segmentsStack.pop();
+        const left = segmentsStack.pop();
+
+        if (left[2] && right[2] && left[3] === right[3]) {
+            segmentsStack.push([left[0], right[1], true, left[3]]);
+        } else {
+            bufferedMerge(arr, left[0], right[0], right[1], buffer, bufferSize);
+            segmentsStack.push([left[0], right[1], false, 0]);
+        }
     }
 
     return arr;
@@ -76,22 +88,31 @@ function reverseSlice(arr, start, end) {
     }
 }
 
-function detectSegmentIndices(arr, start, n) {
-    if (start >= n) return [start, start];
+function detectSegmentEnhanced(arr, start, n) {
+    if (start >= n) return [start, start, false, 0];
 
     let end = start + 1;
-    if (end < n && arr[start] > arr[end]) {
+    if (end >= n) return [start, end, true, arr[start]];
+
+    if (arr[start] === arr[end]) {
+        while (end < n && arr[end] === arr[start]) {
+            end++;
+        }
+        return [start, end, true, arr[start]];
+    }
+
+    if (arr[start] > arr[end]) {
         while (end < n && arr[end - 1] > arr[end]) {
             end++;
         }
         reverseSlice(arr, start, end);
-        return [start, end];
-    } else {
-        while (end < n && arr[end - 1] <= arr[end]) {
-            end++;
-        }
-        return [start, end];
+        return [start, end, false, 0];
     }
+
+    while (end < n && arr[end - 1] <= arr[end]) {
+        end++;
+    }
+    return [start, end, false, 0];
 }
 
 function lowerBound(arr, first, last, value) {
@@ -120,28 +141,24 @@ function rotateRange(arr, first, middle, last) {
  * 1. If min(lenA, lenB) <= buffer.length, use buffer for O(N) merge.
  * 2. Else, use SymMerge (split and recurse).
  */
-function bufferedMerge(arr, first, middle, last, buffer) {
+function bufferedMerge(arr, first, middle, last, buffer, bufferSize) {
     if (first >= middle || middle >= last) return;
 
     const len1 = middle - first;
     const len2 = last - middle;
 
-    // Optimization: Check if already sorted
     if (arr[middle - 1] <= arr[middle]) return;
 
-    // Strategy 1: Merge with buffer if segments are small enough
-    if (len1 <= buffer.length) {
+    if (len1 <= bufferSize) {
         mergeWithBufferLeft(arr, first, middle, last, buffer);
         return;
     }
-    if (len2 <= buffer.length) {
+    if (len2 <= bufferSize) {
         mergeWithBufferRight(arr, first, middle, last, buffer);
         return;
     }
 
-    // Strategy 2: SymMerge (Divide and Conquer)
-    // Split the larger segment
-    const mid1 = Math.floor((first + middle) / 2);
+    const mid1 = first + Math.floor(len1 / 2);
     const value = arr[mid1];
     const mid2 = lowerBound(arr, middle, last, value);
 
@@ -149,9 +166,8 @@ function bufferedMerge(arr, first, middle, last, buffer) {
 
     rotateRange(arr, mid1, middle, mid2);
 
-    // Recurse - eventually segments become small enough for buffer
-    bufferedMerge(arr, first, mid1, newMid, buffer);
-    bufferedMerge(arr, newMid + 1, mid2, last, buffer);
+    bufferedMerge(arr, first, mid1, newMid, buffer, bufferSize);
+    bufferedMerge(arr, newMid + 1, mid2, last, buffer, bufferSize);
 }
 
 // Merge [first, middle) and [middle, last) using buffer for the left part

@@ -39,44 +39,6 @@ def on_the_fly_balanced_merge_sort(arr):
 
     return arr
 
-def merge_two_arrays(left, right):
-    """
-    Merges two sorted arrays into a single sorted array.
-    
-    :param left: The first sorted array.
-    :param right: The second sorted array.
-    :return: The merged and sorted array.
-    """
-    if not left:
-        return right[:]
-    if not right:
-        return left[:]
-    
-    result = []
-    i = 0
-    j = 0
-    
-    # Merge while both arrays have elements
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i])
-            i += 1
-        else:
-            result.append(right[j])
-            j += 1
-    
-    # Add remaining elements from left array
-    while i < len(left):
-        result.append(left[i])
-        i += 1
-    
-    # Add remaining elements from right array
-    while j < len(right):
-        result.append(right[j])
-        j += 1
-    
-    return result
-
 def _reverse_slice(arr, start, end):
     """Reverse arr[start:end] in-place (end exclusive)."""
     i = start

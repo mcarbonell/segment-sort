@@ -5,16 +5,16 @@
 [![Language: C](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
 [![Language: JavaScript](https://img.shields.io/badge/Language-JavaScript-yellow.svg)](https://www.javascript.com/)
 
-> **An adaptive sorting algorithm that beats qsort on real-world data**
+> **A practical, cache-friendly adaptive sorting algorithm for structured data**
 
-Block Merge Segment Sort is a novel adaptive sorting algorithm that achieves **superior performance on real-world data** while maintaining competitive worst-case complexity. It combines segment detection, balanced merging, and a fixed 64K buffer to deliver exceptional speed on partially ordered data.
+Block Merge Segment Sort is an adaptive sorting algorithm that combines well-known techniques — natural run detection, stack-based balanced merging, and a fixed 64K buffer — into a cache-friendly configuration that delivers strong performance on partially ordered data. It draws on ideas from Natural Merge Sort (Knuth), TimSort (Peters, 2002), and SymMerge (Kim & Kutzner, 2004).
 
 ## 🎯 Key Achievements
 
-✅ **Beats C's qsort** on arrays up to 10M elements  
-✅ **Up to 125× faster** on sorted/structured data  
-✅ **72% faster** than JavaScript's Array.sort()  
-✅ **Fixed 256KB buffer** - constant auxiliary space (better than MergeSort/TimSort)  
+✅ **Outperforms C's qsort** on arrays ≤1M elements (average across data patterns)  
+✅ **Up to 125× faster** on already-sorted or structured input  
+✅ **72% faster** than JavaScript's Array.sort() (averaged across all data patterns including sorted/reverse)  
+✅ **Fixed 256KB buffer** — constant, predictable auxiliary space  
 ✅ **Stable** and **adaptive** to existing order
 
 ## ⚠️ Known Limitations
@@ -38,7 +38,7 @@ Block Merge Segment Sort is a novel adaptive sorting algorithm that achieves **s
 | **Random** | 568.20 ms | 603.30 ms | **1.06×** | 🥇 Block |
 | **Duplicates** | 334.30 ms | 179.50 ms | 0.54× | qsort |
 
-**Result: Block Merge wins on all cases except duplicates!** 🎉
+**Result: Block Merge excels on structured data; qsort is stronger on duplicates.**
 
 ### C++ Implementation (1M elements, GCC -O2)
 
@@ -59,7 +59,7 @@ Block Merge Segment Sort is a novel adaptive sorting algorithm that achieves **s
 | **Block Merge** | 44 ms | 0.3 ms | 3.5 ms | 21.6 ms | **17.4 ms** |
 | **Array.sort()** | 78 ms | 0.4 ms | 82 ms | 85 ms | **61.4 ms** |
 
-**Result: Block Merge is 72% faster than V8's builtin sort** 🚀
+**Result: Block Merge averages 72% faster across all data patterns (advantage is largest on structured data)** 🚀
 
 ---
 
@@ -73,7 +73,7 @@ This repository contains **four distinct sorting algorithms**, each optimized fo
 - **Approach:** Fixed 64K buffer (256KB) + stack-based balanced merge
 - **Best For:** General-purpose high performance on structured data
 - **Complexity:** O(N log N) time, **constant auxiliary space** (256KB fixed buffer)
-- **Highlight:** **Beats qsort** on arrays up to 10M, **125× faster** on sorted data
+- **Highlight:** Competitive with qsort, **125× faster** on sorted data
 
 **When to use:**
 - ✅ Any array size (scales to 10M+ elements)
@@ -202,7 +202,7 @@ This ensures O(log N) merge depth, preventing degeneration.
 
 ### 3. Fixed 64K Buffer (256KB)
 
-The key innovation: **optimal fixed buffer size**
+The key engineering choice: **fixed buffer size tuned for L2 cache**
 
 ```c
 buffer_size = 65536  // 64K elements = 256KB
@@ -225,7 +225,7 @@ buffer_size = 65536  // 64K elements = 256KB
 if (segment fits in buffer):
     → Linear merge (O(N), very fast)
 else:
-    → SymMerge (rotation-based, O(N log N))
+    → SymMerge (rotation-based, O(N log²N))
 ```
 
 ---
@@ -242,7 +242,7 @@ else:
 | **10M** | 568.20 ms | 603.30 ms | Block (+6.2%) 🥇 |
 
 **Conclusion:**
-- ✅ **Block Merge wins** consistently on all sizes
+- ✅ **Block Merge wins** at ≤1M elements; qsort has the edge at 5M+ on random data
 - ✅ **Scales linearly** with O(N log N) complexity
 - ✅ **Block Merge dominates** on structured data (any size)
 
@@ -272,11 +272,11 @@ else:
 
 ### Use Block Merge Segment Sort When:
 
-✅ Arrays < 2 million elements  
+✅ Arrays ≤1M elements  
 ✅ Data has any degree of order (logs, timestamps, etc.)  
-✅ Need better space complexity than MergeSort  
+✅ Need more predictable space than MergeSort  
 ✅ Want stable sorting  
-✅ Performance matters  
+✅ Performance on structured data matters  
 
 ### Use qsort/std::sort When:
 
@@ -289,17 +289,17 @@ else:
 
 ```c
 void smart_sort(int* arr, size_t n) {
-    if (n < 2_000_000) {
-        block_merge_segment_sort(arr, n);  // Superior for small-medium
+    if (n <= 1_000_000) {
+        block_merge_segment_sort(arr, n);  // Competitive for small-medium
     }
     else if (has_structure(arr, n)) {
-        block_merge_segment_sort(arr, n);  // Dominates on patterns
+        block_merge_segment_sort(arr, n);  // Dominates on structured data
     }
     else if (high_duplicates(arr, n)) {
         qsort(arr, n, sizeof(int), cmp);   // Better with duplicates
     }
     else {
-        qsort(arr, n, sizeof(int), cmp);   // ~10% better on huge random
+        qsort(arr, n, sizeof(int), cmp);   // Better on large random arrays
     }
 }
 ```
@@ -352,14 +352,14 @@ segment-sort/
 
 - **Best Case:** O(N) - sorted or reverse sorted data
 - **Average Case:** O(N log N) - random data with some structure
-- **Worst Case:** O(N log N) - alternating elements
+- **Worst Case:** O(N log N) when merges fit in buffer; O(N log²N) when SymMerge fallback is required (rare with 64K buffer)
 
 ### Space Complexity
 
 - **Constant auxiliary space** - fixed 256KB buffer (64K int elements)
 - **O(log N)** - segment stack (typically < 1KB)
 - **Total: Constant** - 256KB fixed, independent of input size
-- **Note:** Not O(1) in theoretical sense, but constant in practice (better than MergeSort's O(N))
+- **Note:** Θ(1) auxiliary space in practice (fixed 256KB regardless of input size). More predictable than MergeSort/TimSort's O(N), though QuickSort uses only O(log N).
 
 ### Stability
 
@@ -396,7 +396,7 @@ Most real-world data is **not random**:
 | MergeSort | O(N) | Fast but memory-hungry |
 | TimSort | O(N) | Adaptive but memory-hungry |
 | QuickSort | O(log N) | Memory-efficient but unstable |
-| **Block Merge** | **256KB fixed** | **Constant space, adaptive, stable** ✓ |
+| **Block Merge** | **256KB fixed** | **Predictable space, adaptive, stable** |
 
 ### 3. Comparison with TimSort
 
@@ -426,11 +426,13 @@ Most real-world data is **not random**:
 - ✅ Heavy duplicate content
 - ✅ Highly imbalanced merge scenarios
 
+**Note:** TimSort has over two decades of production hardening in Python and Java, with sophisticated galloping mode for imbalanced merges and extensive edge-case handling. Block Merge Segment Sort is a simpler, newer approach that trades TimSort's refinements for predictable memory usage.
+
 ### 4. Cross-Language Success
 
 **Proven performance in multiple languages:**
-- ✅ C: Beats qsort
-- ✅ JavaScript: Beats Array.sort()
+- ✅ C: Competitive with qsort, excels on structured data
+- ✅ JavaScript: Outperforms Array.sort() on average
 - ✅ C++: Competitive with std::sort
 
 **This validates the algorithmic approach, not just implementation tricks.**
@@ -551,12 +553,13 @@ You are free to:
 
 ## 🎉 Acknowledgments
 
-This algorithm was developed **independently** through original algorithmic reasoning, starting from classical sorting algorithms (QuickSort, MergeSort, HeapSort).
+This algorithm was developed through engineering optimization of classical sorting techniques. While the specific configuration was developed independently, the individual components draw on well-established ideas from Knuth (natural run detection), Peters (TimSort's stack-based merging), and Kim & Kutzner (SymMerge).
 
-**Inspiration:**
-- Classical sorting algorithms (Knuth, Sedgewick)
-- TimSort (Python/Java) - discovered after independent development
-- Modern adaptive sorting research
+**Foundations:**
+- Natural Merge Sort and run detection (Knuth, 1970s)
+- TimSort's stack-based merge strategy (Peters, 2002)
+- SymMerge rotation-based merging (Kim & Kutzner, 2004)
+- Modern adaptive sorting research (Sedgewick, Estivill-Castro)
 
 **Special thanks to:**
 - The open-source community for feedback and testing
@@ -585,15 +588,15 @@ If you find this project useful or interesting, please consider:
 |---------|-------------|-------|-----------|---------|
 | **Time (Best)** | O(N) | O(N log N) | O(N log N) | O(N) |
 | **Time (Avg)** | O(N log N) | O(N log N) | O(N log N) | O(N log N) |
-| **Time (Worst)** | O(N log N) | O(N²) | O(N log N) | O(N log N) |
-| **Space** | **256KB fixed** | O(log N) | O(N) | O(N) |
+| **Time (Worst)** | O(N log²N)* | O(N²) | O(N log N) | O(N log N) |
+| **Space** | **256KB fixed** | O(log N) | O(N) | O(N/2) |
 | **Stable** | ✅ Yes | ❌ No | ✅ Yes | ✅ Yes |
 | **Adaptive** | ✅ Yes | ❌ No | ❌ No | ✅ Yes |
-| **Sorted Data** | **56× faster** | Slow | Slow | Fast |
+| **Sorted Data** | **56× faster** | Slow | Slow | Fast (also adaptive) |
 | **Random Data** | Competitive | Fast | Fast | Fast |
 | **Implementation** | Medium | Simple | Simple | Complex |
 
-**Winner: Block Merge Segment Sort** for most real-world use cases! 🏆
+Block Merge Segment Sort offers a practical balance of adaptivity, stability, and predictable memory usage, particularly for small-to-medium arrays with existing structure.
 
 ---
 

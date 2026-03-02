@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stddef.h>
 
 // Fixed buffer size: 64K elements (256KB for 32-bit ints) matches L2 Cache sweet spot.
 #define BLOCK_MERGE_DEFAULT_BUFFER_SIZE 65536
@@ -68,6 +69,7 @@ static int bm_detect_segment_enhanced(int* arr, size_t start, size_t n, size_t* 
             end++;
         }
         bm_reverse_slice(arr, start, end);
+        *out_end = end;
         return 0; // Not flat
     }
 
@@ -139,11 +141,11 @@ static void bm_merge_with_buffer_right(int* arr, size_t first, size_t middle, si
     // OPTIMIZATION: Memcpy
     memcpy(buffer, &arr[middle], len2 * sizeof(int));
 
-    long i = (long)middle - 1; // left part index
-    long j = (long)len2 - 1;   // buffer index
-    long k = (long)last - 1;   // dest index
+    ptrdiff_t i = (ptrdiff_t)middle - 1; // left part index
+    ptrdiff_t j = (ptrdiff_t)len2 - 1;   // buffer index
+    ptrdiff_t k = (ptrdiff_t)last - 1;   // dest index
 
-    while (i >= (long)first && j >= 0) {
+    while (i >= (ptrdiff_t)first && j >= 0) {
         if (arr[i] > buffer[j]) {
             arr[k--] = arr[i--];
         } else {
