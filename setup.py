@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-Segment Sort Setup Script
-=========================
+Segment Sort Setup Script (DEPRECATED)
+======================================
 
-Script para configurar el entorno de desarrollo y ejecutar tests
-del algoritmo Segment Sort.
+⚠️  Este script está obsoleto. Usa pyproject.toml en su lugar.
+    Para instalar dependencias: pip install -e .
+    Para desarrollo: pip install -e ".[dev]"
+
+Este script se mantiene solo para compatibilidad hacia atrás.
 """
 
 import os

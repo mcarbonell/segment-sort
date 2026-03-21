@@ -152,6 +152,6 @@ function segmentSort(arr) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = segmentSort;
-    module.exports.SegmentSort = SegmentSort;
+    module.exports = SegmentSort;
+    module.exports.segmentSort = segmentSort;
 }
