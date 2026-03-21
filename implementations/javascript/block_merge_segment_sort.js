@@ -167,6 +167,16 @@ function bufferedMerge(arr, first, middle, last, buffer, bufferSize) {
         return;
     }
 
+    // Check for imbalanced merge - use galloping for large size difference
+    const imbalance = Math.max(len1, len2) / Math.min(len1, len2);
+    const hasBufferSpace = len1 + len2 <= buffer.length;
+    
+    if (hasBufferSpace && imbalance >= 10) {
+        // Highly imbalanced merge - use galloping
+        mergeWithGallop(arr, first, middle, last, buffer);
+        return;
+    }
+
     if (len1 <= bufferSize) {
         mergeWithBufferLeft(arr, first, middle, last, buffer);
         return;
@@ -242,6 +252,140 @@ function mergeWithBufferRight(arr, first, middle, last, buffer) {
         arr[k--] = buffer[j--];
     }
     // Remaining elements of left part are already in place
+}
+
+// Galloping mode constants (same as TimSort)
+const MIN_GALLOP = 7;
+const MAX_GALLOP = 64;
+
+// Galloping: find position in target array using exponential search
+function gallopRight(arr, start, end, key) {
+    if (start >= end) return start;
+    
+    // Exponential search
+    let step = 1;
+    let lo = start;
+    
+    while (lo + step < end && arr[lo + step] < key) {
+        lo += step;
+        step <<= 1;
+        if (step > MAX_GALLOP) step = MAX_GALLOP;
+    }
+    
+    // Binary search to refine
+    let hi = Math.min(lo + step, end);
+    while (lo < hi) {
+        const mid = lo + Math.floor((hi - lo) / 2);
+        if (arr[mid] < key) {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+    
+    return lo;
+}
+
+function gallopLeft(arr, start, end, key) {
+    if (start >= end) return start;
+    
+    // Exponential search going left
+    let step = 1;
+    let hi = end - 1;
+    
+    while (hi - step >= start && arr[hi - step] > key) {
+        hi -= step;
+        step <<= 1;
+        if (step > MAX_GALLOP) step = MAX_GALLOP;
+    }
+    
+    // Binary search to refine
+    let lo = Math.max(start, hi - step);
+    while (lo < hi) {
+        const mid = lo + Math.floor((hi - lo) / 2);
+        if (arr[mid] > key) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    
+    return hi;
+}
+
+// Merge with galloping mode for imbalanced merges
+function mergeWithGallop(arr, first, middle, last, buffer) {
+    const len1 = middle - first;
+    const len2 = last - middle;
+    
+    if (len1 <= 0 || len2 <= 0) return;
+    
+    // Ensure left part is smaller (required for galloping efficiency)
+    if (len1 > len2) {
+        // Swap roles - we'll traverse right-to-left
+        [first, middle, last, len1, len2] = [middle, first, last - (middle - first), len2, len1];
+    }
+    
+    let leftIdx = 0;  // index in buffer (copy of left)
+    let rightIdx = middle;  // index in right part
+    let destIdx = first;   // destination
+    
+    let gallopLeftCount = 0;
+    let gallopRightCount = 0;
+    
+    // Copy left part to buffer
+    for (let i = 0; i < len1; i++) {
+        buffer[i] = arr[first + i];
+    }
+    
+    while (leftIdx < len1 && rightIdx < last) {
+        // Galloping check: if we had many from one side, try galloping
+        if (gallopRightCount >= MIN_GALLOP && len1 - leftIdx > MIN_GALLOP) {
+            const gallopPos = gallopRight(arr, rightIdx, last, buffer[leftIdx]);
+            const count = gallopPos - rightIdx;
+            
+            // Copy batch from right
+            for (let i = 0; i < count; i++) {
+                arr[destIdx++] = arr[rightIdx++];
+            }
+            gallopRightCount = 0;
+            gallopLeftCount++;
+            continue;
+        }
+        
+        if (gallopLeftCount >= MIN_GALLOP && leftIdx < len1 - MIN_GALLOP) {
+            // Find position in left (buffer) using gallop
+            const gallopPos = gallopLeft(buffer, leftIdx, len1, arr[rightIdx]);
+            const count = gallopPos - leftIdx;
+            
+            // Copy batch from buffer
+            for (let i = 0; i < count; i++) {
+                arr[destIdx++] = buffer[leftIdx++];
+            }
+            gallopLeftCount = 0;
+            gallopRightCount++;
+            continue;
+        }
+        
+        // Standard merge
+        if (buffer[leftIdx] <= arr[rightIdx]) {
+            arr[destIdx++] = buffer[leftIdx++];
+            gallopLeftCount = 0;
+            gallopRightCount++;
+        } else {
+            arr[destIdx++] = arr[rightIdx++];
+            gallopRightCount = 0;
+            gallopLeftCount++;
+        }
+    }
+    
+    // Copy remaining
+    while (leftIdx < len1) {
+        arr[destIdx++] = buffer[leftIdx++];
+    }
+    while (rightIdx < last) {
+        arr[destIdx++] = arr[rightIdx++];
+    }
 }
 
 // Estimate duplicate ratio in a range using sampling

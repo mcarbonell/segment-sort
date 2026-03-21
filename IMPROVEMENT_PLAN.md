@@ -35,11 +35,12 @@ Roadmap para mejorar, limpiar y publicar el proyecto Block Merge Segment Sort.
 - [x] **3.1** Implementar 3-way partitioning para duplicados
   - [x] Añadir detección de alta cardinalidad de duplicados (estimateDuplicateRatio)
   - [x] Implementar merge con 3-way en código JS (merge3Way)
-  - [ ] Portar a C/C++ (pendiente - validar en JS primero)
-- [ ] **3.2** Añadir galloping mode para merges desbalanceados
-- [ ] **3.3** Tests de rendimiento comparando vs qsort en duplicados (pendiente CPU)
+- [x] **3.2** Añadir galloping mode para merges desbalanceados
+  - [x] Implementado gallopRight(), gallopLeft(), mergeWithGallop()
+  - [x] Activado en merges con imbalance >= 10:1
+- [ ] **3.3** Tests de rendimiento (pendiente - requiere CPU libre)
 
-**Turn 3 completado** - 3-way partitioning implementado en JS
+**Session 3 completada** (turns 3-4)
 
 ---
 
