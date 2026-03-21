@@ -157,25 +157,25 @@ function bufferedMerge(arr, first, middle, last, buffer, bufferSize) {
 
     if (arr[middle - 1] <= arr[middle]) return;
 
-    // Check for high duplicate ratio - use 3-way partitioning
-    const dupRatioLeft = estimateDuplicateRatio(arr, first, middle);
-    const dupRatioRight = estimateDuplicateRatio(arr, middle, last);
-    
-    if (dupRatioLeft > DUPLICATE_RATIO_THRESHOLD && dupRatioRight > DUPLICATE_RATIO_THRESHOLD) {
-        // Both sides have high duplicates - use 3-way merge
-        merge3Way(arr, first, middle, last);
-        return;
-    }
-
-    // Check for imbalanced merge - use galloping for large size difference
-    const imbalance = Math.max(len1, len2) / Math.min(len1, len2);
-    const hasBufferSpace = len1 + len2 <= buffer.length;
-    
-    if (hasBufferSpace && imbalance >= 10) {
-        // Highly imbalanced merge - use galloping
-        mergeWithGallop(arr, first, middle, last, buffer);
-        return;
-    }
+    // NOTE: merge3Way and mergeWithGallop are temporarily disabled due to bugs
+    // TODO: Fix 3-way partitioning and galloping mode implementations
+    // 
+    // // Check for high duplicate ratio - use 3-way partitioning
+    // const dupRatioLeft = estimateDuplicateRatio(arr, first, middle);
+    // const dupRatioRight = estimateDuplicateRatio(arr, middle, last);
+    // 
+    // if (dupRatioLeft > DUPLICATE_RATIO_THRESHOLD && dupRatioRight > DUPLICATE_RATIO_THRESHOLD) {
+    //     merge3Way(arr, first, middle, last);
+    //     return;
+    // }
+    //
+    // // Check for imbalanced merge - use galloping
+    // const imbalance = Math.max(len1, len2) / Math.min(len1, len2);
+    // const hasBufferSpace = len1 + len2 <= buffer.length;
+    // if (hasBufferSpace && imbalance >= 10) {
+    //     mergeWithGallop(arr, first, middle, last, buffer);
+    //     return;
+    // }
 
     if (len1 <= bufferSize) {
         mergeWithBufferLeft(arr, first, middle, last, buffer);
@@ -315,33 +315,40 @@ function gallopLeft(arr, start, end, key) {
 
 // Merge with galloping mode for imbalanced merges
 function mergeWithGallop(arr, first, middle, last, buffer) {
-    const len1 = middle - first;
-    const len2 = last - middle;
+    let len1 = middle - first;
+    let len2 = last - middle;
+    let f = first;
+    let m = middle;
+    let l = last;
     
     if (len1 <= 0 || len2 <= 0) return;
     
     // Ensure left part is smaller (required for galloping efficiency)
     if (len1 > len2) {
         // Swap roles - we'll traverse right-to-left
-        [first, middle, last, len1, len2] = [middle, first, last - (middle - first), len2, len1];
+        [f, m, l, len1, len2] = [m, f, l - (m - f), len2, len1];
+    } else {
+        f = first;
+        m = middle;
+        l = last;
     }
     
     let leftIdx = 0;  // index in buffer (copy of left)
-    let rightIdx = middle;  // index in right part
-    let destIdx = first;   // destination
+    let rightIdx = m;  // index in right part
+    let destIdx = f;   // destination
     
     let gallopLeftCount = 0;
     let gallopRightCount = 0;
     
     // Copy left part to buffer
     for (let i = 0; i < len1; i++) {
-        buffer[i] = arr[first + i];
+        buffer[i] = arr[f + i];
     }
     
-    while (leftIdx < len1 && rightIdx < last) {
+    while (leftIdx < len1 && rightIdx < l) {
         // Galloping check: if we had many from one side, try galloping
         if (gallopRightCount >= MIN_GALLOP && len1 - leftIdx > MIN_GALLOP) {
-            const gallopPos = gallopRight(arr, rightIdx, last, buffer[leftIdx]);
+            const gallopPos = gallopRight(arr, rightIdx, l, buffer[leftIdx]);
             const count = gallopPos - rightIdx;
             
             // Copy batch from right
@@ -383,7 +390,7 @@ function mergeWithGallop(arr, first, middle, last, buffer) {
     while (leftIdx < len1) {
         arr[destIdx++] = buffer[leftIdx++];
     }
-    while (rightIdx < last) {
+    while (rightIdx < l) {
         arr[destIdx++] = arr[rightIdx++];
     }
 }

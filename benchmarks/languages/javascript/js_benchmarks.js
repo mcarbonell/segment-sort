@@ -109,9 +109,11 @@
         }
     }
 
-    // Optimized Quick Sort implementation with median-of-three pivot selection
+    // Quick Sort implementation with median-of-three pivot selection
+    // NOTE: This is a naive recursive implementation for benchmarking comparison.
+    // It may fail with stack overflow on highly unbalanced partitions (e.g., many duplicates).
+    // For production use, implement iterative version or with depth limit + fallback to insertion sort.
     function quickSort(arr, low, high) {
-        // No initial shuffle here; data generation should provide desired distribution
         quickSortRecursive(arr, low, high);
         return arr;
     }
@@ -121,6 +123,19 @@
             const pi = partition(arr, low, high);
             quickSortRecursive(arr, low, pi - 1);
             quickSortRecursive(arr, pi + 1, high);
+        }
+    }
+    
+    // Insertion sort for small subarrays (fallback when recursion depth is high)
+    function insertionSort(arr, low, high) {
+        for (let i = low + 1; i <= high; i++) {
+            const key = arr[i];
+            let j = i - 1;
+            while (j >= low && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
         }
     }
 

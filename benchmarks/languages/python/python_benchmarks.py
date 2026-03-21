@@ -15,7 +15,8 @@ from typing import List, Tuple, Any
 import os
 
 # Add the implementations directory to the Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+sys.path.insert(0, project_root)
 
 # Import Segment Sort implementation
 from implementations.python.balanced_segment_merge_sort import on_the_fly_balanced_merge_sort
@@ -145,7 +146,12 @@ def generate_reverse_array(size, min_val=0, max_val=1000):
 
 # Sorting algorithms implementations
 def quick_sort(arr, low=0, high=None):
-    """Optimized Quick Sort with median-of-three pivot selection"""
+    """
+    Quick Sort with median-of-three pivot selection.
+    NOTE: This is a naive recursive implementation for benchmarking comparison.
+    It may fail with RecursionError on highly unbalanced partitions (e.g., many duplicates).
+    For production use, implement iterative version or with depth limit + fallback to insertion sort.
+    """
     if high is None:
         high = len(arr) - 1
     
