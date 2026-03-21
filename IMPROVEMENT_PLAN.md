@@ -46,12 +46,12 @@ Roadmap para mejorar, limpiar y publicar el proyecto Block Merge Segment Sort.
 
 ## Session 4: Documentation & Polish (2 turns)
 
-- [ ] **4.1** Actualizar README.md con estado actual del proyecto
-- [ ] **4.2** Crear/actualizar CHANGELOG.md
-- [ ] **4.3** Documentar decisiones de diseño en archivos
-- [ ] **4.4** Revisar y mejorar comentarios en código
+- [x] **4.1** Actualizar README.md con estado actual del proyecto
+- [x] **4.2** Crear/actualizar CHANGELOG.md
+- [x] **4.3** Documentar decisiones de diseño en archivos (design docs)
+- [ ] **4.4** Revisar y mejorar comentarios en código (opcional)
 
-**Estimación:** 2 turns
+**Completado en turn 5**
 
 ---
 

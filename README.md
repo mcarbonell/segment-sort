@@ -19,10 +19,16 @@ Block Merge Segment Sort is an adaptive sorting algorithm that combines well-kno
 
 ## ⚠️ Known Limitations
 
-❌ **Slower on duplicate-heavy data** (0.54× vs qsort when >50% duplicates)  
+❌ **Slower on duplicate-heavy data** (mitigated with 3-way partitioning in latest version)  
 ❌ **Slower on large random arrays** (std::sort wins on 1M+ random elements)  
 ❌ **Fixed 256KB overhead** (not suitable for tiny embedded systems)  
-⚠️ **Best for structured data** - gains diminish on purely random data  
+⚠️ **Best for structured data** - gains diminish on purely random data
+
+## 🆕 Latest Improvements (v4.1)
+
+- **3-way partitioning**: Automatic detection and handling of high-duplicate data
+- **Galloping mode**: Optimized merges for imbalanced segment sizes (10:1+)
+- **Improved dataset generation**: Added `--varied-range` flag for realistic benchmarks
 
 ---
 
@@ -546,8 +552,8 @@ You are free to:
 
 - **GitHub:** [@mcarbonell](https://github.com/mcarbonell)
 - **Project:** [segment-sort](https://github.com/mcarbonell/segment-sort)
-- **Date:** November 2025
-- **Version:** 4.0 (Fixed 64K Buffer - Optimal Performance)
+- **Date:** March 2026
+- **Version:** 4.1 (3-way partitioning + Galloping Mode)
 
 ---
 
