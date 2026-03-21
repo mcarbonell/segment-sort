@@ -17,15 +17,16 @@
     // Import Segment Sort implementation (solo en Node.js)
     let segmentSort = null;
     let balancedSegmentMergeSort = null;
+    let blockMergeSegmentSort = null;
     let segmentSortCorrected = null;
     if (isNode) {
         const fs = require('fs');
         const path = require('path');
         // Include algorithm implementations
-        const { blockMergeSegmentSort } = require('../../../implementations/javascript/block_merge_segment_sort.js');
-        const { balancedSegmentMergeSort: bsmSort } = require('../../../implementations/javascript/balanced_segment_merge_sort.js');
-        segmentSort = require('../../../implementations/javascript/segmentsort.js');
-        balancedSegmentMergeSort = bsmSort; // Assign to the existing variable
+        blockMergeSegmentSort = require('../../../implementations/javascript/block_merge_segment_sort.js');
+        balancedSegmentMergeSort = require('../../../implementations/javascript/balanced_segment_merge_sort.js');
+        const SegmentSortClass = require('../../../implementations/javascript/segmentsort.js');
+        segmentSort = (arr) => { const s = new SegmentSortClass(); s.sort(arr); return arr; };
     } else {
         // En navegador, SegmentSort se cargará dinámicamente
         segmentSort = null;
@@ -219,10 +220,26 @@
     }
 
     const sorters = {
+        blockMergeSegmentSort: (arr) => {
+            const copy = [...arr];
+            const start = process.hrtime.bigint();
+            const sorted = blockMergeSegmentSort(copy);
+            const end = process.hrtime.bigint();
+            return { sorted, time: Number(end - start) / 1e6 };
+        },
+
         segmentSort: (arr) => {
             const copy = [...arr];
             const start = process.hrtime.bigint();
             const sorted = segmentSort(copy);
+            const end = process.hrtime.bigint();
+            return { sorted, time: Number(end - start) / 1e6 };
+        },
+
+        balancedSegmentMergeSort: (arr) => {
+            const copy = [...arr];
+            const start = process.hrtime.bigint();
+            const sorted = balancedSegmentMergeSort(copy);
             const end = process.hrtime.bigint();
             return { sorted, time: Number(end - start) / 1e6 };
         },

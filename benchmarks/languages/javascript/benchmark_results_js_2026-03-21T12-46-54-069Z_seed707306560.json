@@ -1,0 +1,909 @@
+{
+  "metadata": {
+    "timestamp": "2026-03-21T12:46:54.070Z",
+    "seed": 707306560,
+    "node_version": "v24.13.0",
+    "platform": "win32",
+    "arch": "x64",
+    "repetitions": 5,
+    "methodology": "Academic Rigor Benchmarking v1.0"
+  },
+  "results": [
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "Aleatorio",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 9.133659999999999,
+        "median": 9.1327,
+        "std": 0.6200074664066556,
+        "p5": 8.4479,
+        "p95": 10.2162,
+        "min": 8.4479,
+        "max": 10.2162
+      },
+      "allTimes": [
+        9.1327,
+        10.2162,
+        9.2532,
+        8.4479,
+        8.6183
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "Aleatorio",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 15.183599999999998,
+        "median": 15.0102,
+        "std": 0.4524712278145431,
+        "p5": 14.7191,
+        "p95": 15.9629,
+        "min": 14.7191,
+        "max": 15.9629
+      },
+      "allTimes": [
+        14.8296,
+        15.3962,
+        15.9629,
+        14.7191,
+        15.0102
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 7.59736,
+        "median": 7.2849,
+        "std": 0.6726333788922463,
+        "p5": 7.2281,
+        "p95": 8.9419,
+        "min": 7.2281,
+        "max": 8.9419
+      },
+      "allTimes": [
+        8.9419,
+        7.2467,
+        7.2852,
+        7.2849,
+        7.2281
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "Aleatorio",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 8.307820000000001,
+        "median": 8.1624,
+        "std": 0.5615976616760436,
+        "p5": 7.6245,
+        "p95": 9.1775,
+        "min": 7.6245,
+        "max": 9.1775
+      },
+      "allTimes": [
+        7.8801,
+        8.6946,
+        7.6245,
+        8.1624,
+        9.1775
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "Ordenado",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 4.6288,
+        "median": 4.3648,
+        "std": 0.49908627310315773,
+        "p5": 4.1489,
+        "p95": 5.5318,
+        "min": 4.1489,
+        "max": 5.5318
+      },
+      "allTimes": [
+        4.1489,
+        4.7915,
+        4.3648,
+        5.5318,
+        4.307
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "Ordenado",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 10.90494,
+        "median": 10.8926,
+        "std": 0.16439438676548568,
+        "p5": 10.7264,
+        "p95": 11.1531,
+        "min": 10.7264,
+        "max": 11.1531
+      },
+      "allTimes": [
+        11.1531,
+        10.7264,
+        10.7351,
+        11.0175,
+        10.8926
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 8.36368,
+        "median": 7.405,
+        "std": 2.426758924491677,
+        "p5": 6.7703,
+        "p95": 13.1744,
+        "min": 6.7703,
+        "max": 13.1744
+      },
+      "allTimes": [
+        7.6178,
+        13.1744,
+        6.7703,
+        7.405,
+        6.8509
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "Ordenado",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 0.78058,
+        "median": 0.794,
+        "std": 0.05039743644273983,
+        "p5": 0.7233,
+        "p95": 0.8525,
+        "min": 0.7233,
+        "max": 0.8525
+      },
+      "allTimes": [
+        0.8525,
+        0.794,
+        0.7237,
+        0.8094,
+        0.7233
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "Inverso",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 9.57356,
+        "median": 8.9895,
+        "std": 2.4476044922331712,
+        "p5": 6.7755,
+        "p95": 12.9517,
+        "min": 6.7755,
+        "max": 12.9517
+      },
+      "allTimes": [
+        7.2983,
+        8.9895,
+        6.7755,
+        12.9517,
+        11.8528
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "Inverso",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 13.41934,
+        "median": 13.2472,
+        "std": 0.5986188523593291,
+        "p5": 12.5649,
+        "p95": 14.2041,
+        "min": 12.5649,
+        "max": 14.2041
+      },
+      "allTimes": [
+        12.5649,
+        13.2472,
+        14.2041,
+        13.9801,
+        13.1004
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 6.957680000000001,
+        "median": 6.9342,
+        "std": 0.2804347724516345,
+        "p5": 6.6623,
+        "p95": 7.3929,
+        "min": 6.6623,
+        "max": 7.3929
+      },
+      "allTimes": [
+        7.1332,
+        6.6623,
+        7.3929,
+        6.6658,
+        6.9342
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "Inverso",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 0.7966,
+        "median": 0.7984,
+        "std": 0.0062533191186760866,
+        "p5": 0.7851,
+        "p95": 0.8025,
+        "min": 0.7851,
+        "max": 0.8025
+      },
+      "allTimes": [
+        0.7955,
+        0.8025,
+        0.7851,
+        0.7984,
+        0.8015
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "K-sorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 7.12556,
+        "median": 6.9099,
+        "std": 0.3826358300002758,
+        "p5": 6.7215,
+        "p95": 7.6046,
+        "min": 6.7215,
+        "max": 7.6046
+      },
+      "allTimes": [
+        6.8198,
+        6.9099,
+        7.6046,
+        6.7215,
+        7.572
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "K-sorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 18.126360000000002,
+        "median": 17.5918,
+        "std": 2.139942824096008,
+        "p5": 16.3233,
+        "p95": 22.2827,
+        "min": 16.3233,
+        "max": 22.2827
+      },
+      "allTimes": [
+        22.2827,
+        17.5918,
+        16.3233,
+        16.7528,
+        17.6812
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 9.69068,
+        "median": 9.3502,
+        "std": 0.6739120043447806,
+        "p5": 8.9762,
+        "p95": 10.8677,
+        "min": 8.9762,
+        "max": 10.8677
+      },
+      "allTimes": [
+        9.9843,
+        8.9762,
+        10.8677,
+        9.275,
+        9.3502
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "K-sorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 11.455400000000001,
+        "median": 10.7873,
+        "std": 2.161008951392844,
+        "p5": 9.5623,
+        "p95": 15.6821,
+        "min": 9.5623,
+        "max": 15.6821
+      },
+      "allTimes": [
+        9.5623,
+        10.4387,
+        15.6821,
+        10.7873,
+        10.8066
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "NearlySorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 5.830140000000001,
+        "median": 5.8825,
+        "std": 0.3783140103141834,
+        "p5": 5.1913,
+        "p95": 6.344,
+        "min": 5.1913,
+        "max": 6.344
+      },
+      "allTimes": [
+        5.1913,
+        5.7285,
+        5.8825,
+        6.344,
+        6.0044
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "NearlySorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 14.692179999999999,
+        "median": 14.7211,
+        "std": 0.7507834159063451,
+        "p5": 13.4672,
+        "p95": 15.6354,
+        "min": 13.4672,
+        "max": 15.6354
+      },
+      "allTimes": [
+        14.374,
+        15.2632,
+        15.6354,
+        14.7211,
+        13.4672
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 8.306819999999998,
+        "median": 8.3666,
+        "std": 0.29885321748309823,
+        "p5": 7.8087,
+        "p95": 8.7355,
+        "min": 7.8087,
+        "max": 8.7355
+      },
+      "allTimes": [
+        8.386,
+        7.8087,
+        8.2373,
+        8.3666,
+        8.7355
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "NearlySorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 5.360639999999999,
+        "median": 4.8543,
+        "std": 1.1207140894982985,
+        "p5": 4.4326,
+        "p95": 7.5371,
+        "min": 4.4326,
+        "max": 7.5371
+      },
+      "allTimes": [
+        4.8543,
+        5.2635,
+        7.5371,
+        4.4326,
+        4.7157
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "Duplicados",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 348.02196000000004,
+        "median": 324.1359,
+        "std": 47.25076843242233,
+        "p5": 297.0371,
+        "p95": 410.5023,
+        "min": 297.0371,
+        "max": 410.5023
+      },
+      "allTimes": [
+        410.5023,
+        399.0091,
+        324.1359,
+        309.4254,
+        297.0371
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "Duplicados",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 16.99486,
+        "median": 16.8051,
+        "std": 0.5110441061200104,
+        "p5": 16.2888,
+        "p95": 17.7668,
+        "min": 16.2888,
+        "max": 17.7668
+      },
+      "allTimes": [
+        16.7672,
+        16.2888,
+        17.7668,
+        17.3464,
+        16.8051
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 8.13654,
+        "median": 8.023,
+        "std": 0.4496799021526311,
+        "p5": 7.6482,
+        "p95": 8.9803,
+        "min": 7.6482,
+        "max": 8.9803
+      },
+      "allTimes": [
+        8.9803,
+        8.1118,
+        7.6482,
+        7.9194,
+        8.023
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "Duplicados",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 6.487299999999999,
+        "median": 6.4112,
+        "std": 0.21938160360431308,
+        "p5": 6.2871,
+        "p95": 6.9152,
+        "min": 6.2871,
+        "max": 6.9152
+      },
+      "allTimes": [
+        6.421,
+        6.4112,
+        6.9152,
+        6.2871,
+        6.402
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "Plateau",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 568.6059600000001,
+        "median": 569.68,
+        "std": 8.208792357125366,
+        "p5": 557.6398,
+        "p95": 581.1947,
+        "min": 557.6398,
+        "max": 581.1947
+      },
+      "allTimes": [
+        562.0905,
+        557.6398,
+        581.1947,
+        569.68,
+        572.4248
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "Plateau",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 13.47006,
+        "median": 13.2677,
+        "std": 0.5178770610868955,
+        "p5": 12.9965,
+        "p95": 14.3874,
+        "min": 12.9965,
+        "max": 14.3874
+      },
+      "allTimes": [
+        14.3874,
+        13.0291,
+        12.9965,
+        13.6696,
+        13.2677
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 6.72016,
+        "median": 6.6208,
+        "std": 0.7307895582176854,
+        "p5": 5.8272,
+        "p95": 7.7142,
+        "min": 5.8272,
+        "max": 7.7142
+      },
+      "allTimes": [
+        6.6208,
+        5.8272,
+        7.7142,
+        7.3807,
+        6.0579
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "Plateau",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 0.60632,
+        "median": 0.6085,
+        "std": 0.006265269347761521,
+        "p5": 0.598,
+        "p95": 0.6144,
+        "min": 0.598,
+        "max": 0.6144
+      },
+      "allTimes": [
+        0.6085,
+        0.6144,
+        0.598,
+        0.6106,
+        0.6001
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "segmentSort",
+      "size": 50000,
+      "dataType": "SegmentSorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "Class constructor SegmentSort cannot be invoked without 'new'"
+    },
+    {
+      "algorithm": "quickSort",
+      "size": 50000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 4.657559999999999,
+        "median": 4.2116,
+        "std": 0.6636321770378526,
+        "p5": 4.0555,
+        "p95": 5.574,
+        "min": 4.0555,
+        "max": 5.574
+      },
+      "allTimes": [
+        4.094,
+        5.3527,
+        4.2116,
+        4.0555,
+        5.574
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "balancedSegmentMergeSort",
+      "size": 50000,
+      "dataType": "SegmentSorted",
+      "repetitions": 0,
+      "statistics": {},
+      "allTimes": [],
+      "success": false,
+      "error": "balancedSegmentMergeSort is not a function"
+    },
+    {
+      "algorithm": "mergeSort",
+      "size": 50000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 11.35654,
+        "median": 11.2497,
+        "std": 0.8242064173494406,
+        "p5": 10.277,
+        "p95": 12.5476,
+        "min": 10.277,
+        "max": 12.5476
+      },
+      "allTimes": [
+        10.277,
+        11.9871,
+        12.5476,
+        10.7213,
+        11.2497
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "heapSort",
+      "size": 50000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 7.480760000000001,
+        "median": 7.6345,
+        "std": 0.39492146864914823,
+        "p5": 6.848,
+        "p95": 8.0149,
+        "min": 6.848,
+        "max": 8.0149
+      },
+      "allTimes": [
+        8.0149,
+        7.2675,
+        7.6389,
+        6.848,
+        7.6345
+      ],
+      "success": true
+    },
+    {
+      "algorithm": "builtinSort",
+      "size": 50000,
+      "dataType": "SegmentSorted",
+      "repetitions": 5,
+      "statistics": {
+        "mean": 0.73732,
+        "median": 0.7404,
+        "std": 0.011685101625574311,
+        "p5": 0.7164,
+        "p95": 0.7505,
+        "min": 0.7164,
+        "max": 0.7505
+      },
+      "allTimes": [
+        0.7447,
+        0.7404,
+        0.7505,
+        0.7164,
+        0.7346
+      ],
+      "success": true
+    }
+  ]
+}
