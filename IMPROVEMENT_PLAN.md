@@ -85,17 +85,24 @@ Roadmap para mejorar, limpiar y publicar el proyecto Block Merge Segment Sort.
 
 | Session | Tasks | Status |
 |---------|-------|--------|
-| 1 | Cleanup | ⬜ |
-| 2 | Benchmarks | ⬜ |
-| 3 | Improvements | ⬜ |
-| 4 | Documentation | ⬜ |
-| 5 | Paper | ⬜ |
+| 1 | Cleanup | ✅ Complete |
+| 2 | Benchmarks | ✅ Complete |
+| 3 | Improvements | ✅ Complete |
+| 3b | Galloping | ✅ Complete |
+| 4 | Documentation | ✅ Complete |
+| 5 | Paper | ✅ Complete |
 
----
+## Project Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 4.1 | March 2026 | 3-way partitioning, galloping mode, improved benchmarks |
+| 4.0 | November 2025 | Fixed 64K buffer, Block Merge main release |
+| 3.x | Earlier | Original K-way merge implementation |
 
 ## Notes
 
-- Total estimado: **10-12 turns**
-- Prioridad: Session 1 → 2 → 3 → 4 → 5
-- Ejecutar benchmarks solo cuando CPU no esté ocupada
-- Mantener backwards compatibility en cambios de API
+- **Total turns:** 5 sessions completed in one session
+- Benchmarks should run when CPU is not heavily loaded
+- Maintain backwards compatibility in API changes
+- Paper available at: docs/TECHNICAL_PAPER.md (v2.0)
