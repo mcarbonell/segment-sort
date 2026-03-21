@@ -63,25 +63,50 @@ def generate_plateau(lcg, n, plateau_size, min_val, max_val):
     return arr
 
 # --- Main ---
+def generate_high_duplicates(lcg, n, unique_ratio, min_val, max_val):
+    unique_count = max(2, int(n * unique_ratio))
+    return generate_duplicates(lcg, n, unique_count, min_val, max_val)
+
+def generate_shuffle(lcg, n, min_val, max_val):
+    arr = list(range(min_val, min_val + n))
+    lcg.shuffle = lambda: lcg.randrange(0, n)
+    for i in range(n):
+        j = i + int(lcg.random() * (n - i))
+        arr[i], arr[j] = arr[j], arr[i]
+    return arr[:n]
+
 def main():
     parser = argparse.ArgumentParser(description="Generate static datasets for benchmarks")
     parser.add_argument("--size", type=int, default=100000, help="Size of arrays")
     parser.add_argument("--out-dir", default="../datasets", help="Output directory")
+    parser.add_argument("--varied-range", action="store_true", help="Use varied value ranges for realism")
     args = parser.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
     
-    lcg = LCG(12345) # Fixed seed
+    lcg = LCG(12345)
 
-    datasets = {
-        "random": lambda: generate_random(lcg, args.size, 0, 1000),
-        "sorted": lambda: generate_sorted(lcg, args.size, 0, 1000),
-        "reverse": lambda: generate_reverse(lcg, args.size, 0, 1000),
-        "ksorted": lambda: generate_k_sorted(lcg, args.size, args.size // 10, 0, 1000),
-        "nearly_sorted": lambda: generate_nearly_sorted(lcg, args.size, args.size // 20, 0, 1000),
-        "duplicates": lambda: generate_duplicates(lcg, args.size, 20, 0, 100),
-        "plateau": lambda: generate_plateau(lcg, args.size, args.size // 10, 0, 1000),
-    }
+    if args.varied_range:
+        datasets = {
+            "random": lambda: generate_random(lcg, args.size, 0, 1000000),
+            "sorted": lambda: generate_sorted(lcg, args.size, 0, 1000000),
+            "reverse": lambda: generate_reverse(lcg, args.size, 0, 1000000),
+            "ksorted": lambda: generate_k_sorted(lcg, args.size, args.size // 10, 0, 1000000),
+            "nearly_sorted": lambda: generate_nearly_sorted(lcg, args.size, args.size // 20, 0, 1000000),
+            "duplicates_10pct": lambda: generate_high_duplicates(lcg, args.size, 0.10, 0, 1000),
+            "duplicates_1pct": lambda: generate_high_duplicates(lcg, args.size, 0.01, 0, 100),
+            "plateau": lambda: generate_plateau(lcg, args.size, args.size // 10, 0, 1000000),
+        }
+    else:
+        datasets = {
+            "random": lambda: generate_random(lcg, args.size, 0, 1000),
+            "sorted": lambda: generate_sorted(lcg, args.size, 0, 1000),
+            "reverse": lambda: generate_reverse(lcg, args.size, 0, 1000),
+            "ksorted": lambda: generate_k_sorted(lcg, args.size, args.size // 10, 0, 1000),
+            "nearly_sorted": lambda: generate_nearly_sorted(lcg, args.size, args.size // 20, 0, 1000),
+            "duplicates": lambda: generate_duplicates(lcg, args.size, 20, 0, 100),
+            "plateau": lambda: generate_plateau(lcg, args.size, args.size // 10, 0, 1000),
+        }
 
     print(f"[*] Generating datasets of size {args.size}...")
 

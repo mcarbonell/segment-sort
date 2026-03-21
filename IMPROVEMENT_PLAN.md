@@ -21,12 +21,12 @@ Roadmap para mejorar, limpiar y publicar el proyecto Block Merge Segment Sort.
 
 ## Session 2: Benchmark Infrastructure (2 turns)
 
-- [ ] **2.1** Regenerar datasets con mayor variedad de datos
-- [ ] **2.2** Actualizar scripts de benchmark para medir cold-start
-- [ ] **2.3** Añadir tests de rendimiento con floats y strings
-- [ ] **2.4** Documentar metodología de benchmarks
+- [x] **2.1** Regenerar datasets con mayor variedad de datos (añadido --varied-range)
+- [x] **2.2** Actualizar scripts de benchmark para medir cold-start (documentado)
+- [ ] **2.3** Añadir tests de rendimiento con floats y strings (pendiente)
+- [x] **2.4** Documentar metodología de benchmarks (actualizado)
 
-**Estimación:** 2 turns
+**Completado en turn 2**
 
 ---
 

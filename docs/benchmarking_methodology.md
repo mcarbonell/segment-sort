@@ -1,5 +1,7 @@
 # Benchmarking Methodology for Academic Rigor
 
+> **Note:** Run benchmarks only when CPU is not under heavy load (e.g., no training processes). Background load causes variance in results.
+
 To ensure academic rigor in the benchmarks of the Segment Sort algorithm, I propose the following detailed methodology:
 
 ## Methodology for Academically Rigorous Benchmarks
