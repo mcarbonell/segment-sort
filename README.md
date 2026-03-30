@@ -1,5 +1,7 @@
 # Block Merge Segment Sort 🚀
 
+![Block Merge Segment Sort](assets/hero.svg)
+
 [![GitHub Repository](https://img.shields.io/badge/GitHub-mcarbonell/segment--sort-blue?logo=github)](https://github.com/mcarbonell/segment-sort)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Language: C](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
